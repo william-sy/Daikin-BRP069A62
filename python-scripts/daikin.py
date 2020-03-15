@@ -1,5 +1,7 @@
 from websocket import create_connection
 import json, datetime, time, string, random
+import locale, calendar
+locale.setlocale(locale.LC_ALL, '')
 
 # Define a random string to send to the device
 def randomString(stringLength=5):
@@ -112,6 +114,34 @@ ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitStatus/WeatherDependent
 js_weather_state = json.loads(ws.recv())
 weather_state = js_weather_state["m2m:rsp"]["pc"]["m2m:cin"]["con"]
 
+# Active schedule:
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/Active/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_active_schedule = json.loads(ws.recv())
+active_schedule = js_active_schedule["m2m:rsp"]["pc"]["m2m:cin"]["con"]
+# Nested json :(
+js_active_schedule_id = json.loads(active_schedule)
+schedule_id = js_active_schedule_id["data"]["id"]
+print(f"User chosen schedule ID: {schedule_id}")
+# Upcomming schedule
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/Next/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_next_schedule = json.loads(ws.recv())
+next_schedule = js_next_schedule["m2m:rsp"]["pc"]["m2m:cin"]["con"]
+# Nested json :(
+js_next_schedule_data = json.loads(next_schedule)
+next_schedule_data_start = js_next_schedule_data["data"]["StartTime"]
+next_schedule_data_target = js_next_schedule_data["data"]["TargetTemperature"]
+# change number to day
+next_schedule_data_day = js_next_schedule_data["data"]["Day"]
+next_schedule_data_day = calendar.day_name[next_schedule_data_day]
+
+# Schedule data
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/List/Heating/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_schedule_list = json.loads(ws.recv())
+schedule_list = js_schedule_list["m2m:rsp"]["pc"]["m2m:cin"]["con"]
+# Nested json :(
+js_schedule_list_uid = json.loads(schedule_list)
+schedule_list_uid = js_schedule_list_uid["data"]
+
 # Translate a 0 to yes or no
 if us_ttos_temp == 0:
     us_ttos_temp = "NO"
@@ -128,24 +158,9 @@ if holiday_state == 0:
 else:
     holiday_state = "YES"
 
-########################################## Needs more filtering
-# Active schedule:
-ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/Active/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
-js_active_schedule = json.loads(ws.recv())
-active_schedule = js_active_schedule["m2m:rsp"]["pc"]["m2m:cin"]["con"]
-print(active_schedule)
-# Upcomming schedule
-ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/Next/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
-js_next_schedule = json.loads(ws.recv())
-next_schedule = js_next_schedule["m2m:rsp"]["pc"]["m2m:cin"]["con"]
-print(next_schedule)
-# Schedule data
-ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/List/Heating/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
-js_schedule_list = json.loads(ws.recv())
-schedule_list = js_schedule_list["m2m:rsp"]["pc"]["m2m:cin"]["con"]
-print(schedule_list)
-############################################
 
+print(f"Next schedule change: {next_schedule_data_day}, Time: {next_schedule_data_start}, temp will be set to: {next_schedule_data_target/10}")
+print(f"Complete schedule: {schedule_list_uid[schedule_id]}")
 print("=====================================================")
 print(f"Connected to Daikin on: {ip}")
 print(f"Device function: {function}")
@@ -171,5 +186,4 @@ print(f"Is child lock active: {child_lock}, Current pin is: {child_lock_code}")
 print("=====================================================")
 print(f"Holiday start: {holiday_start}, Holiday End: {holiday_end}, Holiday mode active?: {holiday_state}")
 print("=====================================================")
-print("Factory reset only trough app. ToDo: Schedule and tempchange")
 ws.close()
