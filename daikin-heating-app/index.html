@@ -1,0 +1,2842 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <title class="cldoktitel" data-localize="webdesktop.document-title">Daikin Online Control Heating</title>
+        <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon; charset=binary" />
+        <link rel="icon" href="/images/icons/favicon.ico" type="image/x-icon; charset=binary" />
+        <meta http-equiv="Content-Security-Policy" content="connect-src 'self' ws://* wss://* http://* http://www.daikin.eu/* https://*.osein1.edc.eur.daikintranet https://*.oseinl.edc.dknadmin.be https://*.oseinl.edc.eur.daikintranet https://*.osepr1.edc.dknadmin.be https://*.osepr1.edc.eur.daikintranet https://*.osepp1.edc.dknadmin.be https://*.osepp1.edc.eur.daikintranet; default-src 'self' 'unsafe-eval' 'unsafe-inline' data: gap://ready ;">
+		<!-- added viewport-fit=cover for iOS11 statusbar fix CB-12886 -->
+		<meta id="viewport" name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts-head.js"></script>
+
+        
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+
+
+    </head>
+    <body>
+        <div class="desktop-overlay"></div>
+        <div class="desktop">
+        <noscript style="position: absolute;z-index: 999999;">
+            You don't have javascript enabled, please enable javascript.
+        </noscript>
+            
+    
+<div class="pane background-image-ext">
+	
+<div class="popup">
+    <div class="header">
+        <div data-localize="popup.header.title"></div>
+    </div>
+    <div class="popup_content">
+        <div class="poppup_text"></div>
+		<div class="popup_button">
+		<table style="width: 99%;">
+			<tr>
+				<td><button id="popup_button_left" class="popup_b_ok" data-localize="popup.button.ok">OK</button></td>
+				<td><button id="popup_button_right" class="popup_b_abord buttonremovehover" data-localize="popup.button.abord">Cancel</button></td>
+			</tr>
+		</table>
+		</div>
+	</div>
+</div>
+</div>
+
+
+            
+    <nav id="slidemenu" class="menu">
+  <div class="sidemenuArea">
+		<div class="cldevlist_menu_content">
+			<div class="clLogoStatusArea">
+				<div class="clLogo"></div>
+				<div class="clOutOffHome">
+					<span class="clOutOffHome_Label" data-localize="slidemenu.inh"></span>
+					<span class="clOutOffHome_Val"></span>
+				</div>
+				<div class="clLoginID">
+					<span class="clLoginID_Label"></span>
+					<span class="clLoginID_Val"></span>
+				</div>
+			</div>
+			<div class="clmenuentry cldevlist_entry clentry_00">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clHome"></td>
+						<td class="clLabel" data-localize="slidemenu.home">Home</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="clmenuentry cldevlist_entry clentry_01">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clTime"></td>
+						<td class="clLabel" data-localize="slidemenu.schedule">Schedule</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+                        <!-- REMOVE COMMENT TO ENABLE THE POWER-CONSUMPTION-->
+			<div class="clmenuentry cldevlist_entry clentry_02">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clConsumption"></td>
+						<td class="clLabel" data-localize="slidemenu.consumption">Consumption</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="clmenuentry cldevlist_entry clentry_03">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clHoliday"></td>
+						<td class="clLabel" data-localize="slidemenu.holiday">Holiday mode</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="clTrendlineBorder_100"></div>
+			<div class="clmenuentry cldevlist_entry clentry_04">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clImgLogin"></td>
+						<td class="clLabel" data-localize="slidemenu.login">Log in (Not at home)</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="clmenuentry cldevlist_entry clentry_11">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clMyAccount"></td>
+						<td class="clLabel" data-localize="slidemenu.myaccount">My Account</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="clmenuentry cldevlist_entry clentry_06">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clAddAdapter"></td>
+						<td class="clLabel" data-localize="slidemenu.adapter">Add adapter</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="clTrendlineBorder_100"></div>
+			<div class="clmenuentry cldevlist_entry clentry_05">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clDemo"></td>
+						<td class="clLabel" data-localize="slidemenu.demo">Demo mode</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="clmenuentry cldevlist_entry clentry_07">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clGSettings"></td>
+						<td class="clLabel" data-localize="slidemenu.general">General settings</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+			<!--<div class="cldevlist_entry clentry_08">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clIFTTT"></td>
+						<td class="clLabel" data-localize="slidemenu.ifttt">IFTTT</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>-->
+			<div class="clmenuentry cldevlist_entry clentry_09">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clFAQ"></td>
+						<td class="clLabel" data-localize="slidemenu.faq">Frequently Asked Questions</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>
+		<!--<div class="cldevlist_entry clentry_10">
+				<table class="cldevlist_table">
+					<tr class="cldevlist">
+						<td class="clSymbol clManual"></td>
+						<td class="clLabel" data-localize="slidemenu.manual">Manual</td>
+						<td class="clBatchIcon"></td>
+					</tr>
+				</table>
+			</div>-->			
+		</div>
+    </div>
+</nav>
+
+<div class="clMenuOverlay"></div>
+<div class="clMenuOverlay2"></div>
+
+<!--
+<nav id="menu2" class="sidemenu">
+    
+</nav>
+-->
+
+        </div>
+        <div class="module-windows">
+            
+    
+
+    
+    
+    
+    
+    
+    
+<div class="window open demo_settings">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.demo_settings.basic.window-title">Demo settings</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clScreen_Demo">
+	<table class="clTable_demo clTable_Device_Chooser">
+	<tr>
+		<td class="label">
+			<div class="">Device</div></td>
+			<td class="">
+				<div id="iddevices">
+				  <input type="radio" id="dev1" name="devices" checked>
+				  <label for="dev1">DHW</label>
+			 
+				  <input type="radio" id="dev2" name="devices">
+				  <label for="dev2">Alterma</label>
+				</div>
+			</td>
+		</td>
+	<tr>
+	</table>
+	<div class="clTrendlineBorder_100"></div>
+	<table class="clTable_demo">
+	<!--<tr>
+		<td class="label"><div class="">Mode</div></td>
+		<td class="">
+			<div class="clTable_Device_2">
+			<select name="icon" class="clSelect_Menu clSelect_Mode2">
+				  <option value="0">All 5 Modes</option>
+				  <option value="1">Only 3 Modes</option>
+				  <option value="2">Only 1 Mode</option>
+			</select>
+			</div>
+			<div class="clTable_Device_1">
+			<select name="icon" class="clSelect_Menu clSelect_Mode1">
+				  <option value="0">DHW Normal</option>
+				  <option value="1">DHW is on and schedule + reheat</option>
+				  <option value="2">DHW no schedule</option>
+				  <option value="3">DHW Powerful Heating</option>
+				  <option value="4">DHW On/Off and reheat locked</option>
+				  <option value="5">DHW Reheat locked</option>
+				  <option value="6">DHW On/Off locked</option>
+			</select>
+			</div>
+		</td>
+	</tr>-->
+	<tr>
+		<td class="label"><div class="">Holiday Locked</div></td>
+		<td class="">
+			<input type="checkbox" class="checkboxHolidayLocked">
+		</td>
+	</tr>
+	<tr>
+		<td class="label"><div class="">On/Off locked</div></td>
+		<td class="">
+			<input type="checkbox" class="checkboxOnOffLocked">
+		</td>
+	</tr>
+	<!--<tr>
+		<td class="label"><div class="">DHW flow through</div></td>
+		<td class="">
+			<input type="checkbox" class="checkboxDHWft">
+		</td>
+	</tr>-->
+	<tr>
+		<td class="label">
+			<div class="">Addition icon</div></td>
+			<td class="">
+				<div id="idAddicon">
+				  <div><input type="radio" id="idNormal" name="addicon">
+				  <label for="idNormal">Normal</label></div>
+				  
+				  <div><input type="radio" id="idHoliday" name="addicon">
+				  <label for="idHoliday">Holiday</label></div>
+				   
+				  <div><input type="radio" id="idConflict" name="addicon">
+				  <label for="idConflict">Mode conflict</label></div>
+				  
+				  <div><input type="radio" id="idSchedule" name="addicon">
+				  <label for="idSchedule">Schedule</label></div>
+				  
+				  <div><input type="radio" id="idOverule" name="addicon">
+				  <label for="idOverule">Overrule</label></div>
+				  
+				  <div><input type="radio" id="idReheat" name="addicon">
+				  <label for="idReheat">Reheat</label></div>
+				  
+				  <div><input type="radio" id="idSpaceHeating_OnOff" name="addicon">
+				  <label for="idSpaceHeating_OnOff">Space heating OnOff blocked</label></div>
+				  
+				  <div><input type="radio" id="idSpaceHeating_Setpoint" name="addicon">
+				  <label for="idSpaceHeating_Setpoint">Space heating setpoint blocked</label></div>
+				  
+				  <div><input type="radio" id="idSetError" name="addicon">
+				  <label for="idSetError">Set error</label></div>
+				  
+				  <div><input type="radio" id="idWeatherDep" name="addicon">
+				  <label for="idWeatherDep">DHW Weather dependent</label></div>
+				  
+				  <div><input type="radio" id="idEmergency" name="addicon">
+				  <label for="idEmergency">Emergency</label></div>
+				  
+				  <div><input type="radio" id="idInstaller" name="addicon">
+				  <label for="idInstaller">Installer</label></div>
+				  
+				  <div><input type="radio" id="idOPandReheatLocked" name="addicon">
+				  <label for="idOPandReheatLocked">DHW OP and Reheat locked</label></div>
+				  
+				  <div><input type="radio" id="idReheatLocked" name="addicon">
+				  <label for="idReheatLocked">DHW Reheat locked</label></div>
+				  
+				  <div><input type="radio" id="idOnOffLocked" name="addicon">
+				  <label for="idOnOffLocked">DHW On/Off locked</label></div>
+				  
+				</div>
+			</td>
+		</td>
+	<tr>
+	<tr>
+		<td class="label"><div class="">Firmware Update</div></td>
+		<td class="">
+			<input type="checkbox" class="checkboxFWU">
+		</td>
+	</tr>
+
+	</table>
+
+	<div class="clTrendlineBorder_100"></div>
+</div>
+
+<table class="clTable_demo clTable_Server_Cfg">
+<tr>
+    <td class="label"></td>
+    <td class="label">
+        <div class="">Server Cfg</div>
+    </td>
+</tr>
+<tr>
+	<td class="label"><div class="">Websocket TO</div></td>
+	<td class="">
+		<input type="text" id="websocket_to" name="mnae_id" value="iot.daikin.com/recapcseID/recapcsebase/">
+	</td>
+</tr>
+<tr>
+	<td class="label"><div class="">Websocket FROM</div></td>
+	<td class="">
+		<input type="text" id="websocket_from" name="mnae_id" value="iot.daikin.com/recapcseID/">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">UsrMgt Srv URL</div></td>
+	<td class="">
+		<input type="text" id="mgt_srv" name="mgt_srv" value="https://192.168.0.1/user-management">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">Auth Srv URL</div></td>
+	<td class="">
+		<input type="text" id="auth_srv" name="auth_srv" value="https://192.168.0.1/login">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">IN-CSE URL</div></td>
+	<td class="">
+		<input type="text" id="in_cse_url" name="in_cse_url" value="ws://192.168.0.1:8080/">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">MN-CSE-ID (deviceID)</div></td>
+	<td class="">
+		<input type="text" id="mncseid" name="mncseid" value="mncse0000ID">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">accessToken</div></td>
+	<td class="">
+		<input type="text" id="access_token" name="access_token" value="">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">Client_ID</div></td>
+	<td class="">
+		<input type="text" id="client_id" name="client_id" value="">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">Client_secret</div></td>
+	<td class="">
+		<input type="text" id="client_secret" name="client_secret" value="">
+	</td>
+</tr>
+
+<tr>
+	<td class="label"><div class="">MNAE_ID</div></td>
+	<td class="">
+		<input type="text" id="mnae_id" name="mnae_id" value="">
+	</td>
+</tr>
+
+<tr>
+    <td class="label"></td>
+    <td class="">
+		<input type="button" id="save_cfg_button" name="save_cfg_button" value="save server cfg">
+	</td>
+</tr>
+<tr>
+	<td class="label"><div class="">Skip Reg/Login</div></td>
+	<td class="">
+		<input type="checkbox" class="checkboxskipRegLogin">
+	</td>
+</tr>
+
+</table>
+
+
+
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open devicelist">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.devicelist.basic.window-title">Devicelist</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+	            <span class="reload-button"></span>
+	        
+            
+                <span class="option-button"></span>
+            
+	        
+	            <span class="optmenu-button"></span>
+	        
+        </span>
+        
+        <div class="clOptmenu_area">
+			<div class="clOptmenu">
+				
+				<div class="clOptmenu_Entry clOptmenu_Entry_Edit">
+					<div class="clOptmenu_Entry_Content" data-localize="header.optmenu.edit"></div>
+				</div>
+				
+				
+				<div class="clOptmenu_Entry clOptmenu_Entry_Childlock">
+					<div class="clOptmenu_Entry_Content" data-localize="header.optmenu.childlook"></div>
+				</div>
+				
+				
+			</div>
+		</div>
+		
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Devicelist">
+	<div class="clStatusBar">
+			<div class="clStatusBar_Image"></div>
+			<div class="clStatusBar_Label"></div>
+		</div>
+	<div class="clLastUpdate">
+		<div class="clValLastUpdate"></div>
+	</div>
+	
+	<div class="clUnitlist_NoUnitsfound">
+		<div class="clUnitlist_NoUnitsfound_TextContent">
+			<div class="clUnitlist_NoUnitsfound_Header" data-localize="modules.devicelist.content.nounits_header"></div>
+			<div class="clUnitlist_NoUnitsfound_Text clNo_units_found_local" data-localize="modules.devicelist.content.nounits_text1"></div>
+			<div class="clUnitlist_NoUnitsfound_Text clno_units_found_global" data-localize="modules.devicelist.content.nounits_text2"></div>
+		</div>
+		<div class="clUnitlist_NoUnitsfound_ButtonContent">
+			<div class="clclUnitlist_NoUnitsfound_Button">
+				<div class="clButton_Style clButtonAddAdapter" data-localize="modules.devicelist.content.addadapter"></div>
+			</div>
+			<div class="clclUnitlist_NoUnitsfound_Button clButtonLogin_Entry">
+				<div class="clButton_Style clButtonLogin" data-localize="modules.devicelist.content.login"></div>
+			</div>
+			<div class="clclUnitlist_NoUnitsfound_Button clButtonLogout_Entry">
+				<div class="clButton_Style clButtonLogin" data-localize="modules.devicelist.content.logout"></div>
+			</div>            
+			<div class="clclUnitlist_NoUnitsfound_Button">
+				<div class="clButton_Style clButtonDemoMode" data-localize="modules.devicelist.content.demomode"></div>
+			</div>
+			<div class="clclUnitlist_NoUnitsfound_Button">
+				<div class="clButton_Style clButtonFAQ" data-localize="modules.devicelist.content.faq"></div>
+			</div>
+		</div>
+	</div>
+	<div class="clUnitlist_Area">
+		<div class="clUnitlist_CountofDevices">
+			<div class="clUnitlist_CountofDevices_Content"></div>
+			<div class="clUnitlist_CountofDevices_Image clImg_Device_Warning"></div>
+		</div>
+		<div class="clUnitlist clDevice_list">
+			
+		</div>
+	</div>
+	
+	<div class="clChildlock_Editor">
+		<div class="clChildlock_Editor_Text clChildlock_Editor_Text_Value" data-localize="modules.childlock.content.entercode">Bitte Code eingeben</div>
+		<table class="clChildlock_Editor_Table" align="center">
+			<tr class="clChildlock_Editor_Row">
+				<td class="clChildlock_Editor_Input clInput0 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput1 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput2 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput3 clChildLock_Bar"></td>
+			</tr>
+		</table>
+		<div class="clInput_Container_Pos"><input class="clInput_Element clInput_Element_all" type="number" pattern="[0-9]*"></div>
+	</div>
+	
+	<!-- Zeroconf status field -->
+	<!--<div id="iddiv_device_search_update" class="cldiv_device_search_update" style="display:block">
+	
+		<div id="iddiv_wait_search" class="cldiv_wait_search" style="display:block">
+			<table>
+				<tr style="height: 20px">
+					<td align="center" > <img id="idimg_search_loader" class="climg_search_loader" src="images/ajax-loader.gif" height="22" width="22"/> </td>	
+					<td data-localize="modules.devicelist.content.searching" style="font-weight:bold">Searching for devices:</td>			
+				</tr>	
+			</table>
+		</div>
+		
+		<div id="iddiv_start_search" class="cldiv_start_search" style="display:none">
+			<table>
+				<tr>        
+					<td><input class="start_search_button buttonremovehover" type="submit" data-localize="modules.devicelist.content.update_device_list"/> </td>
+				</tr>
+			</table>
+		</div>
+	
+	</div>-->
+</div>
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open credentials">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.credentials.basic.window-title">Log in</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="clPage_Login">
+    <div data-localize="modules.credentials.content.logindescr"></div>
+	<div class="ajax-credentials">
+		<div class="clDaikinRowHeight"><input value="Login ID" type="email" class="clLabelFristGray clInputFieldStandard clUsername" autocapitalize="none" autocorrect="off" autocomplete="off"></div>
+		<div class="clDaikinRowHeight">		
+			<input value="" type="text" class="clLabelFristGray clPasswordFake clInputFieldStandard">
+			<input type="password" class="clLabelFristGray clInputFieldStandard clPassword" value="">
+	    </div>
+	    <div class="clDaikinRowHeight"><input type="checkbox" class="clLoginCheckbox" id="c1"><label class="clCheckboxLabel cllabelc1" for="c1"><span></span></label></div>
+	    <div class="clDaikinRowHeight"><input type="checkbox" class="clLoginCheckbox" id="c2"><label class="clCheckboxLabel cllabelc2" for="c2"><span></span></label></div>
+    </div>
+	<div><input class="clLogin cllogin_button clButton_Style clBigger clButton_notactive" type="submit" data-localize="modules.credentials.content.loginbutton" value=""></div>
+	<div><input class="clButton_Forgotpw clButton_Style clBigger clButton_notactive" type="submit" data-localize="modules.credentials.content.forgot" value=""></div>
+    <div style="margin-bottom:4.1vw;"data-localize="modules.credentials.content.newaccount"></div>
+    <div><input class="clButton_Create clButton_Style clBigger clButton_notactive" type="submit" data-localize="modules.credentials.content.create" value=""></div>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open createacc">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.createacc.basic.window-title">Create a user account</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="create_account_view">
+	<div class="clDescription_Text" data-localize="modules.createacc.content.usrinfo_text"></div>
+	<div class="clDaikinRowHeight">
+		<input value="" type="email" class="clLabelFristGray clUserEmail clInputFieldStandard" autocapitalize="none" autocorrect="off" autocomplete="off">
+	</div>
+	<!--<div class="clDaikinRowHeight">
+		<input value="" type="text" class="clLabelFristGray clUserName clInputFieldStandard" autocapitalize="none" autocorrect="off" autocomplete="off">
+	</div>-->
+	<div class="clDaikinRowHeight">
+		<input value="" type="text" class="clLabelFristGray clUserPasswordFake clInputFieldStandard">
+		<input value="" type="password" class="clLabelFristGray clUserPassword clInputFieldStandard">
+	</div>
+	<div class="clDaikinRowHeight">
+		<input value="" type="text" class="clLabelFristGray clUserConfirmFake clInputFieldStandard">
+		<input value="" type="password" class="clLabelFristGray clUserConfirm clInputFieldStandard">
+	</div>
+	<div class="clDescription_Text" data-localize="modules.createacc.content.optinfo"></div>
+	<div class="clDaikinRowHeight"><input value="" type="text" class="clLabelFristGray clUserFirstName clInputFieldStandard" autocapitalize="none" autocorrect="off" autocomplete="off"></div>
+	<div class="clDaikinRowHeight"><input value="" type="text" class="clLabelFristGray clUserLastName clInputFieldStandard" autocapitalize="none" autocorrect="off" autocomplete="off"></div>
+	<div class="clDaikinRowHeight"><input value="" type="text" class="clLabelFristGray clUserAddress clInputFieldStandard" autocapitalize="none" autocorrect="off" autocomplete="off"></div>
+	<div class="clDaikinRowHeight"><input value="" type="tel" class="clLabelFristGray clUserPhone clInputFieldStandard ui-button ui-textfield" autocapitalize="none" autocorrect="off" autocomplete="off"></div>
+	<!--<div class="clCheckboxArea">
+		<div class="clDaikinRowHeight clDaikinRowCheckbox">
+			<input type="checkbox" class="clUserCheckbox_Terms" id="idUserCheckbox_Terms">
+			<label class="clCheckboxLabel clUserCheckbox_Terms_Label1" for="idUserCheckbox_Terms">
+				<span></span>
+			</label>
+			<label class="clCheckboxLabel clUserCheckbox_Terms_Label2 clLink" for="idUserCheckbox_Terms">
+				<span></span>
+			</label>
+			<label class="clCheckboxLabel clUserCheckbox_Policy_Label1" for="idUserCheckbox_Policy">
+				<span></span>
+			</label>
+			<label style="margin-left: 8vw;" class="clCheckboxLabel clUserCheckbox_Policy_Label2 clLink" for="idUserCheckbox_Policy">
+				<span></span>
+			</label>
+		</div>
+		<div class="clDaikinRowHeight clDaikinRowCheckbox">
+			<input type="checkbox" class="clUserCheckbox_Policy" id="idUserCheckbox_Policy">
+			<label class="clCheckboxLabel clUserCheckbox_Policy_Label1" for="idUserCheckbox_Policy">
+				<span></span>
+			</label>
+			<label class="clCheckboxLabel clUserCheckbox_Policy_Label2 clLink" for="idUserCheckbox_Policy">
+				<span></span>
+			</label>
+		</div>
+	</div>-->
+	<div class="clDaikinRowHeight">
+		<input class="clButton_Style clBigger clButton_notactive cl_create_button" type="submit" data-localize="modules.createacc.content.newaccount" value="">
+	</div>
+</div>
+<div class="clLicenseSettings">
+	<div class="clLicenseContent" data-localize="modules.license.content.agreement"></div>
+</div>
+<div class="pswd_info">
+    <div data-localize="modules.createacc.content.pwcheck"></div>
+    <ul>
+        <!--<li id="letter" class="invalid" data-localize="modules.createacc.content.pwrule1"></li>-->
+        <li id="capital" class="invalid" data-localize="modules.createacc.content.pwrule2"></li>
+        <li id="number" class="invalid" data-localize="modules.createacc.content.pwrule3"></li>
+        <li id="specchar" class="invalid" data-localize="modules.createacc.content.pwrule1"></li>
+		<li id="length" class="invalid" data-localize="modules.createacc.content.pwrule4"></li>
+    </ul>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open main">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.main.basic.window-title">Main</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+	            <span class="reload-button"></span>
+	        
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_UnitOverview" class="clPage_UnitOverview clBackground_Screen">
+	<div class="idPage_UnitOverview_Content">
+		<div class="clErrorInformation">
+			<div class="clErrorCode"></div>
+			<div class="clErrorText"></div>
+			<div class="clErrorInstr" data-localize="modules.main.content.errorinstruction">Please check the instruction manual of the unit to solve the error</div>
+		</div>
+		<!--Daikin Add to support installer mode text-->
+		<div class="clInstallerInformation">
+			<div class="clInstallerText"></div>
+			
+		</div>
+		<div class="clStatusBar">
+			<div class="clStatusBar_Image"></div>
+			<div class="clStatusBar_Label"></div>
+		</div>	
+		<div class="clLastUpdate">
+			<div class="clValLastUpdate"></div>
+		</div>
+		<div class="clModeStatus">
+			<table class="clModeStatus_Table">
+				<tr>
+					<td class="tdOnOff"><div class="clOnOff clSwitchOff"></div></td>
+					<td class="tdStatus">
+						<table class="clModeStatus_Info">
+						</table>
+					</td>
+					<td class="tdOnOff"><div class="clOnOff clSwitchOn"></div></td>
+				</tr>		
+			</table>
+		</div>
+		<div class="clModeConfig">
+		</div>
+		<div class="clSlider">
+			<div class="clSliderWrapper">
+				<div class="clBackgroundColorCircle_Content"></div>
+				<div class="clBackgroundColorCircle"></div>
+				<div class="clSlider_View">
+				<div class="clControlElements">
+					<div class="clControlElements_Minus clControlElements_Minus_Off">
+						<div class="clControlElement_Symbol_Minus clControlElement_Symbol_Minus_Off"></div>
+					</div>
+					<div class="clControlElements_Plus clControlElements_Plus_Off">
+						<div class="clControlElement_Symbol_Plus clControlElement_Symbol_Plus_Off"></div>
+					</div>
+				</div>
+				<div id="idTempSlider" class="tempslider"></div>
+				<div id="idReadOnlySlider" class="clreadOnlySlider"></div>
+				</div>
+				<div class="tempslider-innercontent">
+					<div class="tempslider-val"></div>
+					<div class="tempslider-powerful" data-localize="modules.main.content.powerful"></div>
+					<div class="tempslider-unit">°C</div>
+					<div class="tempslider-border"></div>
+					<div class="tempslider-text"></div>
+					<div class="tempslider-text-ndj"></div>
+				</div>		
+			</div>
+		</div>
+		<div class="clBottomMenu">
+		<div class="clBottomMenu_Content">
+			<table class="clBottomMenu_Table">
+				<tr>
+					<!--<td class="classOpenTime clBottomMenu_Entry">
+						<table class="clBottomMenu_TimeTable">
+							<tr>
+								<td class="clTimeIcon"></td>
+								<td class="clTimeValue">11:11 Mon</td>
+							</tr>
+							<tr>
+								<td class="clTimeModeIcon"></td>
+								<td class="clTimeTemp"> 28°C</td>
+							</tr>
+						</table>
+					</td>
+					<td class="classOpenSlideUp1 clBottomMenu_Entry">
+						<div class="clFanIcon"></div>
+					</td>
+					<td class="classOpenSlideUp2 clBottomMenu_Entry">
+						<div class="clImg_SpecMPower_Off"></div>
+					</td>-->
+					<!--<td class="classOpenSlideUp3 clBottomMenu_Entry">
+						<div class="clStreamerIcon"></div>
+					</td>
+					<td class="classOpenSlideUp4 clBottomMenu_Entry">
+						<div class="clAirflowIcon"></div>
+					</td>-->
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="clBottom_Config">
+		<div class="clBottom_Config_Content">
+			<!--<div class="clConfig_Main_Fanspeed">
+				<div class="clConfig_Header"><div class="clConfig_Header_Label" data-localize="modules.main.content.fanheader">Fan speed</div></div>
+				<div class="clOption_Status_Label clOption_Rate_Val_Status">--</div>
+				<table class="clOption_Table">
+					<tr>
+						<td><div class="clRate_Level_Val_0 clImg_FanLevel0_Off"></div></td>
+						<td><div class="clRate_Level_Val_1 clImg_FanLevelContent clImg_FanLevel1_Off"></div></td>
+						<td><div class="clRate_Level_Val_2 clImg_FanLevelContent clImg_FanLevel2_Off"></div></td>
+						<td><div class="clRate_Level_Val_3 clImg_FanLevelContent clImg_FanLevel3_Off"></div></td>
+						<td><div class="clRate_Level_Val_4 clImg_FanLevelContent clImg_FanLevel4_Off"></div></td>
+						<td><div class="clRate_Level_Val_5 clImg_FanLevelContent clImg_FanLevel5_Off"></div></td>
+					</tr>
+				</table>
+			</div>-->
+			<!--<div class="clConfig_Main_SpecMode">
+				<div class="clConfig_Header"><div class="clConfig_Header_Label" data-localize="modules.main.content.specmodeheader">Special operation</div></div>
+				<div class="clOption_Status_Label clOption_SpecMode_Val_Status">--</div>
+				<table class="clOption_Table">
+					<tr>
+						<td><div class="clSpecMode_Val_0 clImgSpecMode clImg_SpecModeBlock_On"></div></td>
+						<td><div class="clSpecMode_Val_1 clImgSpecMode clImg_SpecMPower_Off"></div></td>
+						<td><div class="clSpecMode_Val_2 clImgSpecMode clImg_SpecModeEcno_Off"></div></td>
+					</tr>
+				</table>
+			</div>-->	
+				
+			<!--<div class="clConfig_Main_Streamer">
+				<div class="clOption_Status_Label clOption_SpecMode_Val_Status">--</div>
+				<table class="clOption_Table">
+					<tr>
+						<td><div class="clLevel_Val_0 clImg_FanLevel0_Off"></div></td>
+						<td><div class="clLevel_Val_1 clImg_FanLevelContent clImg_FanLevel1_Off"></div></td>
+						<td><div class="clLevel_Val_2 clImg_FanLevelContent clImg_FanLevel2_Off"></div></td>
+						<td><div class="clLevel_Val_3 clImg_FanLevelContent clImg_FanLevel3_Off"></div></td>
+						<td><div class="clLevel_Val_4 clImg_FanLevelContent clImg_FanLevel4_Off"></div></td>
+						<td><div class="clLevel_Val_5 clImg_FanLevelContent clImg_FanLevel5_Off"></div></td>
+					</tr>
+				</table>
+			</div>-->
+			<!--<div class="clConfig_Main_Airflow">
+				<div class="clOption_Rate_Control">
+					<table class="cltableAFD">
+						<tr>
+							<td><div class="clFanUpDown_Val clImg_FanLevelContent clImg_FanUpDown_Off"></div></td>
+							<td><div class="clFanLeftRight_Val clImg_FanLevelContent clImg_FanLeftRight_Off"></div></td>
+						</tr>
+					</table>
+				</div>
+				<div class="clOption_Rate_Status clOption_Rate_Val_Direc">--</div>
+			</div>-->
+			<!--<div class="clConfig_Footer" data-localize="buttons.close">Close</div>-->
+		</div>
+	</div>	
+	</div>
+</div>	
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open timer">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.timer.basic.window-title">Timer</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+	            <span class="reload-button"></span>
+	        
+            
+                <span class="option-button"></span>
+            
+	        
+	            <span class="optmenu-button"></span>
+	        
+        </span>
+        
+        <div class="clOptmenu_area">
+			<div class="clOptmenu">
+				
+				
+				
+				<div class="clOptmenu_Entry clOptmenu_Entry_Timer">
+					<div class="clOptmenu_Entry_Content clOptmenu_Entry_SelectSchedule" data-localize="header.optmenu.timer"></div>
+					<!--<div class="clOptmenu_Entry_Content clOptmenu_Entry_ChangeName" data-localize="header.optmenu.chschedulename">Change schedule names</div>-->
+				</div>
+				
+			</div>
+		</div>
+		
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Schedule">
+	<div class="clMainSchedulePage">
+		<div class="clDays">
+		<table class="clDayTable">
+			<tr>
+				<td class="clhover_element_text clDay0 clDayListElement active" data-localize="modules.timer.content.day.mon"></td>
+				<td class="clhover_element_text clDay1 clDayListElement" data-localize="modules.timer.content.day.tue"></td>
+				<td class="clhover_element_text clDay2 clDayListElement" data-localize="modules.timer.content.day.wen"></td>
+				<td class="clhover_element_text clDay3 clDayListElement" data-localize="modules.timer.content.day.thu"></td>
+				<td class="clhover_element_text clDay4 clDayListElement" data-localize="modules.timer.content.day.fri"></td>
+				<td class="clhover_element_text clDay5 clDayListElement" data-localize="modules.timer.content.day.sat"></td>
+				<td class="clhover_element_text clDay6 clDayListElement" data-localize="modules.timer.content.day.sun"></td>
+			</tr>
+		</table>	
+		</div>
+		<div class="clWeek">
+		<table class="clWeekTable">
+			<tr>
+				<td class="clhover_element_text clWeekday clDayListElement active"  data-localize="modules.timer.content.day.weekday"></td>
+				<td class="clhover_element_text clWeekend clDayListElement"         data-localize="modules.timer.content.day.weekend"></td>
+			</tr>
+		</table>	
+		</div>        
+		<div class="clUnitlist clDevice_list"></div>
+		<div class="clProgramAdd" data-localize="modules.timer.content.AddProg"></div>		
+	</div>
+	<div class="clChildlock_Editor">
+		<div class="clChildlock_Editor_Text clChildlock_Editor_Text_Value" data-localize="modules.childlock.content.entercode">Bitte Code eingeben</div>
+		<table class="clChildlock_Editor_Table" align="center">
+			<tr class="clChildlock_Editor_Row">
+				<td class="clChildlock_Editor_Input clInput0 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput1 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput2 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput3 clChildLock_Bar"></td>
+			</tr>
+		</table>
+		<div class="clInput_Container_Pos"><input class="clInput_Element clInput_Element_all" type="number" pattern="[0-9]*"></div>
+	</div>
+</div>	
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open timer_add">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.timer_add.basic.window-title">Timer</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Schedule">
+	<div class="clAddProgPage">
+		<div class="clTimer_Normal">
+			<div class="clAddProgTime">
+				<div class="clAddProgLabel clAddProgTimeLabel" data-localize="modules.timer_add.content.prog.time"></div>
+				<div class="clAddProgTimeConfig clAddProgTimeConfig_Normal">00:00</div>
+			</div>
+		</div>
+		<div class="clTimer_StartStop">
+			<div class="clAddProgTime">
+				<div class="clAddProgLabel clAddProgTimeLabel" data-localize="modules.timer_add.content.prog.start"></div>
+				<div class="clAddProgTimeConfig clAddProgTimeConfig_Start">00:00</div>
+			</div>
+			<div class="clAddProgTime">
+				<div class="clAddProgLabel clAddProgTimeLabel" data-localize="modules.timer_add.content.prog.end"></div>
+				<div class="clAddProgTimeConfig clAddProgTimeConfig_End">00:00</div>
+			</div>
+		</div>
+		<div class="clAddProgOp">
+			<div class="clAddProgLabel clAddProgOpLabel" data-localize="modules.timer_add.content.prog.op"></div>
+			<div class="clAddProgOpConfig">
+				<div class="clAddProgOpConfig_Control">
+					<div class="clAddProgOpConfigOnOff">
+						<div class="clAddProgOnOff clAddProgOnOff_Off clImg_SwitchOff_Off"></div>
+						<div class="clAddProgOnOff clAddProgOnOff_On clImg_SwitchOn_On"></div>
+					</div>
+					<div class="clTrendlineBorder_100"></div>
+					<div class="clTimer_Enable_Disable">
+						<div class="clAddProgOpConfigOPLabel"></div>
+						<div class="clAddProgOpConfigOPImages">
+								<div class="clAddProgOpConfigImages_Entry"></div>
+						</div>		
+						<div class="clTrendlineBorder_100"></div>
+						<div class="clAddProgOpConfigSetValue_SPACEH">25°C</div>
+						<div class="clAddProgOpConfigSetValue_DHW">
+							<table class="clTableProgrammApply">
+								<tr>    
+									<td>
+										<div class="clTableProgrammApply_Content"><div class="clButton_Style clButtonEco" data-localize="modules.timer_add.content.eco" value=""></div></div>
+									</td>
+									<td>
+										<div class="clTableProgrammApply_Content"><div class="clButton_Style clButtonComfort" data-localize="modules.timer_add.content.comfort" value=""></div></div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="clTrendlineBorder_100"></div>
+					</div>
+				</div>	  
+			</div>
+			
+		</div>
+		
+		<div class="clAddProgWeek_Weekend">
+			<div class="clAddProgLabel clAddProgDaysLabel" data-localize="modules.timer_add.content.prog.apply"></div>
+			<div class="clAddProgDaysConfig">
+				<table class="clTableProgrammApply">
+					<tr>    
+						<td>
+							<div class="clhover_element_dayapply clTableProgrammApply_Content"><div class="clButton_Style clButtonWeek" data-localize="modules.timer_add.content.weekday" value=""></div></div>
+						</td>
+						<td>
+							<div class="clhover_element_dayapply clTableProgrammApply_Content"><div class="clButton_Style clButtonWeekend" data-localize="modules.timer_add.content.weekend" value=""></div></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="clAddProgDays">
+			<div class="clAddProgLabel clAddProgDaysLabel" data-localize="modules.timer_add.content.prog.apply"></div>
+			<div class="clAddProgDaysConfig">
+				<table class="clDayTableApply">
+					<tr>
+						<td><div class="clhover_element_dayapply clDay0 clDayListElement"><div class="clDayListElementLabel" data-localize="modules.timer_add.content.day.mon"></div></div></td>
+						<td><div class="clhover_element_dayapply clDay1 clDayListElement"><div class="clDayListElementLabel" data-localize="modules.timer_add.content.day.tue"></div></div></td>
+						<td><div class="clhover_element_dayapply clDay2 clDayListElement"><div class="clDayListElementLabel" data-localize="modules.timer_add.content.day.wen"></div></div></td>
+						<td><div class="clhover_element_dayapply clDay3 clDayListElement"><div class="clDayListElementLabel" data-localize="modules.timer_add.content.day.thu"></div></div></td>
+						<td><div class="clhover_element_dayapply clDay4 clDayListElement"><div class="clDayListElementLabel" data-localize="modules.timer_add.content.day.fri"></div></div></td>
+						<td><div class="clhover_element_dayapply clDay5 clDayListElement"><div class="clDayListElementLabel" data-localize="modules.timer_add.content.day.sat"></div></div></td>
+						<td><div class="clhover_element_dayapply clDay6 clDayListElement"><div class="clDayListElementLabel" data-localize="modules.timer_add.content.day.sun"></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="clTimerAdd_Delete_Action">
+			<div class="clTimerAdd_Delete_Action_Content" data-localize="modules.timer_add.content.delete"></div>
+		</div>
+	</div>
+	<div class="clTimerAdd_SliderView">
+		<div class="clTimerAdd_Slider clSlider">
+			<div class="clSliderHeader" data-localize="modules.timer_add.content.sliderheader"></div>
+			<div class="clSliderpadding">	
+                <div class="clSliderWrapper">		
+					<div class="clBackgroundColorCircle_Content"></div>
+					<div class="clBackgroundColorCircle"></div>
+					<div class="clSlider_View">
+					<div class="clControlElements">
+						<div class="clControlElements_Minus clControlElements_Minus_Off">
+							<div class="clControlElement_Symbol_Minus clControlElement_Symbol_Minus_Off"></div>
+						</div>
+						<div class="clControlElements_Plus clControlElements_Plus_Off">
+							<div class="clControlElement_Symbol_Plus clControlElement_Symbol_Plus_Off"></div>
+						</div>
+					</div>
+					<div id="idTempSlider" class="tempslider"></div>
+					<div id="idReadOnlySlider" class="clreadOnlySlider"></div>
+					</div>
+					<div class="tempslider-innercontent">
+						<div class="tempslider-val"></div>
+						<div class="tempslider-unit">°C</div>
+						<div class="tempslider-border"></div>
+						<div class="tempslider-text"></div>
+					</div>
+				</div>
+			</div>
+			<div class="SliderButtonArea">
+				<div class="clButtonSlider_Cancel" data-localize="buttons.abort"></div>
+				<div class="clButtonSlider_OK" data-localize="buttons.ok"></div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open default_schedules">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.default_schedules.basic.window-title">Default schedule</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_DefaultSchedule">	
+	<div class="clUnitlist clDevice_list"></div>
+</div>	
+
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open powercon">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.powercon.basic.window-title">Verbrauch</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+	            <span class="reload-button"></span>
+	        
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Powercon">
+	<div class="clpage_powconlist">
+		<div class="clPowercon_Info">
+			<div class="clPowercon_Info_Content" data-localize="modules.powercon.content.info">Some explenation text is here</div>
+		</div>
+		<div class="clUnitlist_Header clUnitlist_Header_Powercon">
+			<div class="clUnitlist_Header_Label " data-localize="modules.powercon.content.allunits">All units </div>
+		</div>
+		<div class="clUnitlist clDevice_list"></div>
+	</div>
+	<div class="clChildlock_Editor">
+		<div class="clChildlock_Editor_Text clChildlock_Editor_Text_Value" data-localize="modules.childlock.content.entercode">Bitte Code eingeben</div>
+		<table class="clChildlock_Editor_Table" align="center">
+			<tr class="clChildlock_Editor_Row">
+				<td class="clChildlock_Editor_Input clInput0 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput1 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput2 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput3 clChildLock_Bar"></td>
+			</tr>
+		</table>
+		<div class="clInput_Container_Pos"><input class="clInput_Element clInput_Element_all" type="number" pattern="[0-9]*"></div>
+	</div>
+</div>	
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open powercon_diag">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.powercon_diag.basic.window-title">Verbrauch</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Powercon_Diag">
+	<div class="clpage_powerdiagram">
+		<table class="clpower_select_table clpower_select_table_eg">
+			<tr>
+				<td class="cl_select_table_entry"><div class="cl_select_table_entry cl_select_table_entry_eg cl_select_table_entry_l entry_elec clActive" data-localize="modules.powercon_diag.content.electric"></div></td>
+				<td class="cl_select_table_entry"><div class="cl_select_table_entry cl_select_table_entry_eg cl_select_table_entry_r entry_gas" data-localize="modules.powercon_diag.content.gas"></div></td>
+			</tr>
+		</table>
+        <table class="clpower_select_table">
+			<tr>
+				<td class="cl_select_table_entry"><div class="cl_select_table_entry cl_select_table_entry_dwy cl_select_table_entry_l entry_day clActive" data-localize="modules.powercon_diag.content.day"></div></td>
+				<td class="cl_select_table_entry"><div class="cl_select_table_entry cl_select_table_entry_dwy cl_select_table_entry_m entry_week" data-localize="modules.powercon_diag.content.week">Week</div></td>
+				<td class="cl_select_table_entry"><div class="cl_select_table_entry cl_select_table_entry_dwy cl_select_table_entry_r entry_year" data-localize="modules.powercon_diag.content.year"></div></td>
+			</tr>
+		</table>
+		<div class="cldiagram">
+			<canvas id="canvasdiag"></canvas>
+		</div>
+        <div class="clvalue_area">
+            <div class="cltotalvalues clTrendlineBorder_100_4DP">
+                <div class="clear">
+                    <div class="clcurrent_label" data-localize="modules.powercon_diag.content.current">Current</div>
+                    <div class="clprevious_label" data-localize="modules.powercon_diag.content.previous">Previous</div>
+                </div>	
+                <div class="clear">
+                    <div class="clcurrent_val"><span class="clcurrent_val_num">--</span><span class="font_unit clcurrent_val_unit" data-localize="modules.powercon_diag.content.kwh">kWh</span></div>
+                    <div class="clprevious_val"><span class="clprevious_val_num">--</span><span class="font_unit clprevious_val_unit" data-localize="modules.powercon_diag.content.kwh">kWh</span></div>
+                </div>
+            </div>
+            <div class="clsepvalues">
+                <div class="clvalue_cooling">
+                    <div class="clsep_cooling_label" data-localize="modules.powercon_diag.content.cooling">Cooling</div>
+                    <div class="clsep_cooling_val">
+                        <table class="clsep_cooling_table_cur">
+                            <tr>
+                                <td class=""><div class="clcolor_block_blue"></div></td>
+                                <td class="clsep_cooling_table_cur_val">--</td>
+                                <td class="font_unit clsep_cooling_table_cur_unit" data-localize="modules.powercon_diag.content.kwh">kWh</td>
+                            </tr>
+                        </table>						
+                        <table class="clsep_cooling_table_pre">
+                            <tr>
+                                <td class=""><div class="clcolor_block_dark"></div></td>
+                                <td class="clsep_cooling_table_pre_val">--</td>
+                                <td class="font_unit clsep_cooling_table_pre_unit" data-localize="modules.powercon_diag.content.kwh">kWh</td>
+                            </tr>
+                        </table>
+                    </div>
+                    </table>
+                </div>
+                <div class="clvalue_heating">
+                    <div class="clsep_heating_label" data-localize="modules.powercon_diag.content.heating">Heating</div>
+                    <div class="clsep_heating_val">
+                        <table class="clsep_heating_table_cur">
+                            <tr>
+                                <td class=""><div class="clcolor_block_red"></div></td>
+                                <td class="clsep_heating_table_cur_val">--</td>
+                                <td class="font_unit clsep_heating_table_cur_unit" data-localize="modules.powercon_diag.content.kwh">kWh</td>
+                            </tr>
+                        </table>						
+                        <table class="clsep_heating_table_pre">
+                            <tr>
+                                <td class=""><div class="clcolor_block_dark"></div></td>
+                                <td class="clsep_heating_table_pre_val">--</td>
+                                <td class="font_unit clsep_heating_table_pre_unit" data-localize="modules.powercon_diag.content.kwh">kWh</td>
+                            </tr>
+                        </table>
+                    </div>
+                    </table>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>	
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open holiday">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.holiday.basic.window-title">Holiday</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+	            <span class="reload-button"></span>
+	        
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Holiday">
+	<div>
+		<table class="clTableLabelSwitch">
+			<tr class="cltrheight56">
+				<td class="clLabel" data-localize="modules.holiday.content.holiday">Holiday</td>		
+				<td class="cltdswitch">
+					<div class="onoffswitch clCurrent_Holiday_Val">
+		                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switchHoliday">
+		                <label class="onoffswitch-label" for="switchHoliday"></label>
+					</div>
+				</td>	
+			</tr>
+		</table>
+	</div>
+	<!--<div class="clDaikinRowHeight outer flex_center clSettings"><div class="inner" data-localize="modules.holiday.content.settings">Settings</div></div>-->
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDescription_Text" data-localize="modules.holiday.content.descr">
+	If you enable "Holiday", then units are stoppped, and forbid operations and schedule timer. If you turn the unit on by wireless remote controller, this is canceled
+	</div>
+	<!--<div class="clUnitlist clHoliday_list">		
+		
+		<div class="clUnitlist_Entry">
+			<table class="clUnitlist_Table"> 
+				<tr>
+					<td class="clUnitlist_Device_Icon clIcon_1"></td>
+					<td class="clUnitlist_Device_Info"><div class="clUnitlist_Device_Name_Label">Altherma</div></td>
+					<td class="clUnitlist_Device_Status cldevHolidayImg"><div class="clUnitlist_Device_Status_Image clImg_Holiday_On"></div></td>
+				</tr>
+			</table>
+		</div>
+	</div>-->
+	<div class="clUnitlist_Header">
+		<div class="clUnitlist_Header_Label" data-localize="modules.holiday.content.unitlistheader"></div>
+	</div>
+	<div class="clUnitlist clDevice_list">		
+	</div>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open holiday_settings">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.holiday_settings.basic.window-title">Settings</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_HolidaySettings">
+	<div class="clSubTitle"><div class="inner" data-localize="modules.holiday_settings.content.start">Start time</div></div>
+	<div class="clDaikinRowHeight outer flex_center clHSetting_StartTime"><div class="inner clHSetting_StartTime_Content"></div></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.holiday_settings.content.stop">Stop time</div></div>
+	<div class="clDaikinRowHeight outer flex_center clHSetting_StopTime"><div class="inner clHSetting_StopTime_Content"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clUnitlist clDevice_list">
+		<div class="clUnitlist_Header ">
+			<div class="clUnitlist_Header_Label" data-localize="modules.holiday_settings.content.apply">Apply to units</div>
+		</div>
+	</div>
+</div>
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open general">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.general.basic.window-title">Settings</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_General">
+	<div class="clGeneralSettings">
+		<!--<div class="clSubTitle"><div class="inner" data-localize="modules.general.content.generalcfg">General</div></div>
+		<div class="clDaikinRowHeight outer flex_center clReinit"><div class="inner" data-localize="modules.general.content.reinit">Reinitialise application</div></div>-->
+		<div class="clSubTitle"><div class="inner" data-localize="modules.general.content.language">Language</div></div>
+		<div class="clDaikinRowHeight outer flex_center clLanguage"><div class="inner clLanguage_Text"></div></div>
+		<div class="clSubTitle"><div class="inner" data-localize="modules.general.content.about">About</div></div>
+		<div class="clDaikinRowHeight outer flex_center clLicense"><div class="inner" data-localize="modules.general.content.license">License agreement</div></div>
+		<div class="clTrendlineBorder_100"></div>
+		<div class="clDaikinRowHeight outer flex_center clOSL"><div class="inner" data-localize="modules.general.content.oslicense">Open source license</div></div>
+		<div class="clTrendlineBorder_100"></div>
+		<table class="clTableLabelSwitch flex_center">
+			<tr>
+				<td class="clLabel_over"><div  data-localize="modules.general.content.appversion">Application version</div></td>
+				<td class="clValue"><div class="clAppVersion"></div></td>
+			</tr>
+		</table>
+        <div class="clSubTitle"><div class="inner" data-localize="modules.general.content.discovery">Discovery</div></div>
+        <div class="clDaikinRowHeight outer flex_center clFixedIp"><div class="inner" data-localize="modules.general.content.FixedIp">Fixed List</div></div>
+		<!--<div class="clTrendlineBorder_100"></div>
+		<div class="clDaikinRowHeight outer flex_center clDemoConfig"><div class="inner" data-localize="modules.general.content.demo">Demo settings</div></div>-->
+	</div>
+	<div class="clLanguageSettings">
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_xx">
+			<div class="inner clWidth100" data-localize="modules.general.lang.default">Betriebssystem Standardsprache</div>
+			<div class="inner clLang_icon_0 clImg_ActiveElement_On"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_en">
+			<div class="inner clWidth100" data-localize="lang.en" >English</div>
+			<div class="inner clLang_icon_1"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_de">
+			<div class="inner clWidth100" data-localize="lang.de">German</div>
+			<div class="inner clLang_icon_2"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_it">
+			<div class="inner clWidth100" data-localize="lang.it">Italian</div>
+			<div class="inner clLang_icon_3"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_nl">
+			<div class="inner clWidth100" data-localize="lang.nl">Nederlands</div>
+			<div class="inner clLang_icon_4"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_fr">
+			<div class="inner clWidth100" data-localize="lang.fr">France</div>
+			<div class="inner clLang_icon_5"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_es">
+			<div class="inner clWidth100" data-localize="lang.es">Espanol</div>
+			<div class="inner clLang_icon_6"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_el">
+			<div class="inner clWidth100" data-localize="lang.el">Greek</div>
+			<div class="inner clLang_icon_7"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_pt">
+			<div class="inner clWidth100" data-localize="lang.pt">Portuguese</div>
+			<div class="inner clLang_icon_8"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_ru">
+			<div class="inner clWidth100" data-localize="lang.ru">Russian</div>
+			<div class="inner clLang_icon_9"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_tr">
+			<div class="inner clWidth100" data-localize="lang.tr">Turkish</div>
+			<div class="inner clLang_icon_10"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_da">
+			<div class="inner clWidth100" data-localize="lang.da">Danish</div>
+			<div class="inner clLang_icon_11"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_sv">
+			<div class="inner clWidth100" data-localize="lang.sv">Swedish</div>
+			<div class="inner clLang_icon_12"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_no">
+			<div class="inner clWidth100" data-localize="lang.no">Norwegian</div>
+			<div class="inner clLang_icon_13"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_fi">
+			<div class="inner clWidth100" data-localize="lang.fi">Finnish(Suomi)</div>
+			<div class="inner clLang_icon_14"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_cs">
+			<div class="inner clWidth100" data-localize="lang.cs">Czech</div>
+			<div class="inner clLang_icon_15"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_hr">
+			<div class="inner clWidth100" data-localize="lang.hr">Croatian</div>
+			<div class="inner clLang_icon_16"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_hu">
+			<div class="inner clWidth100" data-localize="lang.hu">Hungarian</div>
+			<div class="inner clLang_icon_17"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_pl">
+			<div class="inner clWidth100" data-localize="lang.pl">Polish</div>
+			<div class="inner clLang_icon_18"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_ro">
+			<div class="inner clWidth100" data-localize="lang.ro">Romanian</div>
+			<div class="inner clLang_icon_19"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_sl">
+			<div class="inner clWidth100" data-localize="lang.sl" >Slovenian</div>
+			<div class="inner clLang_icon_20"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_bg">
+			<div class="inner clWidth100" data-localize="lang.bg">Bulgarian</div>
+			<div class="inner clLang_icon_21"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clAppLang clLang_sk">
+			<div class="inner clWidth100" data-localize="lang.sk">Slovak</div>
+			<div class="inner clLang_icon_22"></div>
+		</div>
+	</div>
+	<div class="clLicenseSettings">
+		<div class="clLicenseContent">
+			<div data-localize="modules.license.content.agreement"></div>
+			<div data-localize="modules.license.content.license_cloud"></div>
+		</div>
+	</div>
+	<div class="clOpenSourceLicenseSettings">
+		<div class="clOpenSourceLicenseContent" data-localize="modules.general.license.opensource">Correct text to be provided by Daikin</div>
+	</div>	
+    <div class="clFixedIpSettings">
+        <div class='clFixedIpSettingsEntries'>
+            <div class='clFixedIpEntry'>
+                <input autocomplete='off' autocorrect='off' autocapitalize='off' maxlength='16' type='text' class='clFixedIp_Input_Field clFixedIp_Input_0' value='192.168.0.1'>
+            </div>
+            <div class='clFixedIpCheckbox'>
+                <input type='checkbox' class='clFixedIp_Checkbox_Field clFixedIp_Checkbox_0'>
+            </div>
+        </div>
+        <div class="clTrendlineBorder_100"></div>
+        <div class='clFixedIpSettingsEntries'>
+            <div class='clFixedIpEntry'>
+                <input autocomplete='off' autocorrect='off' autocapitalize='off' maxlength='16' type='text' class='clFixedIp_Input_Field clFixedIp_Input_1' value='192.168.0.2'>
+            </div>
+            <div class='clFixedIpCheckbox'>
+                <input type='checkbox' class='clFixedIp_Checkbox_Field clFixedIp_Checkbox_1'>
+            </div>
+        </div>
+        <div class="clTrendlineBorder_100"></div>
+        <div class='clFixedIpSettingsEntries'>
+            <div class='clFixedIpEntry'>
+                <input autocomplete='off' autocorrect='off' autocapitalize='off' maxlength='16' type='text' class='clFixedIp_Input_Field clFixedIp_Input_2' value='192.168.0.3'>
+            </div>
+            <div class='clFixedIpCheckbox'>
+                <input type='checkbox' class='clFixedIp_Checkbox_Field clFixedIp_Checkbox_2'>
+            </div>
+        </div>
+        <div class="clTrendlineBorder_100"></div>
+        <div class='clFixedIpSettingsEntries'>
+            <div class='clFixedIpEntry'>
+                <input autocomplete='off' autocorrect='off' autocapitalize='off' maxlength='16' type='text' class='clFixedIp_Input_Field clFixedIp_Input_3' value='192.168.0.4'>
+            </div>
+            <div class='clFixedIpCheckbox'>
+                <input type='checkbox' class='clFixedIp_Checkbox_Field clFixedIp_Checkbox_3'>
+            </div>
+        </div>
+        <div class="clTrendlineBorder_100"></div>
+        <div class='clFixedIpSettingsEntries'>
+            <div class='clFixedIpEntry'>
+                <input autocomplete='off' autocorrect='off' autocapitalize='off' maxlength='16' type='text' class='clFixedIp_Input_Field clFixedIp_Input_4' value='192.168.0.5'>
+            </div>
+            <div class='clFixedIpCheckbox'>
+                <input type='checkbox' class='clFixedIp_Checkbox_Field clFixedIp_Checkbox_4'>
+            </div>
+        </div>        
+	</div>
+             
+            <!--
+            <table class='clFixedIp_Table clTable_0'>
+                <tr>
+                    <td class='clUnitlist_Device_Info'>
+                        <div class='clUnitlist_Device_Name_Label'>FixedIp1</div>
+                        <div class='clUnitlist_Device_Name_Label'>FixedIptest</div>
+                    </td>
+                    <td class='clUnitlist_Device_Checkbox'><input type='checkbox' class='clDevice_Checkbox_0'></td>
+                </tr>
+            </table>
+            -->   
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open childlock">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.childlock.basic.window-title">Child lock</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Childlock">
+	<div class="clChildlock_Overview">
+		<div class="clDescription_Text" data-localize="modules.childlock.content.info"></div>
+		<div class="clUnitlist clDevice_list"></div>
+	</div>	
+	<div class="clChildlock_Editor">
+		<div class="clChildlock_Editor_Text clChildlock_Editor_Text_Value" data-localize="modules.childlock.content.entercode">Bitte Code eingeben</div>
+		<table class="clChildlock_Editor_Table" align="center">
+			<tr class="clChildlock_Editor_Row">
+				<td class="clChildlock_Editor_Input clInput0 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput1 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput2 clChildLock_Bar"></td>
+				<td class="clChildlock_Editor_Input clInput3 clChildLock_Bar"></td>
+			</tr>
+		</table>
+		<div class="clInput_Container_Pos"><input class="clInput_Element clInput_Element_all" type="number" pattern="[0-9]*"></div>
+	</div>
+	<div class="clChildLockTurn">
+		<div class="clChildLockTurn_ButtonContent">
+			<div class="clDaikinRowHeight outer flex_center clChildLockTurn_Button clButtonTurnOff">
+				<div class="inner" data-localize="modules.childlock.content.turnoff"></div>
+			</div>
+			<div class="clTrendlineBorder_100"></div>
+			<div class="clDaikinRowHeight outer flex_center clChildLockTurn_Button clButtonTurnChange">
+				<div class="inner" data-localize="modules.childlock.content.turnchange"></div>
+			</div>
+		</div>	
+	</div>
+</div>	
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open editunits">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.editunits.basic.window-title">Edit units</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_UnitEdit">
+	<div class="clEditInfotext">
+		<div class="clDescription_Text" data-localize="modules.editunits.content.info1">
+		</div>
+		<div class="clDescription_Text" data-localize="modules.editunits.content.info2">
+		</div>
+		<div class="clDescription_Text" data-localize="modules.editunits.content.info3">
+		</div>
+	</div>
+	
+	<div class="clUnitlist clDevice_list"></div>
+</div>	
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open unit_settings">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.unit_settings.basic.window-title">Settings</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_UnitSettings">
+	<!--<div class="clSubTitle"><div class="inner" data-localize="modules.unit_settings.content.ans">Adapter network setttings</div></div>
+	<div class="clDaikinRowHeight outer flex_center clCloudCon_Entry"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.cloudcon">Cloud connection</div><div class="inner clWidth50_right clCloudConValue"></div></div>-->
+	<!--<div class="clSubTitle"><div class="inner" data-localize="modules.unit_settings.content.oas">Other adapter setttings</div></div>-->
+	<!--<div class="clContest_Entry_Container">
+		<div class="clDaikinRowHeight outer flex_center clContest_Entry"><div class="inner" data-localize="modules.unit_settings.content.contest"></div></div>
+		<div class="clTrendlineBorder_100"></div>
+	</div>-->
+	<div class="clHybrid_Entry_Container">
+		<div class="clDaikinRowHeight outer flex_center clHybrid_Entry"><div class="inner" data-localize="modules.unit_settings.content.hybrid">Hybrid price settings</div></div>
+		<div class="clTrendlineBorder_100"></div>
+	</div>
+	<div class="clReheat_Entry_Container">
+		<div class="clDaikinRowHeight outer flex_center clReheat_Entry"><div class="inner" data-localize="modules.unit_settings.content.reheat">Reheat settings</div></div>
+		<div class="clTrendlineBorder_100"></div>
+	</div>
+	<div class="clDaikinRowHeight clHeight_Double outer flex_center clTime_Entry">
+		<table class="clTableWidth_100">			
+			<tr>
+				<td><div class="inner clWidth50_left clHeight_Margin_Double" data-localize="modules.unit_settings.content.time">Time</div></td>
+				<td><div class="inner clWidth100_right clDateValue"></div></td>
+			</tr>
+			<tr>
+				<td class="clHeight_0"><div class="inner clWidth50_left clHeight_0"></div></td>
+				<td><div class="inner clWidth100_right clTimeValue"></div></td>
+			</tr>
+		</table>
+	</div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.unit_settings.content.ai">Adapter information</div></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.minfo">Model information</div><div class="inner clWidth50_right clMInfoValue_adapter"></div></div>
+        <div class="clTrendlineBorder_100"></div>
+        <div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.version">Firmware version</div><div class="inner clWidth50_right clVersionValue"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.ipadr">IP address</div><div class="inner clWidth50_right clIPAdrValue"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.mac">MAC address</div><div class="inner clWidth50_right clMACValue"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.serialnr">Serialnumber</div><div class="inner clWidth50_right clSerialnrValue" ></div></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.unit_settings.content.uinfo">Unit information</div></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.minfo">Model information</div><div class="inner clWidth50_right clMInfoValue"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.indoors">Indoor software</div><div class="inner clWidth50_right clIndoorSValue"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center">
+        <div class="inner clWidth50_left" data-localize="modules.unit_settings.content.eeprom">Indoor eeprom</div>
+        <div class="inner clWidth50_right clIndoorEValue"></div>
+    </div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.outdoor">Outdoor software</div><div class="inner clWidth50_right clOutdoorSValue"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.remo_eeprom">Remocon eeprom</div><div class="inner clWidth50_right clRemoconEValue"></div></div>
+	<div class="clTrendlineBorder_100"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.unit_settings.content.remo_software">Remocon software</div><div class="inner clWidth50_right clRemoconSValue"></div></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.unit_settings.content.adaptersettings">Adapter settings</div></div>
+	<div class="clFactoryReset_Entry_Container">
+		<div class="clDaikinRowHeight outer flex_center clFactoryReset_Entry"><div class="inner" data-localize="modules.unit_settings.content.reset">Factory reset</div></div>
+	</div>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open outofhome">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.outofhome.basic.window-title">"Out-of-Home" (Not at Home)</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_OoH">
+	<div class="clOoH_Text">
+		<div class="clDescription_Text" data-localize="modules.outofhome.content.itext"></div>
+	</div>
+	<div class="clOoH_ConTest">
+		<table class="clTableLabelSwitch">
+			<tr class="cltrheight56">
+				<td class="clLabel" data-localize="modules.outofhome.content.cloudcon">Cloud connection</td>		
+				<td class="cltdswitch">
+					<div class="onoffswitch">
+		                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox clCurrent_CloudCon_Val" id="idCloudCon_Value">
+		                <label class="onoffswitch-label" for="idCloudCon_Value"></label>
+					</div>
+				</td>	
+			</tr>
+		</table>	
+	</div>
+</div>	
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open contest">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.contest.basic.window-title">Connection test</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_ConTest">
+	<div class="clConTest_Text">
+		<div class="clDescription_Text" data-localize="modules.contest.content.info1"></div>
+		<div class="clConSymbol"></div>
+		<div class="clDescription_Text" data-localize="modules.contest.content.info2"></div>
+	</div>
+</div>	
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open hybridprice">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.hybridprice.basic.window-title">Edit Hybrid price information</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+                <span class="option-button"></span>
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_HybridPriceSettings">
+	<div class="clSubTitle"><div class="inner" data-localize="modules.hybridprice.content.high">Electricity price - High</div></div>
+	<div class="clHybridValue"><span><input class="clWidth50_right clNoBorder clHybridValue_High" type="number" value="20"><span><span data-localize="modules.hybridprice.content.kWh">/kWh</span></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.hybridprice.content.medium">Electricity price - Medium</div></div>
+	<div class="clHybridValue"><span><input class="clWidth50_right clNoBorder clHybridValue_Medium" type="number" value="20"><span><span data-localize="modules.hybridprice.content.kWh">/kWh</span></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.hybridprice.content.low">Electricity price - low</div></div>
+	<div class="clHybridValue"><span><input class="clWidth50_right clNoBorder clHybridValue_Low" type="number" value="15"><span><span data-localize="modules.hybridprice.content.kWh">/kWh</span></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.hybridprice.content.gas">Gas price</div></div>
+	<div class="clHybridValue"><span><input class="clWidth50_right clNoBorder clHybridValue_Gas" type="number" value="8.0"><span><span data-localize="modules.hybridprice.content.kWh">/kWh</span></div>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open reheat">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.reheat.basic.window-title">Reheat settings</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_Reheat">
+	<div class="clReheat_Symbol"></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.reheat.content.setpoint">Reheat setpoint</div></div>
+	<div class="clSlider">
+			<div class="clBackgroundColorCircle_Content"></div>
+			<div class="clBackgroundColorCircle"></div>
+			<div class="clSlider_View">
+			<div class="clControlElements">	
+				<div class="clControlElements_Minus clControlElements_Minus_Off">
+					<div class="clControlElement_Symbol_Minus clControlElement_Symbol_Minus_Off"></div>
+				</div>
+				<div class="clControlElements_Plus clControlElements_Plus_Off">
+					<div class="clControlElement_Symbol_Plus clControlElement_Symbol_Plus_Off"></div>
+				</div>	
+			</div>
+			<div id="idTempSlider" class="tempslider"></div>
+			<div id="idReadOnlySlider" class="clreadOnlySlider"></div>
+			</div>
+			<div class="tempslider-innercontent">
+				<div class="tempslider-val"></div>
+				<div class="tempslider-unit">°C</div>
+				<div class="tempslider-border"></div>
+				<div class="tempslider-text"></div>
+			</div>
+		</div>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open addadapters">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.addadapters.basic.window-title">My adapters</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clDemoAddadapter">
+<div class="clDescription_Text">TBD: Link a MN_CSE_ID to the current active account</div>
+<div class="clSubTitle" data-localize="modules.addadapters.content.avaliabledev"></div>
+
+<table class="clTable_add_dadapter">
+
+<tr>
+	<td><div class="">adapter ID (MN_CSE_ID)</div></td>
+	<td class="">
+		<input type="text" id="add_mn_cse_id" name="add_mn_cse_id" value="">
+	</td>
+</tr>
+
+</table>
+<input class="clButton_Style clBigger clButton_notactive cl_addadapter_button" type="submit" value="Send">
+</div>
+
+<div class="clAddadapterContainter">
+	<div class="clDescription_Text" data-localize="modules.addadapters.content.description"></div>
+	<div class="clSubTitle"><div class="inner" data-localize="modules.addadapters.content.connected"></div></div>
+	<div class="clUnitlist clDevice_list clUnitlist_Con_Dev"></div>	
+	<div class="clSubTitle"><div class="inner" data-localize="modules.addadapters.content.avaliabledev"></div></div>
+	<div class="clUnitlist clDevice_list clUnitlist_Avail_Dev"></div>	
+</div>
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open myaccount">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.myaccount.basic.window-title">My account</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clMyAcc_ContentArea">
+	<div class="clSubTitle">
+		<div class="inner" data-localize="modules.myaccount.content.email">Email</div>
+	</div>
+	<div class="clDaikinRowHeight outer flex_center">
+		<div class="inner clCentertext clMyAcc_Email"></div>
+	</div>
+	<div class="clSubTitle">
+		<div class="inner" data-localize="modules.myaccount.content.prelanguage">My prefered contact language</div>
+	</div>
+	<div class="clDaikinRowHeight outer flex_center">
+        <div class="clfloat_left inner clCentertext_small clMyAcc_Language"></div>
+        <div class="clfloat_right pos_pencil img_pencil clMyAcc_Language_pencil"></div>
+	</div>
+	<div class="clSubTitle">
+		<div class="inner" data-localize="modules.myaccount.content.firstname">First name</div>
+	</div>
+	<div class="clDaikinRowHeight outer flex_center">
+		<div class="clfloat_left inner clCentertext_small clMyAcc_FirstName"></div>
+        <div class="clfloat_right pos_pencil img_pencil clMyAcc_FirstName_edit"></div>
+	</div>
+	<div class="clSubTitle">
+		<div class="inner" data-localize="modules.myaccount.content.lastname">Last name</div>
+	</div>
+	<div class="clDaikinRowHeight outer flex_center">
+        <div class="clfloat_left inner clCentertext_small clMyAcc_LastName"></div>
+        <div class="clfloat_right pos_pencil img_pencil clMyAcc_LastName_edit"></div>
+	</div>
+	<div class="clSubTitle">
+		<div class="inner" data-localize="modules.myaccount.content.address">Adress</div>
+	</div>
+	<div class="clDaikinRowHeight outer flex_center">
+        <div class="clfloat_left inner clCentertext_small clMyAcc_MYAdress"></div>
+        <div class="clfloat_right pos_pencil img_pencil clMyAcc_MYAdress_edit"></div>
+	</div>
+	<div class="clSubTitle">
+		<div class="inner" data-localize="modules.myaccount.content.phone">Telephone number</div>
+	</div>
+	<div class="clDaikinRowHeight outer flex_center">
+        <div class="clfloat_left inner clCentertext_small clMyAcc_Phone"></div>
+        <div class="clfloat_right pos_pencil img_pencil clMyAcc_Phone_edit"></div>
+	</div>
+	<div class="clMyAcc_ButtonArea">
+		<div><input class="clButton_Style clBigger clButton_notactive clChangePW_Button" type="submit" data-localize="modules.myaccount.content.changepw" value=""></div>
+		<div class="clpaddingbutton"><input class="clButton_Style clBigger clButton_notactive clDeleteUser_Button" type="submit" data-localize="modules.myaccount.content.deleteuser" value=""></div>
+	</div>
+</div>
+<div class="clContactLanguageSettings">
+	<div class="clLanguageSettings">
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_en">
+			<div class="inner clWidth100" data-localize="lang.en">English</div>
+			<div class="inner clLang_icon_1"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_de">
+			<div class="inner clWidth100" data-localize="lang.de">German</div>
+			<div class="inner clLang_icon_2"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_it">
+			<div class="inner clWidth100" data-localize="lang.it">Italian</div>
+			<div class="inner clLang_icon_3"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_nl">
+			<div class="inner clWidth100" data-localize="lang.nl">Nederlands</div>
+			<div class="inner clLang_icon_4"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_fr">
+			<div class="inner clWidth100" data-localize="lang.fr">France</div>
+			<div class="inner clLang_icon_5"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_es">
+			<div class="inner clWidth100" data-localize="lang.es">Espanol</div>
+			<div class="inner clLang_icon_6"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_el">
+			<div class="inner clWidth100" data-localize="lang.el">Greek</div>
+			<div class="inner clLang_icon_7"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_pt">
+			<div class="inner clWidth100" data-localize="lang.pt">Portuguese</div>
+			<div class="inner clLang_icon_8"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_ru">
+			<div class="inner clWidth100" data-localize="lang.ru">Russian</div>
+			<div class="inner clLang_icon_9"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_tr">
+			<div class="inner clWidth100" data-localize="lang.tr">Turkish</div>
+			<div class="inner clLang_icon_10"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_da">
+			<div class="inner clWidth100" data-localize="lang.da">Danish</div>
+			<div class="inner clLang_icon_11"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_sv">
+			<div class="inner clWidth100" data-localize="lang.sv">Swedish</div>
+			<div class="inner clLang_icon_12"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_no">
+			<div class="inner clWidth100" data-localize="lang.no">Norwegian</div>
+			<div class="inner clLang_icon_13"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_fi">
+			<div class="inner clWidth100" data-localize="lang.fi">Finnish(Suomi)</div>
+			<div class="inner clLang_icon_14"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_cs">
+			<div class="inner clWidth100" data-localize="lang.cs">Czech</div>
+			<div class="inner clLang_icon_15"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_hr">
+			<div class="inner clWidth100" data-localize="lang.hr">Croatian</div>
+			<div class="inner clLang_icon_16"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_hu">
+			<div class="inner clWidth100" data-localize="lang.hu">Hungarian</div>
+			<div class="inner clLang_icon_17"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_pl">
+			<div class="inner clWidth100" data-localize="lang.pl">Polish</div>
+			<div class="inner clLang_icon_18"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_ro">
+			<div class="inner clWidth100" data-localize="lang.ro">Romanian</div>
+			<div class="inner clLang_icon_19"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_sl">
+			<div class="inner clWidth100" data-localize="lang.sl">Slovenian</div>
+			<div class="inner clLang_icon_20"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_bg">
+			<div class="inner clWidth100" data-localize="lang.bg">Bulgarian</div>
+			<div class="inner clLang_icon_21"></div>
+		</div>
+		<div class="clDaikinRowHeight outer flex_center clConLang clLang_sk">
+			<div class="inner clWidth100" data-localize="lang.sk">Slovak</div>
+			<div class="inner clLang_icon_22"></div>
+		</div>
+	</div>
+</div>
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open authlist">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.authlist.basic.window-title">Authorization list</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clSubTitle" data-localize="modules.authlist.content.family">Family</div>
+<div class="clFamily_Add" data-localize="modules.authlist.content.add">ADD</div>
+<div data-localize="modules.authlist.content.mailadr">Email_adress_1</div>
+<div class="clDetail_Auth" data-localize="modules.authlist.content.detail">-> detail</div>
+<div data-localize="modules.authlist.content.mailadr">Email_adress_2</div>
+<div data-localize="modules.authlist.content.detail">-> detail</div>
+<div class="clSubTitle" data-localize="modules.authlist.content.thirdparty">3th party access</div>
+<div data-localize="modules.authlist.content.IFTTT">IFTTT</div>
+<div data-localize="modules.authlist.content.detail">-> detail</div>
+<div data-localize="modules.authlist.content.overkizz">overkizz</div>
+<div data-localize="modules.authlist.content.detail">-> detail</div>
+<div class="clSubTitle" data-localize="modules.authlist.content.installerD">Installers - Daikin</div>
+<div data-localize="modules.authlist.content.installer">Installer_1</div>
+<div class="clDetail_Installer" data-localize="modules.authlist.content.detail">-> detail</div>
+<div data-localize="modules.authlist.content.installer">Installer_2</div>
+<div data-localize="modules.authlist.content.detail">-> detail</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open family_auth">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.family_auth.basic.window-title">Family athorization</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clSubTitle" data-localize="modules.family_auth.content.emailadr">email-address of user account</div>
+<div>input field email</div>
+<div class="clSubTitle" data-localize="modules.family_auth.content.authlist">Authorization list</div>
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open detail_auth">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.detail_auth.basic.window-title">Family athorization</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clSubTitle" data-localize="modules.detail_auth.content.emailadr">email-address of user account</div>
+<div>input field email</div>
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open installer_auth">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.installer_auth.basic.window-title">Family athorization</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clSubTitle" data-localize="modules.installer_auth.content.installer">installer</div>
+
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open forgotpw">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.forgotpw.basic.window-title">Forgot password</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+
+<div class="clForgotpw_InputArea">
+	<div class="clDaikinRowHeight">
+		<input value="" type="email" class="clLabelFristGray clForgotPw_UserEmail clInputFieldStandard" autocapitalize="none" autocorrect="off" autocomplete="off">
+	</div>
+</div>
+<div class="clForgotpw_ButtonArea">
+	<div class="clForgotpw_ButtonArea_Content">
+		<input class="clButton_ResetPW clButton_Style clBigger clButton_notactive" type="submit" data-localize="modules.forgotpw.button.reset" value="">
+	</div>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open fwupdate">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.fwupdate.basic.window-title">Firmware Update</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clfwu_startscreen">
+	<div class="clDaikinRowHeight" data-localize="modules.fwupdate.content.info"></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.fwupdate.content.current"></div><div class="inner clWidth50_right clCurrentVersion"></div></div>
+	<div class="clDaikinRowHeight outer flex_center"><div class="inner clWidth50_left" data-localize="modules.fwupdate.content.latest"></div><div class="inner clWidth50_right clLatestVersion"></div></div>
+	<div class="clDaikinRowHeight clButtonRow">
+        <input class="clButton_Style clButton_notactive clUpdate_button" type="submit" value="">
+	</div>
+	<div class="clDescription_Text" data-localize="modules.fwupdate.content.descr"></div>
+</div>
+<div class="clfwu_progressscreen">
+	<div class="clfwu_progress_content">
+		<div class="clfwu_text" data-localize="modules.fwupdate.content.progresstext"></div>
+		<div class="clfwu_progressbar">
+			<table class="clfwu_progressbar_table">
+				<tr>
+					<td class="clfwu_progress_shine"></td>
+					<td class="clfwu_progress_grey"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="clfwu_resultscreen">
+	<div class="clFwu_Center_Content clFwSuccess" data-localize="modules.fwupdate.content.updatesuccess"></div>
+	<div class="clFwu_Center_Content clFwTheAdapter" data-localize="modules.fwupdate.content.theadapter"></div>
+	
+    <div class="clDaikinRowHeight outer flex_center">
+        
+        <!--<div class="inner clWidth50_right clResultCurrentVersion"></div>-->
+    </div>
+    
+    <!--<div class="clDaikinRowHeight outer flex_center">-->
+        <!--<div style="width: 50%;text-align: right;" class="inner "data-localize="modules.fwupdate.content.version"></div>-->
+		<div style="width:100%;text-align: center;min-height:8vw;" class="inner" data-localize="modules.fwupdate.content.softver"></div>
+        <div style="width:100%;text-align: center;min-height:8vw;" class="inner clResultLatestVersion"></div>
+    <!--</div>-->
+    
+	<div class="clDaikinRowHeight clButtonRow">
+        <input class="clButton_Style clButton_notactive clUpdate_ok" type="submit" value="">
+	</div>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open license">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.license.basic.window-title">License agreement</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div class="clLicenseSettings">
+	<div class="clLicenseContent">
+		<div class="clLicense_local" data-localize="modules.license.content.agreement"></div>
+		<div class="clLicense_cloud" data-localize="modules.license.content.license_cloud"></div>
+	</div>
+</div>
+<div class="clLicenseButtonArea">
+	<table class="clWidth100">
+		<tr>
+			<td class="clWidth50_center"><div class="clDivButtonStyle clLicenseAbort" data-localize="buttons.decline"></div></td>
+			<td class="clWidth50_center"><div class="clDivButtonStyle clDivButtonStyle_Border_Rights clLicenseOk clDeactiveFont" data-localize="buttons.accept"></div></td>
+		</tr>
+	</table>
+</div>
+
+    </div>
+    
+</div>
+
+
+    
+    
+    
+    
+    
+    
+<div class="window open change_schedulenames">
+    <div class="header">
+        <span class="back-button"></span>
+        
+            <span class="close-button"></span>
+        
+        
+            <span class="cancel-button"></span>
+        
+        
+            <span class="menu-button"></span>
+        
+        <span class="title"><span data-localize="modules.change_schedulenames.basic.window-title">Change schedule names</span></span>
+		<span class="reloadcontainer"></span>
+        <span class="buttons">
+            
+            
+	        
+        </span>
+        
+    </div>
+    <div class="content">
+        <div class="info"></div>        
+        <div class="overlay notvisable"></div>
+        
+<div id="idPage_ChangeScheduleNames">	
+	<div class="clUnitlist clDevice_list"></div>
+</div>	
+
+
+
+    </div>
+    
+</div>
+
+
+    
+
+        </div>
+        
+    <script type="text/javascript" src="scripts-body.js"></script>
+
+        <script type="text/javascript">
+            window['themeMainClass'] = stxWebdesktop.themes.webdesktop.Desktop;
+        </script>
+        
+    <script type="text/javascript">
+        document.addEventListener(
+                "deviceready",
+                function() {
+                    var bootstrap = new stxWebdesktop.Bootstrap();
+                    bootstrap.initializeWebdesktop_App();
+                },
+                false
+        );
+    </script>
+
+    </body>
+</html>
