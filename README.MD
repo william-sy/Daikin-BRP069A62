@@ -21,6 +21,10 @@ I am sure you can find more even on the urls there is this repo that does all of
 ## In this repo
 My attempt to combine all this into a script that fetches all the data, sofar the result is:
 ```
+User chosen schedule ID: 3
+Next schedule change: Sunday, Time: 2200, temp will be set to: 18.0
+Complete schedule: $NULL|1|1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1000,200;1300,180;1700,200;2200,180;,;,;1000,200;1300,180;1700,200;2200,180;,;,
+=====================================================
 =====================================================
 Connected to Daikin on: 192.168.1.247
 Device function: function/SpaceHeating
@@ -49,12 +53,10 @@ ToDo: reset/reboot, Schedule and tempchange (automatic Daikin finder?)
 Also there are the `index.html` and some javascript files from the daikin heating app, some scripts the community on the posted urls wrote and some notes that helps me to keep track.
 
 ## ToDo:
-- Schedule read default / activated schedule + name
-- Schedule display next schedule change
+- Schedule read default name
 - Schedule change ?
 - Change temp.
 - Reboot / reset
-- weather dependent state yes/no
 
 When all of this is found:
 - Make the websocket requests in a nice loop as displayed in `daikin2.py`
@@ -63,4 +65,4 @@ Feel free to improve and create pull requests.
 
 ## Note:
 
-All setups are different, And its is hard to program every scenario in. Support is welcome. 
+All setups are different, And its is hard to program every scenario in. Support is welcome.
