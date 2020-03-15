@@ -60,3 +60,7 @@ When all of this is found:
 - Make the websocket requests in a nice loop as displayed in `daikin2.py`
 
 Feel free to improve and create pull requests.
+
+## Note:
+
+All setups are different, And its is hard to program every scenario in. Support is welcome. 
