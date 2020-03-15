@@ -107,7 +107,10 @@ holiday_start = js_holiday_start["m2m:rsp"]["pc"]["m2m:cin"]["con"]
 ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Holiday/HolidayState/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
 js_holiday_state = json.loads(ws.recv())
 holiday_state = js_holiday_state["m2m:rsp"]["pc"]["m2m:cin"]["con"]
-
+# Weather WeatherDependentState
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitStatus/WeatherDependentState/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_weather_state = json.loads(ws.recv())
+weather_state = js_weather_state["m2m:rsp"]["pc"]["m2m:cin"]["con"]
 
 # Translate a 0 to yes or no
 if us_ttos_temp == 0:
@@ -161,6 +164,8 @@ print(f"Current indoor temp: {indoor_temp}")
 print(f"Current outdoor temp: {outdoor_temp}")
 print(f"Current water temp: {lwct_temp}")
 print(f"Current target temp: {target_temp}")
+print("=====================================================")
+print(f"Water temp is calculated based on: {weather_state}")
 print("=====================================================")
 print(f"Is child lock active: {child_lock}, Current pin is: {child_lock_code}")
 print("=====================================================")
