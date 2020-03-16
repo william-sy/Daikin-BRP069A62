@@ -25,7 +25,6 @@ User chosen schedule ID: 3
 Next schedule change: Sunday, Time: 2200, temp will be set to: 18.0
 Complete schedule: $NULL|1|1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1700,200;2200,180;,;,;,;,;1000,200;1300,180;1700,200;2200,180;,;,;1000,200;1300,180;1700,200;2200,180;,;,
 =====================================================
-=====================================================
 Connected to Daikin on: 192.168.1.247
 Device function: function/SpaceHeating
 The device is currently: on, and the operation is: heating

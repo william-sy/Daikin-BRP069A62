@@ -121,7 +121,6 @@ active_schedule = js_active_schedule["m2m:rsp"]["pc"]["m2m:cin"]["con"]
 # Nested json :(
 js_active_schedule_id = json.loads(active_schedule)
 schedule_id = js_active_schedule_id["data"]["id"]
-print(f"User chosen schedule ID: {schedule_id}")
 # Upcomming schedule
 ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/Next/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
 js_next_schedule = json.loads(ws.recv())
@@ -133,7 +132,6 @@ next_schedule_data_target = js_next_schedule_data["data"]["TargetTemperature"]
 # change number to day
 next_schedule_data_day = js_next_schedule_data["data"]["Day"]
 next_schedule_data_day = calendar.day_name[next_schedule_data_day]
-
 # Schedule data
 ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Schedule/List/Heating/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
 js_schedule_list = json.loads(ws.recv())
@@ -141,6 +139,27 @@ schedule_list = js_schedule_list["m2m:rsp"]["pc"]["m2m:cin"]["con"]
 # Nested json :(
 js_schedule_list_uid = json.loads(schedule_list)
 schedule_list_uid = js_schedule_list_uid["data"]
+
+# Turning the heatpump on / off
+# Change to on / standby
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/Power","fr":"/S","rqi":"olpcx","ty":4,"pc":{"m2m:cin":{"con":"on","cnf":"text/plain:0"}}}}
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/Power","fr":"/S","rqi":"olpcx","ty":4,"pc":{"m2m:cin":{"con":"standby","cnf":"text/plain:0"}}}}
+# Set a different temperature
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":14,"cnf":"text/plain:0"}}}}
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":16,"cnf":"text/plain:0"}}}}
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":18,"cnf":"text/plain:0"}}}}
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":20,"cnf":"text/plain:0"}}}}
+
+
+# Change schedule to different one
+# Read:
+#{"m2m:rqp":{"op":2,"to":"/[0]/MNAE/1/Schedule/Active/la","fr":"/","rqi":""}}
+# Change:
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con": "{"data":{"path":"/mn-cse-5e639e61465efa001c09edc0/MNAE/1/schedule/List/Heating","id":2}}","cnf":"application/json:0"}}}}
+#Data:?: "{"data":{"path":"/mn-cse-5e639e61465efa001c09edc0/MNAE/1/schedule/List/Heating/la","id":2}}"
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":20,"cnf":"text/plain:0"}}}}
+
+
 
 # Translate a 0 to yes or no
 if us_ttos_temp == 0:
@@ -158,7 +177,7 @@ if holiday_state == 0:
 else:
     holiday_state = "YES"
 
-
+print(f"User chosen schedule ID: {schedule_id}")
 print(f"Next schedule change: {next_schedule_data_day}, Time: {next_schedule_data_start}, temp will be set to: {next_schedule_data_target/10}")
 print(f"Complete schedule: {schedule_list_uid[schedule_id]}")
 print("=====================================================")
