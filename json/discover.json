@@ -1,0 +1,58 @@
+{
+	"SyncStatus": "reboot",
+	"Sensor": ["IndoorTemperature", "OutdoorTemperature", "LeavingWaterTemperatureCurrent"],
+	"UnitStatus": ["ErrorState", "InstallerState", "WarningState", "EmergencyState", "TargetTemperatureOverruledState"],
+	"Operation": {
+		"Power": ["on", "standby"],
+		"OperationMode": ["heating"],
+		"TargetTemperature": {
+			"heating": {
+				"maxValue": 30.0000000000000000,
+				"minValue": 12.0000000000000000,
+				"stepValue": 1.0000000000000000
+			}
+		},
+		"RoomTemperatureHeating": {
+			"maxValue": 30.0000000000000000,
+			"minValue": 12.0000000000000000,
+			"stepValue": 1.0000000000000000,
+			"settable": true
+		},
+		"LeavingWaterTemperatureHeating": {
+			"maxValue": 80,
+			"minValue": 25,
+			"stepValue": 1,
+			"settable": false
+		}
+	},
+	"Schedule": {
+		"Base": "action",
+		"defaultScheduleAvailable": "true",
+		"NameAdjustable": "false",
+		"List": {
+			"heating": [{
+					"StartTime": {
+						"stepValue": 10.0000000000000000,
+						"unit": "minutes"
+					},
+					"TargetTemperature": {
+						"heating": {
+							"maxValue": 30.0000000000000000,
+							"minValue": 12.0000000000000000,
+							"stepValue": 1
+						}
+					},
+					"Actions": ["StartTime", "TargetTemperature"],
+					"maxActionsAllowed": 6
+				},
+				["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+				["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+				["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+				["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+				["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+				["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+				[]
+			]
+		}
+	}
+}

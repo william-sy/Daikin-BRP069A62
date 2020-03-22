@@ -55,6 +55,19 @@ I did a man in the middle capture and found the following end points:
 /[0]/MNCSE-node/firmware
 You can do a discovery of your device by asking for the [0]/MNAE/ and then a number. This will give you a response of what unit you are talking to:
 
+Write packages:
+
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/Power","fr":"/S","rqi":"qwxxl","ty":4,"pc":{"m2m:cin":{"con":"on","cnf":"text/plain:0"}}}}
+{"m2m:rsp":{"rsc":2001,"rqi":"qwxxl","to":"/S","fr":"/[0]/MNAE/1/Operation/Power"}}
+
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/2/Operation/Powerful","fr":"/S","rqi":"spcxt","ty":4,"pc":{"m2m:cin":{"con":1,"cnf":"text/plain:0"}}}}
+{"m2m:rsp":{"rsc":2001,"rqi":"spcxt","to":"/S","fr":"/[0]/MNAE/2/Operation/Powerful"}}
+
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/2/Operation/Powerful","fr":"/S","rqi":"olpcx","ty":4,"pc":{"m2m:cin":{"con":0,"cnf":"text/plain:0"}}}}
+{"m2m:rsp":{"rsc":2001,"rqi":"olpcx","to":"/S","fr":"/[0]/MNAE/2/Operation/Powerful"}}
+
+
+
 {"m2m:rsp":{"rsc":2000,"rqi":"lcmsd","to":"/S","fr":"/[0]/MNAE/0","pc":{"m2m:cnt":{"rn":"0","ri":"006a","pi":"C0003","ty":3,"ct":"20000000T000000Z","lt":"20000000T000000Z","st":11,"lbl":"function/Adapter"}}}}
 {"m2m:rsp":{"rsc":2000,"rqi":"lnjnp","to":"/S","fr":"/[0]/MNAE/2","pc":{"m2m:cnt":{"rn":"2","ri":"003c","pi":"C0003","ty":3,"ct":"20000000T000000Z","lt":"20000000T000000Z","st":13,"lbl":"function/DomesticHotWaterTank"}}}}
 A non existing unit will give you a rsc:4004. The next step would then be to request the unit profile: /[0]/MNAE/2/UnitProfile/la which gives you a map of the end points that can be talked to and some information about what answers to expect (only the con part shown here):

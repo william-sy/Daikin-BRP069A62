@@ -1,0 +1,230 @@
+{
+    "autodiscover": "False",
+    "baseurl": "/[0]/MNAE/",
+    "discurl": "/[0]/MNCSE-node/",
+    "hosts": [
+        {
+            "ip": "192.168.1.247",
+            "id": "1"
+        }
+    ],
+    "rw_url": [
+        {
+            "name"    : "R_Info",
+            "key1"    : "m2m:cnt",
+            "key2"    : "lbl",
+            "op"      : "2",
+            "url"     : "",
+            "fr"      : "/",
+            "end"     : "",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_D_I_Brand",
+            "key1"    : "m2m:dvi",
+            "key2"    : "man",
+            "op"      : "2",
+            "url"     : "deviceInfo",
+            "fr"      : "/",
+            "end"     : "",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "d"
+        },
+        {
+            "name"    : "R_D_I_Model",
+            "key1"    : "m2m:dvi",
+            "key2"    : "mod",
+            "op"      : "2",
+            "url"     : "deviceInfo",
+            "fr"      : "/",
+            "end"     : "",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "d"
+        },
+        {
+            "name"    : "R_D_I_Duty",
+            "key1"    : "m2m:dvi",
+            "key2"    : "dty",
+            "op"      : "2",
+            "url"     : "deviceInfo",
+            "fr"      : "/",
+            "end"     : "",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "d"
+        },
+        {
+            "name"    : "R_D_I_Firmware",
+            "key1"    : "m2m:dvi",
+            "key2"    : "fwv",
+            "op"      : "2",
+            "url"     : "deviceInfo",
+            "fr"      : "/",
+            "end"     : "",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "d"
+        },
+        {
+            "name"    : "R_D_I_Software",
+            "key1"    : "m2m:dvi",
+            "key2"    : "swv",
+            "op"      : "2",
+            "url"     : "deviceInfo",
+            "fr"      : "/",
+            "end"     : "",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "d"
+        },
+        {
+            "name"    : "R_D_I_Serial",
+            "key1"    : "m2m:dvi",
+            "key2"    : "dlb",
+            "op"      : "2",
+            "url"     : "deviceInfo",
+            "fr"      : "/",
+            "end"     : "",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "d"
+        },
+        {
+            "name"    : "R_U_I_Indoor_Softare",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "url"     : "/UnitInfo/Version/IndoorSoftware",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_U_I_Outdoor_Software",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "url"     : "/UnitInfo/Version/OutdoorSoftware",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_U_I_Model_Number",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "url"     : "/UnitInfo/ModelNumber",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_U_I_Indoor_Eeprom",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "url"     : "/UnitInfo/Version/IndoorSettings",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_U_I_User_Eeprom",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "url"     : "/UnitInfo/Version/RemoconSettings",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_U_I_Given_Name",
+            "url"     : "/UnitIdentifier/Name",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_Heating_IndoorTemperature",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "url"     : "/Sensor/IndoorTemperature",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_Heating_OutdoorTemperature",
+            "url"     : "/Sensor/OutdoorTemperature",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_Heating_OperationPower",
+            "url"     : "/Operation/Power",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+        {
+            "name"    : "R_Heating_OperationMode",
+            "url"     : "/Operation/OperationMode",
+            "key1"    : "m2m:cin",
+            "key2"    : "con",
+            "op"      : "2",
+            "fr"      : "/",
+            "end"     : "/la",
+            "cnf"     : "",
+            "rw"      : "r",
+            "type"    : "b"
+        },
+
+        {
+            "name"    : "W_Heating_OperationPower",
+            "url"     : "/Operation/Power",
+            "key1"    : "",
+            "key2"    : "",
+            "op"      : "1",
+            "fr"      : "/S",
+            "end"     : "",
+            "cnf"     : "text/plain:0",
+            "rw"      : "w",
+            "type"    : "b"
+        }
+    ]
+}
