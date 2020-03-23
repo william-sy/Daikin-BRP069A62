@@ -68,7 +68,7 @@ def workData(mode, value=""):
                                 # This one needs a different process, as we get a dict in a nested json.
                                 get_nested_value = nested_value["data"]
                                 print(get_nested_value)
-                                print(get_nested_value[key3])
+                                #print(get_nested_value[3])
                                 #filterred_schedule = get_nested_value[""+key3+""]
                                 # Store this in valueStore
                                 #valueStore[""+name+""] = filterred_schedule
