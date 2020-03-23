@@ -19,7 +19,7 @@
             "end": "",         (/la or empty depending on sending / reading etc.)
             "cnf": "",         (The data to send here)
             "rw" : "r",        ( If this config is for reading or writing)
-            "type": "",          (b or d (base or discovery url))
+            "type": "",          (b,e,n, or d (base, nested, discovery or error url))
         },
 
 Names:
@@ -27,3 +27,4 @@ R: Read
 D: Device
 U: Unit
 I: Info
+S: Status
