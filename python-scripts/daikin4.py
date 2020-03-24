@@ -1,17 +1,21 @@
 from websocket import create_connection
 import json, datetime, time, string, random
 import locale, calendar, sys, os
+import logger
 locale.setlocale(locale.LC_ALL, '')
 
-valueStore = {}
-mode = "read"
-
+# Open Json for reading
 with open(os.path.join(sys.path[0], "list.json"), "r") as f:
         datastore = json.load(f)
 
+valueStore = {}
+mode = "read"
+LOG_FILENAME = datastore["logfile"]
+logging.debug('This message should go to the log file')
+
 # Define a random string to send to the device
 def randomString(stringLength=5):
-    """Generate a random string of fixed length """
+    # Generate a random string for the urls, This is not mandatory
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 

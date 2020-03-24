@@ -4,6 +4,7 @@
     "discurl": "/[0]/MNCSE-node/",
     "dnstype": "_daikin._tcp.local.",
     "errorurl": "/[0]/MNAE/0",
+    "logfile": "./daikin.log"
     "hosts": [
         {
             "id": "1",

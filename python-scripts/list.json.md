@@ -2,6 +2,9 @@
     "autodiscover": "False",  (Whether to autodiscover (not implemented yet)) -> If true then define the serial number of the device ask your installed!
     "baseurl": "/[0]/MNAE/",  (Default Url for 90% of the time)
     "discurl": "/[0]/MNCSE-node/", (The other 10 %)
+    "dnstype": "_daikin._tcp.local.", (The mdns string_)
+    "errorurl": "/[0]/MNAE/0", (THe url where the unit collects errors)
+    "logfile": "./daikin.log", (Where you want your logs)
     "hosts": [
         {
             "ip": "192.168.1.247",  (Hosts here if autodiscover == false)
