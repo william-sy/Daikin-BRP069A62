@@ -19,8 +19,38 @@ def randomString(stringLength=5):
 def autoDiscover():
     enabled = datastore["autodiscover"]
     if enabled == "True":
-        print("Autodiscover initiated. (TBD)")
-        # create a autodiscovered list here (mdns)
+        print("Autodiscover initiated.")
+        hosts = datastore["hosts"]
+        print(hosts)
+        for item in hosts:
+            name = item["name"]
+            if item["ip"] == "" and item["id"] != "" and item["name"] != "" :
+                print("Need to go look")
+                from zeroconf import Zeroconf
+                import ipaddress
+                dns = datastore["dnstype"]
+                zeroconf = Zeroconf()
+                try:
+                    info = zeroconf.get_service_info(dns, item["name"]+ '.' + dns)
+                    ip = ipaddress.IPv4Address(info.address)
+                finally:
+                    zeroconf.close()
+                # Make info readable in the rest of the script.
+                temp = str(ip)
+                item["ip"] = ""+temp+""
+                print(json)
+                with open(os.path.join(sys.path[0], "list.json"), "w") as f:
+                        json.dump(datastore, f)
+                autoDiscover.hostinfo = datastore["hosts"]
+            elif item["name"] == "" or item["id"] == "":
+                print("To find a host we will need the device name and id")
+                break
+            elif item["ip"] != "" and item["id"] != "":
+                print("Please set autodiscover to false")
+                autoDiscover.hostinfo = datastore["hosts"]
+            else:
+                print("You seem to have misconfigured something")
+                break
     elif enabled == "False":
         print("No autodiscover initiated.")
         autoDiscover.hostinfo = datastore["hosts"]
@@ -53,6 +83,9 @@ def workData(mode, value=""):
                         ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\""+durl+""+url+""+end+"\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
                     elif ritems["type"] == "e":
                         ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\""+eurl+""+url+""+end+"\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+                    elif ritems["type"] == "z":
+                        print(f"The value {name} has been disabled.")
+                        continue
                     # Get the result and parse json
                     js_value = json.loads(ws.recv())
                     response = js_value["m2m:rsp"]["rsc"]
@@ -65,13 +98,19 @@ def workData(mode, value=""):
                             # Load value as json
                             nested_value = json.loads(value)
                             if name == "R_Schedule_List_ID":
-                                # This one needs a different process, as we get a dict in a nested json.
+                                if "R_Schedule_Active" in valueStore:
+                                    # Check if we already got our manually set ID
+                                    # Order in the JSON is important if you dont get this to work.
+                                    id = valueStore["R_Schedule_Active"]
+                                else:
+                                    # Transform our default json string into a int
+                                    id = int(key3)
+                                # Filter the nested json
                                 get_nested_value = nested_value["data"]
-                                print(get_nested_value)
-                                #print(get_nested_value[3])
-                                #filterred_schedule = get_nested_value[""+key3+""]
+                                # Filter the list that came out of this.
+                                filterred_schedule = get_nested_value[id]
                                 # Store this in valueStore
-                                #valueStore[""+name+""] = filterred_schedule
+                                valueStore[""+name+""] = filterred_schedule
                             else:
                                 # Get the value we want from key3
                                 get_nested_value = nested_value["data"][""+key3+""]
@@ -94,4 +133,5 @@ autoDiscover()
 # Reads or writes
 workData(mode)
 
+# Debug our valueStore
 print(valueStore)

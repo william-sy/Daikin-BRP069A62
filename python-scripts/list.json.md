@@ -1,5 +1,5 @@
 {
-    "autodiscover": "False",  (Whether to autodiscover (not implemented yet))
+    "autodiscover": "False",  (Whether to autodiscover (not implemented yet)) -> If true then define the serial number of the device ask your installed!
     "baseurl": "/[0]/MNAE/",  (Default Url for 90% of the time)
     "discurl": "/[0]/MNCSE-node/", (The other 10 %)
     "hosts": [
@@ -19,7 +19,7 @@
             "end": "",         (/la or empty depending on sending / reading etc.)
             "cnf": "",         (The data to send here)
             "rw" : "r",        ( If this config is for reading or writing)
-            "type": "",          (b,e,n, or d (base, nested, discovery or error url))
+            "type": "",        (b,e,n, or d (base, nested, discovery or error url)) (Z is disabled.)
         },
 
 Names:
