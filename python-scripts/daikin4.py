@@ -180,7 +180,8 @@ def readData(mode):
                                     # Get the value we want from key3
                                     get_nested_value = nested_value["data"][""+key3+""]
                                     # Store this in valueStore
-                                    valueStore[""+name+""] = get_nested_value
+                                    valueStore["R_Schedule_Active_id"] = get_nested_value
+                                    valueStore[""+name+""] = value
                             else:
                                 # Result can go sraight into valueStore
                                 valueStore[""+name+""] = value
@@ -221,7 +222,13 @@ def write_temp_data(id, temp):
 
 # throw schedule items:
 def write_schedule_data():
+    # For naming with multiple words only the following characters will be returned to you: () - + . ?
+    # If you use oter charachters, you will get $NULL back but it might show up on the thermostat on the wall with this all characters should be possible
+    # If you keep overwriting them, else they will return to stock.
     print("nothing yet")
+
+def activate_schedule():
+    print("Activate a certain schedule")
 
 if __name__ == '__main__':
     # This will auto discover units over MDNS or not depending on JSON values
