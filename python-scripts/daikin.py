@@ -160,7 +160,6 @@ def writeTempData(mode):
 def writeScheduleData():
     print("nothing yet")
 
-
 if __name__ == '__main__':
     # This will auto discover units over MDNS or not depending on JSON values
     autoDiscover()
