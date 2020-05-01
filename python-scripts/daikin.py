@@ -9,13 +9,20 @@ with open(os.path.join(sys.path[0], "list.json"), "r") as f:
         datastore = json.load(f)
 
 valueStore = {}
+nestedValueStore = {}
+jsonValueStore = {}
+serviceStore = {}
+
 mode = "read"
+
+# Log settings
 LOG_FILENAME = datastore["logfile"]
 logging.basicConfig(format='%(levelname)s: %(asctime)s : %(message)s',datefmt='%d/%m/%Y %H:%M:%S',filename=LOG_FILENAME,level=logging.DEBUG)
 
 logging.info("<- Start of program ->")
 # Write json function
 def writeJson():
+    logging.info("JSON WRITTEN")
     with open(os.path.join(sys.path[0], "list.json"), "w") as f:
             json.dump(datastore, f)
 # Define a random string to send to the device
@@ -23,13 +30,12 @@ def randomString(stringLength=5):
     # Generate a random string for the urls, This is not mandatory
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
-# Discover Daikin units.
+# Find Daikin unit IP adress.
 def autoDiscover():
     enabled = datastore["autodiscover"]
     if enabled == "True":
         logging.info(" Autodiscover initiated.")
         hosts = datastore["hosts"]
-        print(hosts)
         for item in hosts:
             name = item["name"]
             if item["ip"] == "" and item["id"] != "" and item["name"] != "" :
@@ -45,13 +51,14 @@ def autoDiscover():
                     zeroconf.close()
                 temp = str(ip)
                 item["ip"] = ""+temp+""
+                enabled = "False"
                 writeJson()
                 autoDiscover.hostinfo = datastore["hosts"]
             elif item["name"] == "" or item["id"] == "":
                 logging.warn(" To find a host we will need the device name and id")
                 break
             elif item["ip"] != "" and item["id"] != "":
-                logging.warn(" Please set autodiscover to false")
+                logging.warn(" Please set autodiscover to False")
                 autoDiscover.hostinfo = datastore["hosts"]
             else:
                 logging.error(" You seem to have misconfigured something")
@@ -61,23 +68,62 @@ def autoDiscover():
         autoDiscover.hostinfo = datastore["hosts"]
     else:
         logging.error(" Seems like you have encounterred a error at the end of autodiscover.")
-        break
-# fetch items:
+# Fetch Service items
+def readServices():
+    logging.info("Discovering units capabillities")
+    enabled = datastore["autodiscover"]
+    if enabled == "True":
+        # This is not supposed to happen after the very first run.
+        autoDiscover()
+    elif enabled == "False":
+        autoDiscover.hostinfo = datastore["hosts"]
+        for item in autoDiscover.hostinfo:
+            ip = item["ip"]
+            id = item["id"]
+            ws = create_connection("ws://"+ip+"/mca")
+            ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/"+id+"/UnitProfile/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+            js_value = json.loads(ws.recv())
+            response = js_value["m2m:rsp"]["rsc"]
+            ws.close()
+            if response == 2000:
+                value = js_value["m2m:rsp"]["pc"]["m2m:cin"]["con"]
+                serviceStore[""+id+""] = value
+            else:
+                logging.info("Unable to discover units capabilities")
+                break
+# Set temperature:
+def set_tempterature(ids, temp):
+    autoDiscover.hostinfo = datastore["hosts"]
+    for item in autoDiscover.hostinfo:
+        ip = item["ip"]
+        id = item["id"]
+        tmp = str(temp)
+        if ids == id:
+            ws = create_connection("ws://"+ip+"/mca")
+            ws.send("{\"m2m:rqp\":{\"op\":1,\"to\":\"/[0]/MNAE/"+id+"/Operation/TargetTemperature\",\"fr\":\"/S\",\"rqi\":\""+randomString()+"\",\"ty\":4,\"pc\":{\"m2m:cin\":{\"con\":"+tmp+",\"cnf\":\"text/plain:0\"}}}}")
+            js_value = json.loads(ws.recv())
+            response = js_value["m2m:rsp"]["rsc"]
+            ws.close()
+            print(response)
+            if response == 2001:
+                logging.info("Sending new temp succes")
+            else:
+                if response == 4000:
+                    logging.info("Sending new temp failed - URL Error")
+                    break
+                elif response == 4102:
+                    logging.info("Sending new temp failed - value Error")
+                    break
+        else:
+            print(f"Host with id {id} does not match")
+# Fetch data items:
 def readData(mode):
     enabled = datastore["autodiscover"]
     if enabled == "True":
-        hosts = datastore["hosts"]
-        for item in hosts:
-            if item["ip"] == "" and item["id"] != "" and item["name"] != "" :
-                logging.error(" You need to run autodiscover first")
-                break
-            elif item["ip"] != "" and item["id"] == ""
-                logging.error(" You need to run autodiscover first")
-                break
+        # This is not supposed to happen after the very first run.
+        autoDiscover()
     elif enabled == "False":
-        logging.info(" No autodiscover initiated.")
         autoDiscover.hostinfo = datastore["hosts"]
-
         for item in autoDiscover.hostinfo:
             ip = item["ip"]
             id = item["id"]
@@ -134,44 +180,67 @@ def readData(mode):
                                     # Get the value we want from key3
                                     get_nested_value = nested_value["data"][""+key3+""]
                                     # Store this in valueStore
-                                    valueStore[""+name+""] = get_nested_value
+                                    valueStore["R_Schedule_Active_id"] = get_nested_value
+                                    valueStore[""+name+""] = value
                             else:
                                 # Result can go sraight into valueStore
                                 valueStore[""+name+""] = value
                         elif response == 4004:
                             logging.error("Item has not been found and is now disabled for future.")
-                            #print(f"The item {name} has not been found")
                             ritems["type"] = "z"
                             writeJson()
                         else:
                             logging.error(" Encounterred a different error, please investigate")
                             break
                             #print(f"The item {name} gave error {response}, please investigate")
+                #### end for loop
+                # Create a nested dict of all the values at once.
+                nestedValueStore[item["id"]] = valueStore
 
         ws.close()
 
-
-
 # throw items:
-def writeTempData(mode):
-    print("nothing yet")
+def write_temp_data(id, temp):
+    if jsonValueStore == "":
+        logging.info("Trying to change a temperature without any data")
+        readData(read)
+        write_temp_data(id)
+    else:
+        logging.info("Temperature change requested")
+        ids = str(id)
+        RHTT = nestedValueStore[""+ids+""]['R_Heating_TargetTemperature']
+        RHIT = nestedValueStore[""+ids+""]['R_Heating_IndoorTemperature']
+        if temp == RHTT:
+            logging.info("No temp change needed")
+        elif temp < RHTT:
+            logging.info("Setting temp to a lower setting")
+            set_tempterature(ids, temp)
+        elif temp > RHTT:
+            logging.info("Setting temp to a higher setting")
+            set_tempterature(ids, temp)
+
 
 # throw schedule items:
-def writeScheduleData():
+def write_schedule_data():
+    # For naming with multiple words only the following characters will be returned to you: () - + . ?
+    # If you use oter charachters, you will get $NULL back but it might show up on the thermostat on the wall with this all characters should be possible
+    # If you keep overwriting them, else they will return to stock.
     print("nothing yet")
+
+def activate_schedule():
+    print("Activate a certain schedule")
 
 if __name__ == '__main__':
     # This will auto discover units over MDNS or not depending on JSON values
-    autoDiscover()
+    #autoDiscover()
+    # This will read all available services
+    #readServices()
     # Reads all the data from your unit and disables it if your unit does not have a value
     readData(mode)
-
     # Writes data (Temp change)
-    writeTempData(mode)
-
+    write_temp_data(1, 21)
     # Schedule: Adapt schedule and change active schedule ID (This now also becomes the default ID in your json)
-    #writeScheduleData()
+    #write_schedule_data()
 
-# Debug our valueStore
-print(valueStore)
+
 logging.info("<- End of program ->")
