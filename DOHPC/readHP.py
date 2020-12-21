@@ -1,26 +1,60 @@
+# Define a random string to send to the device
+def randomString(stringLength=5):
+    import string, random
+    """
+    Generate a random string of fixed length
+    """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))
+
 # A function to read the heatpump data
-def readHP():
+def readHPOptions(daikinIP, daikinDevices):
     from websocket import create_connection
-    import json, datetime, time, string, random
+    import json, datetime, time
     import locale, calendar
     locale.setlocale(locale.LC_ALL, '')
 
-    # Define a random string to send to the device
-    def randomString(stringLength=5):
-        """Generate a random string of fixed length """
-        letters = string.ascii_lowercase
-        return ''.join(random.choice(letters) for i in range(stringLength))
+    # Setup the connection
+    ip = daikinIP
+    ws = create_connection("ws://"+ip+"/mca")
+    numerOfDevices = int(daikinDevices)
+    daikinDeviceOptions = {}
 
-    ip = "192.168.2.130"
+    # Scan our options and put then in variables
+    while numerOfDevices >= 0:
+        daikinDeviceID = str(numerOfDevices)
+        ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/"+daikinDeviceID+"/UnitProfile/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+        raw_data = json.loads(ws.recv())
+        filter_data = raw_data["m2m:rsp"]["pc"]["m2m:cin"]["con"]
+        # DDID = Daikin Device ID
+        daikinDeviceOptions["DDID{0}".format(daikinDeviceID)] = filter_data
+        numerOfDevices -= 1
+
+    ws.close()
+    # Debug the data your device sends your way
+    print(daikinDeviceOptions)
+    return daikinDeviceOptions
+
+# A function to read the heatpump data
+def readHPDetails(daikinIP,):
+    from websocket import create_connection
+    import json, datetime, time
+    import locale, calendar
+    locale.setlocale(locale.LC_ALL, '')
+
+    # Setup the connection
+    ip = daikinIP
     ws = create_connection("ws://"+ip+"/mca")
 
-    # Get Info
+    # Get general Info about the device:
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_function = json.loads(ws.recv())
+    #print(js_function)
     function = js_function["m2m:rsp"]["pc"]["m2m:cnt"]["lbl"]
     # device info
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNCSE-node/deviceInfo\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_deviceinfo = json.loads(ws.recv())
+    #print(js_deviceinfo)
     brand = js_deviceinfo["m2m:rsp"]["pc"]["m2m:dvi"]["man"]
     model = js_deviceinfo["m2m:rsp"]["pc"]["m2m:dvi"]["mod"]
     duty = js_deviceinfo["m2m:rsp"]["pc"]["m2m:dvi"]["dty"]
@@ -30,29 +64,37 @@ def readHP():
     # Unit info:
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/Version/IndoorSoftware/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_indoor_software = json.loads(ws.recv())
+    #(js_indoor_software)
     indoor_software = js_indoor_software["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/ModelNumber/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_indoor_model = json.loads(ws.recv())
+    #print(js_indoor_model)
     indoor_model = js_indoor_model["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/Version/IndoorSettings/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_indoor_eeprom = json.loads(ws.recv())
+    #print(js_indoor_eeprom)
     indoor_eeprom = js_indoor_eeprom["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/Version/OutdoorSoftware/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_outdoor_software = json.loads(ws.recv())
+    #print(js_outdoor_software)
     outdoor_software = js_outdoor_software["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/Version/RemoconSettings/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_user_eeprom = json.loads(ws.recv())
+    #print(js_user_eeprom)
     user_eeprom = js_user_eeprom["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/Version/RemoconSettings/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_user_software = json.loads(ws.recv())
+    #print(js_user_software)
     user_software = js_user_software["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     # Power state
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Operation/Power/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_power = json.loads(ws.recv())
+    #print(js_power)
     power = js_power["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     # Operation state
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Operation/OperationMode/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_operation = json.loads(ws.recv())
+    #print(js_operation)
     operation = js_operation["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     # User defined name
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitIdentifier/Name/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
@@ -77,6 +119,7 @@ def readHP():
     # Did we manually change the temp on the thermostat or app?
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitStatus/TargetTemperatureOverruledState/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
     js_us_ttos_temp = json.loads(ws.recv())
+    #print(js_us_ttos_temp)
     us_ttos_temp = js_us_ttos_temp["m2m:rsp"]["pc"]["m2m:cin"]["con"]
     # Indoor Temp
     ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Sensor/IndoorTemperature/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
@@ -164,6 +207,7 @@ def readHP():
 
 
     # Translate a 0 to yes or no
+    #print(us_ttos_temp)
     if us_ttos_temp == 0:
         us_ttos_temp = "NO"
     else:

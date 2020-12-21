@@ -26,6 +26,9 @@ def main():
     parser.add_argument('-ip','--ip', nargs='+',
                     help='You know your IP (nerd!), and want to just use it',
                     dest='IP')
+    parser.add_argument('-n','--number', nargs='+',
+                    help='The ammount of daikin devices you have (need to be used with --ip or --fip)',
+                    dest='number')
     parser.add_argument('-f','--file',
                     help='The config file to use (./config.ini), this removes the need for other flags',
                     dest='file')
@@ -44,7 +47,7 @@ def main():
     if args.file:
         # User gave a config file
         givenConfig = args.file
-        daikinSearch, daikinSerial, daikinIP = RC.readConfig(givenConfig)
+        daikinSearch, daikinSerial, daikinIP, daikinDevices = RC.readConfig(givenConfig)
         if daikinSearch == "True":
             # ^- need to convert to booleans
             DaikinIP = FI.findIP(daikinSerial)
@@ -52,14 +55,22 @@ def main():
         else:
             daikinIP = ""
     else:
+        # Not pretty, but it works :)
         if args.IP:
             # You know the IP, no need to find it
             daikinIP = args.IP[0]
+            if args.number:
+                daikinDevices = args.number[0]
+            else:
+                daikinDevices = ""
         elif args.findIP:
             # You want to find the ip
             daikinSerial = args.findIP[0]
-            DaikinIP = FI.findIP(daikinSerial)
-            print(DaikinIP)
+            daikinIP = FI.findIP(daikinSerial)
+            if args.number:
+                daikinDevices = args.number[0]
+            else:
+                daikinDevices = ""
         else:
             daikinIP = ""
 
@@ -68,14 +79,13 @@ def main():
     Time to do some actual work with the heatpump.
     """
     # Read Heatpump values:
-    if daikinIP == "":
-        print("There is no IP adress specified, cannot read heatpump")
+    if daikinIP == "" or daikinDevices == "":
+        print("There is no IP adress, or amount of devices specified, cannot read heatpump")
         sys.exit(1)
     else:
-        RH.readHP()
+        RH.readHPOptions(daikinIP, daikinDevices)
+        RH.readHPDetails(daikinIP)
 
-
-    # Start TUI here with argument
 
 if __name__ == "__main__":
     # Run program

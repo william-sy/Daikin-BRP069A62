@@ -6,5 +6,6 @@ def readConfig(file):
     daikinSearch = config['DAIKIN']['search']
     daikinSerial = config['DAIKIN']['serial']
     daikinIP = config['DAIKIN']['ip']
+    daikinDevices = config['DAIKIN']['devices']
 
-    return daikinSearch, daikinSerial, daikinIP
+    return daikinSearch, daikinSerial, daikinIP, daikinDevices
