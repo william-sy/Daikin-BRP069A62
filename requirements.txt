@@ -1,0 +1,7 @@
+zeroconf
+socket
+configparser
+argparse
+time
+websocket
+sys
