@@ -10,10 +10,11 @@ __email__ = ""
 __status__ = "Testing"
 
 # Imports:
-import argparse, time, sys
+import argparse, time, sys, json
 import DOHPC.readConfig as RC
 import DOHPC.findIP as FI
 import DOHPC.readHP as RH
+import DOHPC.createDB as CDB
 
 def main():
     # Get input form user
@@ -41,8 +42,16 @@ def main():
     parser.add_argument('-w','--write',
                     help='Supply a configuration to the heatpump.\nUse other scripts to make this one update the heatpump.',
                     dest='writeFile')
-
+    parser.add_argument('-db','--database',
+                    help='Creates a SQLITE database for you - takes filename as argument.(besure to update the config.ini)',
+                    dest='dataBase')
     args = parser.parse_args()
+
+    if args.dataBase:
+        # we want to initialize a DB
+        #print(args.dataBase)
+        CDB.createDatabase(args.dataBase)
+        sys.exit(1)
 
     if args.file:
         # User gave a config file
@@ -83,9 +92,9 @@ def main():
         print("There is no IP adress, or amount of devices specified, cannot read heatpump")
         sys.exit(1)
     else:
-        RH.readHPOptions(daikinIP, daikinDevices)
+        # Read current settings from the heatpump
         RH.readHPDetails(daikinIP)
-
+        # Run into a while loop here that does its magic.
 
 if __name__ == "__main__":
     # Run program
