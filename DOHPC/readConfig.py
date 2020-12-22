@@ -7,5 +7,8 @@ def readConfig(file):
     daikinSerial = config['DAIKIN']['serial']
     daikinIP = config['DAIKIN']['ip']
     daikinDevices = config['DAIKIN']['devices']
-
-    return daikinSearch, daikinSerial, daikinIP, daikinDevices
+    daikinDataBase = config['DAIKIN']['database']
+    daikinUrlError = config['URLS']['error']
+    daikinUrlBase = config['URLS']['base']
+    daikingUrlDisc = config['URLS']['disc']
+    return daikinSearch, daikinSerial, daikinIP, daikinDevices, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc

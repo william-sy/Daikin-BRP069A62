@@ -5,3 +5,4 @@ argparse
 time
 websocket
 sys
+sqlite3

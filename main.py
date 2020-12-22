@@ -42,25 +42,34 @@ def main():
     parser.add_argument('-w','--write',
                     help='Supply a configuration to the heatpump.\nUse other scripts to make this one update the heatpump.',
                     dest='writeFile')
-    parser.add_argument('-db','--database',
+    parser.add_argument('-cdb','--create-database',
                     help='Creates a SQLITE database for you - takes filename as argument.(besure to update the config.ini)',
+                    dest='cdataBase')
+    parser.add_argument('-db','--database',
+                    help='SQLITE file location.(besure to update the config.ini)',
                     dest='dataBase')
     args = parser.parse_args()
 
-    if args.dataBase:
+    if args.cdataBase:
         # we want to initialize a DB
-        #print(args.dataBase)
-        CDB.createDatabase(args.dataBase)
+        #print(args.cdataBase)
+        CDB.createDatabase(args.cdataBase)
         sys.exit(1)
+
+    if args.dataBase:
+        # database is over written.
+        daikinDataBase = args.dataBase
+    else:
+        daikinDataBase = ""
 
     if args.file:
         # User gave a config file
         givenConfig = args.file
-        daikinSearch, daikinSerial, daikinIP, daikinDevices = RC.readConfig(givenConfig)
+        daikinSearch, daikinSerial, daikinIP, daikinDevices, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc = RC.readConfig(givenConfig)
         if daikinSearch == "True":
             # ^- need to convert to booleans
             DaikinIP = FI.findIP(daikinSerial)
-            print(DaikinIP)
+            #print(DaikinIP)
         else:
             daikinIP = ""
     else:
@@ -88,12 +97,17 @@ def main():
     Time to do some actual work with the heatpump.
     """
     # Read Heatpump values:
-    if daikinIP == "" or daikinDevices == "":
+    if daikinIP == "" or daikinDevices == "" or daikinDataBase == "":
         print("There is no IP adress, or amount of devices specified, cannot read heatpump")
         sys.exit(1)
+    elif daikinUrlError == "" or daikinUrlBase == "" or daikingUrlDisc == "":
+        # In case still no config file is being used :(
+        daikinUrlError = "/[0]/MNAE/"
+        daikinUrlBase = "/[0]/MNCSE-node/"
+        daikingUrlDisc = "/[0]/MNAE/0"
     else:
         # Read current settings from the heatpump
-        RH.readHPDetails(daikinIP)
+        RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
         # Run into a while loop here that does its magic.
 
 if __name__ == "__main__":
