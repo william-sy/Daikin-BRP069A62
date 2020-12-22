@@ -90,7 +90,8 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
 
 def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, daikinKey3, daikinRwType):
     import sqlite3 as sl
-    import json
+    import json, datetime
+    print (now.strftime("%Y-%m-%d %H:%M:%S"))
     # Now that we have the data, we need to clean it and make it usable.
     daikinFilteredData = {}
     # Check if we get a healthy response:
@@ -107,8 +108,7 @@ def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, da
                 extractNestedData = nestedData["data"]
                 print(f"n = {rowName}")
                 print("\n")
-                print(f"n = {rowName} -  {extractNestedData}")
-
+                print(f"n = {rowName} - {extractNestedData}")
                 print("\n")
                 # predifined1 (cannot change this one)
                 print(extractNestedData[0])
