@@ -37,17 +37,13 @@ def readHPOptions(daikinIP, daikinDevices):
 # A function to read the heatpump data
 def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices):
     from websocket import create_connection
-    import json, datetime, time
-    import locale, calendar
     import sqlite3 as sl
-    locale.setlocale(locale.LC_ALL, '')
 
     # Setup the connection
     ip = daikinIP
     ws = create_connection("ws://"+ip+"/mca")
     con = sl.connect(dbFileName)
     numberofDaikinDevices = int(daikinDevices)
-    daikinRecievedData = {}
     if numberofDaikinDevices > 1:
         # Print disclaimer.
         print("""
@@ -55,7 +51,6 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
             Feel free to test on your setup and help the project along if you find bugs!
             Thanks
         """)
-
     # Get all the specific urls we want.
     with con:
         # Get base and nested URLS
@@ -73,19 +68,43 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
             # m2m:rqp = ReQuestParameter, this is default.
             # rqi ReQuestIndex? needs to be random in anycase
             ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
-            print(ws.recv())
+            daikinSocketResponse = ws.recv()
+            daikinSocketResponseName = row[7]
+            daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName)
+            #print(ws.recv())
         numberofDaikinDevices -= 1
 
     for row in hpDisc:
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikingUrlDisc+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
-        print(ws.recv())
+        daikinSocketResponse = ws.recv()
+        daikinSocketResponseName = row[7]
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName)
 
     for row in hpError:
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlError+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
-        print(ws.recv())
-
-    # Store some data in the database for historical purposes
-
-    # output some data for now to sanity check:
+        daikinSocketResponse = ws.recv()
+        daikinSocketResponseName = row[7]
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName)
 
     ws.close()
+
+def daikinDataFilter(ReturnData, rowName, dbFileName):
+    #import json, datetime, time
+    #import locale, calendar
+    #locale.setlocale(locale.LC_ALL, '')
+    import sqlite3 as sl
+    import json
+    # Now that we have the data, we need to clean it and make it usable.
+    daikinFilteredData = {}
+    # Check if we get a healthy response:
+    data = json.loads(ReturnData)
+    response = data["m2m:rsp"]["rsc"]
+    if response == 2000:
+        # Healthy return code
+        print(f"{rowName}: {ReturnData}")
+    elif response == 4004:
+        # Unhealthy return code, we dont want this again
+        con = sl.connect(dbFileName)
+        con.execute(f"UPDATE rw_url SET type = 'Z' WHERE name {rowName}")
+
+    pass
