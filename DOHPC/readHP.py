@@ -70,7 +70,7 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
             ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
             daikinSocketResponse = ws.recv()
             daikinSocketResponseName = row[7]
-            daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName)
+            daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10])
             #print(ws.recv())
         numberofDaikinDevices -= 1
 
@@ -78,17 +78,17 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikingUrlDisc+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
         daikinSocketResponse = ws.recv()
         daikinSocketResponseName = row[7]
-        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName)
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10])
 
     for row in hpError:
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlError+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
         daikinSocketResponse = ws.recv()
         daikinSocketResponseName = row[7]
-        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName)
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10])
 
     ws.close()
 
-def daikinDataFilter(ReturnData, rowName, dbFileName):
+def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, daikinKey3, daikinRwType):
     #import json, datetime, time
     #import locale, calendar
     #locale.setlocale(locale.LC_ALL, '')
@@ -97,11 +97,50 @@ def daikinDataFilter(ReturnData, rowName, dbFileName):
     # Now that we have the data, we need to clean it and make it usable.
     daikinFilteredData = {}
     # Check if we get a healthy response:
-    data = json.loads(ReturnData)
+    data = json.loads(returnData)
     response = data["m2m:rsp"]["rsc"]
     if response == 2000:
         # Healthy return code
-        print(f"{rowName}: {ReturnData}")
+        #print(f"{rowName}: {returnData}")
+        if daikinRwType == "n":
+            # This will get messy, but bear with it pesky values hidden away:
+            if rowName == "R_Schedule_List_ID":
+                extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
+                nestedData = json.loads(extractData)
+                extractNestedData = nestedData["data"]
+                print(f"n = {rowName}")
+                print("\n")
+                # predifined1 (cannot change this one)
+                print(extractNestedData[0])
+                # predifined 2 (cannot change this one)
+                print(extractNestedData[1])
+                # predifined 3 (cannot change this one)
+                print(extractNestedData[2])
+                # User defined 1
+                print(extractNestedData[3])
+                # User defines 2
+                print(extractNestedData[4])
+                # user defined 3
+                print(extractNestedData[5])
+            else:
+                extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
+                nestedData = json.loads(extractData)
+                extractNestedData = nestedData["data"][daikinKey3]
+                print(f"n = {rowName} = {extractNestedData}")
+        else:
+            # These should be less nested:
+            if rowName == "R_D_Error":
+                extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
+                if extractData == "":
+                    extractData = "None"
+                    print(f"{rowName} = {extractData}")
+            else:
+                extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
+                print(f"{rowName} = {extractData}")
+
+        #print(rowName)
+        pass
+
     elif response == 4004:
         # Unhealthy return code, we dont want this again
         con = sl.connect(dbFileName)
