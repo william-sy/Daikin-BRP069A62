@@ -7,7 +7,7 @@ def randomString(stringLength=5):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
-# A function to read the heatpump data
+# A function to read the heatpump data, not in use just yet.
 def readHPOptions(daikinIP, daikinDevices):
     from websocket import create_connection
     import json, datetime, time
@@ -38,12 +38,14 @@ def readHPOptions(daikinIP, daikinDevices):
 def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices):
     from websocket import create_connection
     import sqlite3 as sl
+    import datetime
 
     # Setup the connection
     ip = daikinIP
     ws = create_connection("ws://"+ip+"/mca")
-    con = sl.connect(dbFileName)
     numberofDaikinDevices = int(daikinDevices)
+    daikinFilteredData = {}
+
     if numberofDaikinDevices > 1:
         # Print disclaimer.
         print("""
@@ -51,15 +53,20 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
             Feel free to test on your setup and help the project along if you find bugs!
             Thanks
         """)
+    # Create a row to put all the date in:
+    now = datetime.datetime.now()
+    # Allows you one row per minute.
+    today = now.strftime("%Y%m%d%H%M")
     # Get all the specific urls we want.
+    con = sl.connect(dbFileName)
     with con:
+        con.execute(f"INSERT OR REPLACE INTO hp_data (DATE) VALUES  ('{today}'); ")
         # Get base and nested URLS
-        #hpBase = con.execute("SELECT * FROM rw_url WHERE type LIKE REGEXP '[bn]'; AND rw NOT LIKE '%w%'")
         hpBase = con.execute("SELECT * FROM rw_url WHERE type LIKE 'b' AND rw NOT LIKE 'w%' OR type LIKE 'n%'")
         # Get discovery URLS
-        hpDisc = con.execute("SELECT * FROM rw_url where type like '%d%' and rw like '%r%'")
+        hpDisc =  con.execute("SELECT * FROM rw_url where type like '%d%' and rw like '%r%'")
         # Get error URLS
-        hpError = con.execute("SELECT * FROM rw_url where type like '%e%' and rw like '%r%'")
+        hpError =  con.execute("SELECT * FROM rw_url where type like '%e%' and rw like '%r%'")
 
     # Time to get the results we want from the heatpump.
     while numberofDaikinDevices >= 1:
@@ -70,30 +77,35 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
             ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
             daikinSocketResponse = ws.recv()
             daikinSocketResponseName = row[7]
-            daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10])
-            #print(ws.recv())
+            daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
+
+
         numberofDaikinDevices -= 1
 
     for row in hpDisc:
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikingUrlDisc+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
         daikinSocketResponse = ws.recv()
         daikinSocketResponseName = row[7]
-        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10])
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
+        #daikinFilteredData[""+daikinSocketResponseName+""] = data
 
     for row in hpError:
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlError+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
         daikinSocketResponse = ws.recv()
         daikinSocketResponseName = row[7]
-        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10])
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
+        #daikinFilteredData[""+daikinSocketResponseName+""] = data
 
+    #daikinUpdateDB(daikinFilteredData, today, con)
+
+    con.commit()
     ws.close()
+    con.close()
 
-def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, daikinKey3, daikinRwType):
+def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, daikinKey3, daikinRwType, today, con):
     import sqlite3 as sl
-    import json, datetime
-    print (now.strftime("%Y-%m-%d %H:%M:%S"))
+    import json
     # Now that we have the data, we need to clean it and make it usable.
-    daikinFilteredData = {}
     # Check if we get a healthy response:
     data = json.loads(returnData)
     response = data["m2m:rsp"]["rsc"]
@@ -106,44 +118,52 @@ def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, da
                 extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
                 nestedData = json.loads(extractData)
                 extractNestedData = nestedData["data"]
-                print(f"n = {rowName}")
-                print("\n")
-                print(f"n = {rowName} - {extractNestedData}")
-                print("\n")
-                # predifined1 (cannot change this one)
-                print(extractNestedData[0])
-                # predifined 2 (cannot change this one)
-                print(extractNestedData[1])
-                # predifined 3 (cannot change this one)
-                print(extractNestedData[2])
-                # User defined 1
-                print(extractNestedData[3])
-                # User defines 2
-                print(extractNestedData[4])
-                # user defined 3
-                print(extractNestedData[5])
+                #return extractNestedData
+                con.execute(f"""
+                    UPDATE hp_data SET
+                        R_Schedule_List_ID_0 = '{extractNestedData[0]}',
+                        R_Schedule_List_ID_1 = '{extractNestedData[1]}',
+                        R_Schedule_List_ID_2 = '{extractNestedData[2]}',
+                        R_Schedule_List_ID_3 = '{extractNestedData[3]}',
+                        R_Schedule_List_ID_4 = '{extractNestedData[4]}',
+                        R_Schedule_List_ID_5 = '{extractNestedData[5]}'
+                    WHERE DATE LIKE '{today}';
+                """)
             else:
                 extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
                 nestedData = json.loads(extractData)
                 extractNestedData = nestedData["data"][daikinKey3]
-                print(f"n = {rowName} = {extractNestedData}")
+                #return extractNestedData
+                con.execute(f"""
+                    UPDATE hp_data SET
+                        {rowName} = '{extractNestedData}'
+                    WHERE DATE LIKE '{today}';
+                """)
         else:
             # These should be less nested:
             if rowName == "R_D_Error":
                 extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
                 if extractData == "":
                     extractData = "None"
-                    print(f"{rowName} = {extractData}")
+                    #return extractData
+                con.execute(f"""
+                    UPDATE hp_data SET
+                        {rowName} = '{extractData}'
+                    WHERE DATE LIKE '{today}';
+                """)
             else:
                 extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
-                print(f"{rowName} = {extractData}")
-
-        #print(rowName)
+                #return extractData
+                con.execute(f"""
+                    UPDATE hp_data SET
+                        {rowName} = '{extractData}'
+                    WHERE DATE LIKE '{today}';
+                """)
         pass
-
     elif response == 4004:
         # Unhealthy return code, we dont want this again
         con = sl.connect(dbFileName)
         con.execute(f"UPDATE rw_url SET type = 'Z' WHERE name {rowName}")
-
+        con.commit()
+        con.close()
     pass

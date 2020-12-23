@@ -58,16 +58,16 @@ def createDatabase(dbFileName):
                 R_Schedule_Next_Start INTEGER,
                 R_Schedule_Next_Target INTEGER,
                 R_Schedule_Next_Day INTEGER,
-                R_Schedule_List_ID TEXT,
-                R_Schedule_List_ID_0 TEXT,
-                R_Schedule_List_ID_1 TEXT,
-                R_Schedule_List_ID_2 TEXT,
-                R_Schedule_List_ID_3 TEXT,
-                R_Schedule_List_ID_4 TEXT,
-                R_Schedule_List_ID_5 TEXT
+                R_Schedule_List_ID BLOB,
+                R_Schedule_List_ID_0 BLOB,
+                R_Schedule_List_ID_1 BLOB,
+                R_Schedule_List_ID_2 BLOB,
+                R_Schedule_List_ID_3 BLOB,
+                R_Schedule_List_ID_4 BLOB,
+                R_Schedule_List_ID_5 BLOB
             );
         """)
-
+        con.execute("CREATE UNIQUE INDEX daikinReturnValues ON hp_data (DATE);")
     sql = 'INSERT INTO rw_url (id, cnf, end, fr, key1, key2, key3, name, op, rw, type, url ) values(?,?,?,?,?,?,?,?,?,?,?,?)'
     data = [
         (1,  '',             '/la', '/',  'm2m:cin', 'con', '',                  'R_D_Error',                        '2', 'r', 'e', '/Error'),
