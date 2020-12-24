@@ -15,6 +15,7 @@ import DOHPC.readConfig as RC
 import DOHPC.findIP as FI
 import DOHPC.readHP as RH
 import DOHPC.createDB as CDB
+import DOHPC.sendHP as SH
 
 def main():
     # Get input form user
@@ -39,15 +40,21 @@ def main():
     parser.add_argument('-fd','--fancy-display','--thermostat',
                     help='Use NPYSCREEN to display the info and run as a thermostat',
                     )
-    parser.add_argument('-w','--write',
-                    help='Supply a configuration to the heatpump.\nUse other scripts to make this one update the heatpump.',
-                    dest='writeFile')
     parser.add_argument('-cdb','--create-database',
                     help='Creates a SQLITE database for you - takes filename as argument.(besure to update the config.ini)',
                     dest='cdataBase')
     parser.add_argument('-db','--database',
                     help='SQLITE file location.(besure to update the config.ini)',
                     dest='dataBase')
+    parser.add_argument('-s','--send',
+                    help='argument can be (T) for temperature or (S) for schedule bust be paired with -v',
+                    dest='sendType')
+    parser.add_argument('-v','--value',
+                    help='The value to send to the heatpump \n(int for temperature for schedule see DOCUMENTATION)',
+                    dest='sendValue')
+    parser.add_argument('-r','--read', action='store_true',
+                    help='Set me and I will read the pump and put it in the DB ',
+                    dest='readFlag')
     args = parser.parse_args()
 
     if args.cdataBase:
@@ -107,8 +114,21 @@ def main():
         daikingUrlDisc = "/[0]/MNAE/0"
     else:
         # Read current settings from the heatpump
-        RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+        if args.readFlag:
+            RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
         # Run into a while loop here that does its magic.
+        #pass
+
+    """
+    Now that we have the valeus, time to do send a new temperature, or schedule to the heatpump
+    """
+    if args.sendType:
+        # we want to send a value
+        if args.sendValue:
+            SH.sendHPvalues(args.sendType, args.sendValue, daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+        else:
+            print("No data to send")
+            sys.exit(1)
 
 if __name__ == "__main__":
     # Run program

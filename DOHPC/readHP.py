@@ -42,7 +42,7 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
 
     # Setup the connection
     ip = daikinIP
-    ws = create_connection("ws://"+ip+"/mca")
+    ws = create_connection(f"ws://{ip}/mca")
     numberofDaikinDevices = int(daikinDevices)
     daikinFilteredData = {}
 
@@ -79,7 +79,6 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
             daikinSocketResponseName = row[7]
             daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
 
-
         numberofDaikinDevices -= 1
 
     for row in hpDisc:
@@ -87,16 +86,12 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
         daikinSocketResponse = ws.recv()
         daikinSocketResponseName = row[7]
         daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
-        #daikinFilteredData[""+daikinSocketResponseName+""] = data
 
     for row in hpError:
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlError+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
         daikinSocketResponse = ws.recv()
         daikinSocketResponseName = row[7]
         daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
-        #daikinFilteredData[""+daikinSocketResponseName+""] = data
-
-    #daikinUpdateDB(daikinFilteredData, today, con)
 
     con.commit()
     ws.close()

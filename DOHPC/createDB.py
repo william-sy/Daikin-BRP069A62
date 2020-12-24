@@ -106,7 +106,8 @@ def createDatabase(dbFileName):
         (34, '',             '/la', '/',  'm2m:cin', 'con', 'TargetTemperature', 'R_Schedule_Next_Target',           '2', 'r', 'n', '/Schedule/Next'),
         (35, '',             '/la', '/',  'm2m:cin', 'con', 'Day',               'R_Schedule_Next_Day',              '2', 'r', 'n', '/Schedule/Next'),
         (36, '',             '/la', '/',  'm2m:cin', 'con', '3',                 'R_Schedule_List_ID',               '2', 'r', 'n', '/Schedule/List/Heating'),
-        (37, 'text/plain:0', '',    '/S', '',        '',    '',                  'W_Heating_OperationPower',         '1', 'w', 'b', '/Operation/Power'),
+        (37, 'text/plain:0', '',    '/S', 'm2m:cin', 'con', '',                  'W_Heating_OperationPower',         '1', 'w', 'b', '/Operation/Power'),
+        (38, 'text/plain:0', '',    '/S', 'm2m:cin', 'con', '',                  'W_TargetTemperature',              '1', 'w', 'b', '/Operation/TargetTemperature'),
 
     ]
     with con:
