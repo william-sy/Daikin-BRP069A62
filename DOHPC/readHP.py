@@ -38,7 +38,7 @@ def readHPOptions(daikinIP, daikinDevices):
 def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices):
     from websocket import create_connection
     import sqlite3 as sl
-    import datetime
+    import datetime, json
 
     # Setup the connection
     ip = daikinIP
@@ -92,6 +92,16 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
         daikinSocketResponse = ws.recv()
         daikinSocketResponseName = row[7]
         daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
+
+    # Special case for device ID:
+    ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]\",\"fr\":\"/S\",\"rqi\":\""+randomString()+"\"}}")
+    js_function = json.loads(ws.recv())
+    device_id = js_function["m2m:rsp"]["pc"]["m2m:cb"]["csi"]
+    con.execute(f"""
+        UPDATE hp_data SET
+            R_Device_ID = '{device_id}'
+        WHERE DATE LIKE '{today}';
+    """)
 
     con.commit()
     ws.close()

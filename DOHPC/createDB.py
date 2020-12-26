@@ -64,7 +64,8 @@ def createDatabase(dbFileName):
                 R_Schedule_List_ID_2 BLOB,
                 R_Schedule_List_ID_3 BLOB,
                 R_Schedule_List_ID_4 BLOB,
-                R_Schedule_List_ID_5 BLOB
+                R_Schedule_List_ID_5 BLOB,
+                R_Device_ID TEXT
             );
         """)
         con.execute("CREATE UNIQUE INDEX daikinReturnValues ON hp_data (DATE);")
