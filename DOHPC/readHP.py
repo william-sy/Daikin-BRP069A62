@@ -64,10 +64,11 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
         # Get base and nested URLS
         hpBase = con.execute("SELECT * FROM rw_url WHERE type LIKE 'b' AND rw NOT LIKE 'w%' OR type LIKE 'n%'")
         # Get discovery URLS
-        hpDisc =  con.execute("SELECT * FROM rw_url where type like '%d%' and rw like '%r%'")
+        hpDisc = con.execute("SELECT * FROM rw_url where type like '%d%' and rw like '%r%'")
         # Get error URLS
-        hpError =  con.execute("SELECT * FROM rw_url where type like '%e%' and rw like '%r%'")
-
+        hpError = con.execute("SELECT * FROM rw_url where type like '%e%' and rw like '%r%'")
+        # Get Device ID and default schedule ID:
+        hpSDID = con.execute("SELECT * FROM rw_url where type like '%s%' and rw like '%w%'")
     # Time to get the results we want from the heatpump.
     while numberofDaikinDevices >= 1:
         id = str(numberofDaikinDevices)
@@ -93,15 +94,11 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
         daikinSocketResponseName = row[7]
         daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
 
-    # Special case for device ID:
-    ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]\",\"fr\":\"/S\",\"rqi\":\""+randomString()+"\"}}")
-    js_function = json.loads(ws.recv())
-    device_id = js_function["m2m:rsp"]["pc"]["m2m:cb"]["csi"]
-    con.execute(f"""
-        UPDATE hp_data SET
-            R_Device_ID = '{device_id}'
-        WHERE DATE LIKE '{today}';
-    """)
+    for row in hpSDID:
+        ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+""+row[2]+"\",\"fr\":\"+row[3]+\",\"rqi\":\""+randomString()+"\"}}")
+        daikinSocketResponse = ws.recv()
+        daikinSocketResponseName = row[7]
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
 
     con.commit()
     ws.close()
@@ -144,6 +141,21 @@ def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, da
                         {rowName} = '{extractNestedData}'
                     WHERE DATE LIKE '{today}';
                 """)
+        elif daikinRwType == "s":
+            # Normally we dont want this but we have to make 1 execption:
+            if rowName == "R_ScheduleDefault":
+                extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
+                nestedData = json.loads(extractData)
+                deviceID = nestedData["data"][0]["path"]
+                defaultSchedule = nestedData["data"][0]["id"]
+                con.execute(f"""
+                    UPDATE hp_data SET
+                        R_Device_ID = '{deviceID}',
+                        R_Schedule_List_ID = '{defaultSchedule}'
+                    WHERE DATE LIKE '{today}';
+                """)
+            else:
+                pass
         else:
             # These should be less nested:
             if rowName == "R_D_Error":

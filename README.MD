@@ -1,4 +1,4 @@
-# Daikin Lan Adapter scripts
+# Daikin BPR069A62 Lan Adapter
 
 ## Intro
 
@@ -12,4 +12,24 @@ currently the `main.py` helps you to find your daikin IP adrres based on mDNS.
 It only finds 1 ip so if you have multiple heatpumps this might need some adaptation.
 
 ## Documentation
-This can be found in the `docs` directory
+This will be in the `docs` directory
+
+## For the time being:
+You can find the old readme in /moved/readme.md
+
+# Current status of project:
+
+- Reading all data from the lan adapter needed to work with it:
+- > DONE
+- Sending new temperature:
+- > DONE
+- Sending new schedule ID (choose between schedules)
+- > WIP
+- Sending new schedule
+- > WIP
+- Display all data
+- > TODO (All data is in database already)
+- Create a TUI / Flask wrapper
+- > TODO
+- Documentation
+- > Ongoing in the code itself, not formalized in the docs folder just yet

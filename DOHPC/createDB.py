@@ -109,15 +109,11 @@ def createDatabase(dbFileName):
         (36, '',             '/la', '/',  'm2m:cin', 'con', '3',                 'R_Schedule_List_ID',               '2', 'r', 'n', '/Schedule/List/Heating'),
         (37, 'text/plain:0', '',    '/S', 'm2m:cin', 'con', '',                  'W_Heating_OperationPower',         '1', 'w', 'b', '/Operation/Power'),
         (38, 'text/plain:0', '',    '/S', 'm2m:cin', 'con', '',                  'W_TargetTemperature',              '1', 'w', 'b', '/Operation/TargetTemperature'),
-
+        (39, '',             '/la', '/S', 'm2m:cin', 'con', '',                  'R_ScheduleDefault',                '2', 'w', 's', '/Schedule/Default'),
+        (40, '',             '',    '/S', 'm2m:cin', 'con', '',                  'W_ScheduleDefault',                '1', 'w', 'b', '/Schedule/Default'),
     ]
     with con:
         con.executemany(sql, data)
 
-    print("Show imported data:")
-    with con:
-        data = con.execute("SELECT * FROM rw_url")
-        for row in data:
-            print(row)
 
     print("Database populated")

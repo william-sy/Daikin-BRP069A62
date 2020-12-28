@@ -25,51 +25,42 @@ def sendHPvalues(type, value, daikinIP, dbFileName, daikinUrlError, daikinUrlBas
     id = "1"
     ip = daikinIP
     with con:
-        hpCurrentTemp = con.execute("SELECT R_Heating_TargetTemperature FROM hp_data ORDER BY DATE DESC LIMIT 1;")
         hpTempSend = con.execute("SELECT * FROM rw_url where name like 'W_TargetTemperature'")
         hpOperationSend = con.execute("SELECT * FROM rw_url where name like 'W_Heating_OperationPower'")
 
-    for row in hpCurrentTemp:
-        current_target_temp = row[0]
-    # Check if the wanted temp is lower or higher else do nothing.
     if type == "t" or type == "T":
-        ctt = int(current_target_temp)
         wtt = int(value)
         print(f"temp change to {wtt}")
-        if ctt == wtt:
-            pass
-        else:
-            for row in hpTempSend:
-                ws = create_connection(f"ws://{ip}/mca")
-                ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\",\"ty\":4,\"pc\":{\""+row[4]+"\":{\"con\":"+value+",\"cnf\":\""+row[1]+"\"}}}}")
-                js_value = json.loads(ws.recv())
-                response = js_value["m2m:rsp"]["rsc"]
-                ws.close()
-                if response == 2001:
-                    print("Sending new temp succes")
-                else:
-                    if response == 4000:
-                        print("Sending new temp failed - URL Error")
-                        sys.exit(1)
-                    elif response == 4102:
-                        print("Sending new temp failed - value Error")
-                        sys.exit(1)
-            con.close()
+        for row in hpTempSend:
+            ws = create_connection(f"ws://{ip}/mca")
+            ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\",\"ty\":4,\"pc\":{\""+row[4]+"\":{\"con\":"+value+",\"cnf\":\""+row[1]+"\"}}}}")
+            js_value = json.loads(ws.recv())
+            response = js_value["m2m:rsp"]["rsc"]
+            ws.close()
+            if response == 2001:
+                print("Sending new temp succes")
+            else:
+                if response == 4000:
+                    print("Sending new temp failed - URL Error")
+                    sys.exit(1)
+                elif response == 4102:
+                    print("Sending new temp failed - value Error")
+                    sys.exit(1)
+        con.close()
 
     elif type == "s" or type == "S":
-        #daikinNewSchedule = Convert(value)
-        #print(f"id: {daikinNewSchedule[0]}")
-        #print(f"sched: {daikinNewSchedule[1]}")
-        # Change:
         ws = create_connection(f"ws://{ip}/mca")
-        ws.send('{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"rtgfd","ty":4,"pc":{"m2m:cin":{"con":1,"cnf":"text/plain:0"}')
+        #ws.send({"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/List/Heating","fr":"/S","rqi":"sxpom","ty":4,"pc":{"m2m:cin":{"con":"{ \"data\" : [\"$NULL|0|0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|0|0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,    210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|0|0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|1|1700,200;22    50,120;;;;;1700,200;2200,180;;;;;1700,200;2200,180;;;;;1700,200;2200,180;;;;;1700,200;2200,180;;;;;1000,200;1300,180;1700,200;2200,180;;;1000,200;1300,180;1700,200;2200,180;;\",\"$NULL|1|;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\",\"$NULL|1|;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\"]}","cnf":"text/plain:0"}}}})
+
         js_value = json.loads(ws.recv())
         response = js_value["m2m:rsp"]["rsc"]
         ws.close()
         print(js_value)
-        #{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con": "{"data":{"path":"/mn-cse-5e639e61465efa001c09edc0/MNAE/1/schedule/List/Heating","id":2}}","cnf":"application/json:0"}}}}
-        #Data:?: "{"data":{"path":"/mn-cse-5e639e61465efa001c09edc0/MNAE/1/schedule/List/Heating/la","id":2}}"
-        #{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":20,"cnf":"text/plain:0"}}}}
+
+    elif type == "i" or type == "I":
+        # Set new ID to start using
+        #ws.send('{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Default","fr":"/S","rqi":"'+randomString()+'","ty":4,"pc":{"m2m:cin":{"con":"{\\"data\\":[{\\"path\\":\\"/'+device_id+'/MNAE/1/schedule/List/Heating/la\\",\\"id\\":3}]}","cnf":"text/plain:0"}}}}')
+        pass
     elif type == "o" or type == "O":
         daikinOperationState = value
         print(daikinOperationState)
