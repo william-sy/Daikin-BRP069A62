@@ -25,8 +25,11 @@ def sendHPvalues(type, value, daikinIP, dbFileName, daikinUrlError, daikinUrlBas
     id = "1"
     ip = daikinIP
     with con:
-        hpTempSend = con.execute("SELECT * FROM rw_url where name like 'W_TargetTemperature'")
-        hpOperationSend = con.execute("SELECT * FROM rw_url where name like 'W_Heating_OperationPower'")
+        hpTempSend = con.execute("SELECT * FROM rw_url WHERE name LIKE 'W_TargetTemperature'")
+        hpOperationSend = con.execute("SELECT * FROM rw_url WHERE name LIKE 'W_Heating_OperationPower'")
+        hpScheduleSend = con.execute("SELECT * FROM rw_url WHERE name LIKE 'R_Schedule_List_ID'")
+        hpsheduleIDSend = con.execute("SELECT * FROM rw_url WHERE name LIKE 'W_ScheduleDefault'")
+        hp_device_id = con.execute("SELECT R_Device_ID from hp_data order by DATE DESC limit 1")
 
     if type == "t" or type == "T":
         wtt = int(value)
@@ -49,23 +52,67 @@ def sendHPvalues(type, value, daikinIP, dbFileName, daikinUrlError, daikinUrlBas
         con.close()
 
     elif type == "s" or type == "S":
-        ws = create_connection(f"ws://{ip}/mca")
-        #ws.send({"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/List/Heating","fr":"/S","rqi":"sxpom","ty":4,"pc":{"m2m:cin":{"con":"{ \"data\" : [\"$NULL|0|0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|0|0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,    210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|0|0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|1|1700,200;22    50,120;;;;;1700,200;2200,180;;;;;1700,200;2200,180;;;;;1700,200;2200,180;;;;;1700,200;2200,180;;;;;1000,200;1300,180;1700,200;2200,180;;;1000,200;1300,180;1700,200;2200,180;;\",\"$NULL|1|;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\",\"$NULL|1|;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\"]}","cnf":"text/plain:0"}}}})
+        daikinNewSchedule = Convert(value)
+        idToChange = int(daikinNewSchedule[0])
+        newSchedule = daikinNewSchedule[1]
+        # Get all current, schedules from the database
+        daikinCurrentSchedules = con.execute("select * from hp_data order by DATE DESC limit 1")
+        for row in daikinCurrentSchedules:
+            S0 = row[37]
+            S1 = row[38]
+            S2 = row[39]
+            S3 = row[40]
+            S4 = row[41]
+            S5 = row[42]
 
-        js_value = json.loads(ws.recv())
-        response = js_value["m2m:rsp"]["rsc"]
+        if idToChange <= 2:
+            print("This schedule is read only")
+        elif idToChange >= 3 and idToChange <=5:
+                if idToChange == 3:
+                    S3 = newSchedule
+                elif idToChange == 4:
+                    S4 = newSchedule
+                elif idToChange == 5:
+                    S5 = newSchedule
+
+                for row in hpScheduleSend:
+                # Now send the New schedule of choice to the heatpump
+                    ws = create_connection(f"ws://{ip}/mca")
+                    ws.send('{"m2m:rqp":{"op":1,"to":"'+daikinUrlBase+''+id+''+row[11]+'","fr":"'+row[3]+'","rqi":"'+randomString()+'","ty":4,"pc":{"'+row[4]+'":{"con":"{ \\"data\\":[\\"'+S0+'\\",\\"'+S1+'\\",\\"'+S2+'\\",\\"'+S3+'\\",\\"'+S4+'\\",\\"'+S5+'\\"]}","cnf":"text/plain:0"}}}}')
+                    #js_value = json.loads(ws.recv())
+                    #response = js_value["m2m:rsp"]["rsc"]
+                    #print(response)
+        else:
+            print("ID out of range")
         ws.close()
-        print(js_value)
-
+        con.close()
     elif type == "i" or type == "I":
-        # Set new ID to start using
-        #ws.send('{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Default","fr":"/S","rqi":"'+randomString()+'","ty":4,"pc":{"m2m:cin":{"con":"{\\"data\\":[{\\"path\\":\\"/'+device_id+'/MNAE/1/schedule/List/Heating/la\\",\\"id\\":3}]}","cnf":"text/plain:0"}}}}')
-        pass
+        daikinWantedSchedule = value
+        for row in hp_device_id:
+            device_id = row[0]
+        for row in hpsheduleIDSend:
+            if int(daikinWantedSchedule) >= 5:
+                print("ID out of range try between 0 to 5")
+            # Set new ID to start using
+            else:
+                ws = create_connection(f"ws://{ip}/mca")
+                ws.send('{"m2m:rqp":{"op":'+row[8]+',"to":"'+daikinUrlBase+''+id+''+row[11]+'","fr":"'+row[3]+'","rqi":"'+randomString()+'","ty":4,"pc":{"'+row[4]+'":{"con":"{\\"data\\":[{\\"path\\":\\"'+device_id+'\\",\\"id\\":'+daikinWantedSchedule+'}]}","cnf":"text/plain:0"}}}}')
+                #response = js_value["m2m:rsp"]["rsc"]
+                #print(response)
+                ws.close()
     elif type == "o" or type == "O":
         daikinOperationState = value
-        print(daikinOperationState)
-        #{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/Power","fr":"/S","rqi":"olpcx","ty":4,"pc":{"m2m:cin":{"con":"on","cnf":"text/plain:0"}}}}
-        #{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/Power","fr":"/S","rqi":"olpcx","ty":4,"pc":{"m2m:cin":{"con":"standby","cnf":"text/plain:0"}}}}
+        for row in hpOperationSend:
+            ws = create_connection(f"ws://{ip}/mca")
+            if daikinOperationState == "on":
+                ws.send('{"m2m:rqp":{"op":'+row[8]+',"to":"'+daikinUrlBase+''+id+''+row[11]+'","fr":"'+row[3]+'","rqi":"'+randomString()+'","ty":4,"pc":{"m2m:cin":{"con":"on","cnf":"text/plain:0"}}}}')
+                ws.close()
+            elif daikinOperationState == "off":
+                ws.send('{"m2m:rqp":{"op":'+row[8]+',"to":"'+daikinUrlBase+''+id+''+row[11]+'","fr":"'+row[3]+'","rqi":"'+randomString()+'","ty":4,"pc":{"m2m:cin":{"con":"standby","cnf":"text/plain:0"}}}}')
+                ws.close()
+            else:
+                print("Please try 'on' or 'off'.")
+                pass
     else:
         con.close()
         sys.exit(1)
