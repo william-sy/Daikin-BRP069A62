@@ -162,11 +162,16 @@ def readData(mode):
                             if ritems["type"] == "n":
                                 # Load value as json
                                 nested_value = json.loads(value)
+                                #if name == "R_Schedule_Active":
+                                #    valueStore[""+name+""] = filterred_schedule
+
                                 if name == "R_Schedule_List_ID":
                                     if "R_Schedule_Active" in valueStore:
-                                        # Check if we already got our manually set ID
+                                        # Check if we already got our set ID
                                         # Order in the JSON is important if you dont get this to work.
-                                        id = valueStore["R_Schedule_Active"]
+                                        #id_json = json.loads(valueStore["R_Schedule_Active"])
+                                        #id = id_json["data"]["id"]
+                                        id = int(valueStore["R_Schedule_Active"])
                                     else:
                                         # Transform our default json string into a int
                                         id = int(key3)
@@ -180,8 +185,7 @@ def readData(mode):
                                     # Get the value we want from key3
                                     get_nested_value = nested_value["data"][""+key3+""]
                                     # Store this in valueStore
-                                    valueStore["R_Schedule_Active_id"] = get_nested_value
-                                    valueStore[""+name+""] = value
+                                    valueStore[""+name+""] = str(get_nested_value)
                             else:
                                 # Result can go sraight into valueStore
                                 valueStore[""+name+""] = value
@@ -219,7 +223,6 @@ def write_temp_data(id, temp):
             logging.info("Setting temp to a higher setting")
             set_tempterature(ids, temp)
 
-
 # throw schedule items:
 def write_schedule_data():
     # For naming with multiple words only the following characters will be returned to you: () - + . ?
@@ -238,9 +241,9 @@ if __name__ == '__main__':
     # Reads all the data from your unit and disables it if your unit does not have a value
     readData(mode)
     # Writes data (Temp change)
-    write_temp_data(1, 21)
+    #write_temp_data(1, 21)
     # Schedule: Adapt schedule and change active schedule ID (This now also becomes the default ID in your json)
     #write_schedule_data()
 
-
+print(valueStore)
 logging.info("<- End of program ->")

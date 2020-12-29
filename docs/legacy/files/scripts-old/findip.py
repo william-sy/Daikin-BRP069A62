@@ -1,3 +1,6 @@
+"""
+This is a default example of zeroconf
+"""
 from zeroconf import ServiceBrowser, Zeroconf
 import ipaddress
 

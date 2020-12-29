@@ -9,13 +9,14 @@ def randomString(stringLength=5):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
-ip = "192.168.1.247"
+ip = "192.168.2.130"
 ws = create_connection("ws://"+ip+"/mca")
 
 # Get Info
 ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
 js_function = json.loads(ws.recv())
 function = js_function["m2m:rsp"]["pc"]["m2m:cnt"]["lbl"]
+
 # device info
 ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNCSE-node/deviceInfo\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
 js_deviceinfo = json.loads(ws.recv())
@@ -25,9 +26,11 @@ duty = js_deviceinfo["m2m:rsp"]["pc"]["m2m:dvi"]["dty"]
 firmware = js_deviceinfo["m2m:rsp"]["pc"]["m2m:dvi"]["fwv"]
 software = js_deviceinfo["m2m:rsp"]["pc"]["m2m:dvi"]["swv"]
 dlb = js_deviceinfo["m2m:rsp"]["pc"]["m2m:dvi"]["dlb"]
+
 # Unit info:
 ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/Version/IndoorSoftware/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
 js_indoor_software = json.loads(ws.recv())
+
 indoor_software = js_indoor_software["m2m:rsp"]["pc"]["m2m:cin"]["con"]
 ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/ModelNumber/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
 js_indoor_model = json.loads(ws.recv())
@@ -159,8 +162,43 @@ schedule_list_uid = js_schedule_list_uid["data"]
 #Data:?: "{"data":{"path":"/mn-cse-5e639e61465efa001c09edc0/MNAE/1/schedule/List/Heating/la","id":2}}"
 #{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":20,"cnf":"text/plain:0"}}}}
 
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/0\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitProfile/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/0/UnitProfile/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/0/DateTime/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitInfo/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/UnitIdentifier/Icon/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/1/Consumption/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
 
-
+ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNCSE-node/deviceInfo\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+js_function = json.loads(ws.recv())
+print(js_function)
+print("\n")
 # Translate a 0 to yes or no
 if us_ttos_temp == 0:
     us_ttos_temp = "NO"

@@ -1,8 +1,7 @@
 import npyscreen
-
-#
-#self.mySlider = self.add(npyscreen.TitleSlider,name="Temp Indoor", lowest=12, out_of=30, step=1, label=True, block_color="WARNING", value=20)
-
+"""
+This is a simple TUI far from finished
+"""
 class FormObject( npyscreen.FormWithMenus, npyscreen.SplitForm ):
     def create( self ):
         self.tc = self.add( npyscreen.TitleText, name="Temp Indoor:", value=20, editable=False, hidden=False)
