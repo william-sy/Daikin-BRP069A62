@@ -16,6 +16,7 @@ import DOHPC.findIP as FI
 import DOHPC.readHP as RH
 import DOHPC.createDB as CDB
 import DOHPC.sendHP as SH
+import DOHPC.showHP as DHP
 
 def main():
     # Get input form user
@@ -34,12 +35,12 @@ def main():
     parser.add_argument('-f','--file',
                     help='The config file to use (./config.ini), this removes the need for other flags',
                     dest='file')
-    parser.add_argument('-d','--display',
+    parser.add_argument('-d','--display', action='store_true',
                     help='Just display all the info dont change a thing',
-                    )
+                    dest='display')
     parser.add_argument('-fd','--fancy-display','--thermostat',
                     help='Use NPYSCREEN to display the info and run as a thermostat',
-                    )
+                    dest='fdisplay')
     parser.add_argument('-cdb','--create-database',
                     help='Creates a SQLITE database for you - takes filename as argument.(besure to update the config.ini)',
                     dest='cdataBase')
@@ -116,6 +117,10 @@ def main():
         # Read current settings from the heatpump
         if args.readFlag:
             RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+            if args.display:
+                DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+        elif args.display:
+            DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
         # Run into a while loop here that does its magic.
         #pass
 
