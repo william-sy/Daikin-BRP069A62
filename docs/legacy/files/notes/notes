@@ -1,0 +1,5 @@
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Holiday/StartDate","fr":"/S","rqi":"npoqn","ty":4,"pc":{"m2m:cin":{"con":"2020-12-31","cnf":"text/plain:0"}}}}
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Holiday/EndDate","fr":"/S","rqi":"doesf","ty":4,"pc":{"m2m:cin":{"con":"2020-12-31","cnf":"text/plain:0"}}}}
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Holiday/HolidayState","fr":"/S","rqi":"rhbh","ty":4,"pc":{"m2m:cin":{"con":1,"cnf":"text/plain:0"}}}}
+{"m2m:rqp":{"op":2,"to":"/[0]/MNAE/1/ChildLock/LockedState/la","fr":"/S","rqi":"dlcon"}}
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Holiday/HolidayState","fr":"/S","rqi":"yskhf","ty":4,"pc":{"m2m:cin":{"con":0,"cnf":"text/plain:0"}}}}

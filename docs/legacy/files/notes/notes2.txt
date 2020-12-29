@@ -1,0 +1,90 @@
+{
+	'DDID1':   '{
+  "SyncStatus":"update",
+  "Sensor":["IndoorTemperature","OutdoorTemperature","LeavingWaterTemperatureCurrent"],
+  "UnitStatus":["ErrorState","InstallerState","WarningState","EmergencyState","TargetTemperatureOverruledState"],
+  "Operation":{"Power":["on","standby"],"OperationMode":["heating"],"TargetTemperature":{"heating":{"maxValue":30.0000000000000000,"minValue":12.0000000000000000,"stepValue":1.0000000000000000}},"RoomTemperatureHeating":{"maxValue":30.0000000000000000,"minValue":12.0000000000000000,"stepValue":1.0000000000000000,"settable":true},"LeavingWaterTemperatureHeating":{"maxValue":80,"minValue":25,"stepValue":1,"settable":false}},"Schedule":{"Base":"action","defaultScheduleAvailable":"true","NameAdjustable":"false","List":{"heating":[{"StartTime":{"stepValue":10.0000000000000000,"unit":"minutes"},"TargetTemperature":{"heating":{"maxValue":30.0000000000000000,"minValue":12.0000000000000000,"stepValue":1}},"Actions":["StartTime","TargetTemperature"],"maxActionsAllowed":6},["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],[]]}}}',
+	'DDID0':
+    '{"SyncStatus":"update","UnitStatus":["ErrorState"],"DateTime":{"DateTimeAdjustable":false}}'
+}
+
+
+
+
+{
+	'DDID1': {
+		'm2m:rsp': {
+			'rsc': 2000,
+			'rqi': 'rrueg',
+			'to': '/',
+			'fr': '/[0]/MNAE/1/UnitProfile/la',
+			'pc': {
+				'm2m:cin': {
+					'rn': '00000004',
+					'ri': '0006_00000004',
+					'pi': '0006',
+					'ty': 4,
+					'ct': '20201211T112639Z',
+					'lt': '20201211T112639Z',
+					'st': 4,
+					'con': '{
+          "SyncStatus":"update",
+          "Sensor":[
+            "IndoorTemperature",
+            "OutdoorTemperature",
+            "LeavingWaterTemperatureCurrent"
+          ],
+          "UnitStatus":[
+            "ErrorState",
+            "InstallerState",
+            "WarningState",
+            "EmergencyState",
+            "TargetTemperatureOverruledState"
+            ],
+          "Operation":{"Power":["on","standby"],"OperationMode":["heating"],"TargetTemperature":{"heating":{"maxValue":30.0000000000000000,"minValue":12.0000000000000000,"stepValue":1.0000000000000000}},"RoomTemperatureHeating":{"maxValue":30.0000000000000000,"minValue":12.0000000000000000,"stepValue":1.0000000000000000,"settable":true},"LeavingWaterTemperatureHeating":{"maxValue":80,"minValue":25,"stepValue":1,"settable":false}},"Schedule":{"Base":"action","defaultScheduleAvailable":"true","NameAdjustable":"false","List":{"heating":[{"StartTime":{"stepValue":10.0000000000000000,"unit":"minutes"},"TargetTemperature":{"heating":{"maxValue":30.0000000000000000,"minValue":12.0000000000000000,"stepValue":1}},"Actions":["StartTime","TargetTemperature"],"maxActionsAllowed":6},["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],
+          ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],[]]}}}'
+				}
+			}
+		}
+	},
+	'DDID0': {
+		'm2m:rsp': {
+			'rsc': 2000,
+			'rqi': 'wfvmh',
+			'to': '/',
+			'fr': '/[0]/MNAE/0/UnitProfile/la',
+			'pc': {
+				'm2m:cin': {
+					'rn': '000003da',
+					'ri': '0073_000003da',
+					'pi': '0073',
+					'ty': 4,
+					'ct': '20201221T170001Z',
+					'lt': '20201221T170001Z',
+					'st': 986,
+					'con': '{"SyncStatus":"update","UnitStatus":["ErrorState"],"DateTime":{"DateTimeAdjustable":false}}'
+				}
+			}
+		}
+	}
+}
+
+
+# Turning the heatpump on / off
+# Change to on / standby
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/Power","fr":"/S","rqi":"olpcx","ty":4,"pc":{"m2m:cin":{"con":"on","cnf":"text/plain:0"}}}}
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/Power","fr":"/S","rqi":"olpcx","ty":4,"pc":{"m2m:cin":{"con":"standby","cnf":"text/plain:0"}}}}
+# Set a different temperature
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":14,"cnf":"text/plain:0"}}}}
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":16,"cnf":"text/plain:0"}}}}
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":18,"cnf":"text/plain:0"}}}}
+# {"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":20,"cnf":"text/plain:0"}}}}
+
+
+# Change schedule to different one
+# Read:
+#{"m2m:rqp":{"op":2,"to":"/[0]/MNAE/1/Schedule/Active/la","fr":"/","rqi":""}}
+# Change:
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con": "{"data":{"path":"/mn-cse-5e639e61465efa001c09edc0/MNAE/1/schedule/List/Heating","id":2}}","cnf":"application/json:0"}}}}
+#Data:?: "{"data":{"path":"/mn-cse-5e639e61465efa001c09edc0/MNAE/1/schedule/List/Heating/la","id":2}}"
+#{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Active","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":20,"cnf":"text/plain:0"}}}}
