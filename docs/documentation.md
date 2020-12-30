@@ -11,6 +11,10 @@ Hopefully eventually this will also include:
 - flask / nypscreen documentation
 once those are built and implemented in the script.
 
+## Stuff in the files directory
+
+Here is all the old code that I made in the past for this.
+Keeping it for further reference. Neatly organised numbered randomly.
 
 ## Using the program
 
@@ -23,9 +27,71 @@ pages helped the project along and finally made it all happen.
 If you followed all the basic steps on the main page you are already on your way!
 Now lets see what we can do in terms of other command line options and what to give them:
 
+### Changing schedules times and temperatures
+```bash
+ python3 ./main.py -f ./files/config.ini -s s -v "5 \$NULL|1|,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,"
+```
+Changes schedule number 5 to empty, Only schedules 3,4 and 5 are editable
+Each day has 6 time slots, starting with Monday
+Setting every day to 0900 to 18 degrees would be:
+```json
+\$NULL|1|0900,180;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,
+```
+Doing this for every day:
+```json
+\$NULL|1|0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;,;,;,;,;,;,
+```
+> You need to escape special characters
 
-######### MORE TO COME
+### Changing schedule name
+```bash
+ python3 ./main.py -f ./files/config.ini -s s -v "5 EMPTY|1|,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,;,"
+```
+Changes the name of schedule 5 from `$NULL` to `EMPTY`
+> Note not all special characters are allowed if you happen to wish one with it..
 
+ToDo: Add list of allowed characters :)
+
+### Changing Active Schedule
+```bash
+python3 ./main.py -f ./files/config.ini -s i -v 3
+```
+Sets active schedule to number 3
+Value must be 0 to 5
+### Changing Temperature
+```bash
+python3 ./main.py -f ./files/config.ini -s t -v 13
+```
+Set current wanted temperature to 13 degrees (Cold!)
+There is a max and a min value. But the script does not check for them.
+
+### Reading data
+```bash
+python3 ./main.py -f ./files/config.ini -r
+```
+Reads the database and uses the stored URLS in there as what to read.
+### Showing Data
+```bash
+python3 ./main.py -f ./files/config.ini -r
+```
+Reads the database and shows you the data.
+### Turning on or off
+```bash
+python3 ./main.py -f ./files/config.ini -s o -v on
+python3 ./main.py -f ./files/config.ini -s o -v off
+```
+> off in this case is actually `standby` in the lan adapter
+
+### Create a new database:
+``` bash
+python3 ./main.py -f ./files/config.ini -cdb ./files/daikin.db
+```
+
+#### To come:
+- A fancy diplay in flask / NPYSCREEN
+- Changing / setting a holiday start and end date
+- The app does not allow you to change the pincode of child lock,
+Perhaps this is possible somehow.
 
 ### Open ports of the lan adapter
 - port 23: Telnet this has a timeout and is thus only open for a certain amount of time.
