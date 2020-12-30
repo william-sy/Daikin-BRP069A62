@@ -69,11 +69,14 @@ Read data and then show:
 
 More information on how to use this program in the docs folder.
 
-# Credits:
+# Credits / Other usefull links:
 Most of the things you see here are inspired by:
 - [openenergymonitor.org](https://community.openenergymonitor.org/t/hack-my-heat-pump-and-publish-data-onto-emoncms/2551/25)
 - [openhab.org](https://community.openhab.org/t/how-to-integrate-daikin-altherma-lt-heat-pump/16488/27)
 - [athom.com](https://community.athom.com/t/daikin-ai/158/103)
+- [home-assistant.io](https://community.home-assistant.io/t/daikin-heat-pump-altherma-integration/202760/13)
+- [community.getvera.com](https://community.getvera.com/t/lua-code-to-read-data-via-websocket/213810/17)
+
 
 Please give them a read it will help!
 Most project out there for Daikin is for their aico units and not heatpump stuff such as:
