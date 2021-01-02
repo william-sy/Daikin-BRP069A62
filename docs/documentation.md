@@ -42,6 +42,7 @@ Doing this for every day:
 \$NULL|1|0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;0900,180;,;,;,;,;,;,;,;,;,;,;,
 ```
 > You need to escape special characters
+> Renaming a schedule on the thermostat will tell you this.
 
 ### Changing schedule name
 ```bash
@@ -264,4 +265,40 @@ Again you can increment the number in the URL and repeat the discovery / resend 
 #### Writing packages
 Writing data to the lan adapter is a bit complicated / frustrating as in some cases you send data in plain text in order for the device to understand you (even tough you send JSON so its get back translated) Also if you want to update one schedule you have to send all six of them instead of one with just the ID.
 
-############ More to come.
+#### New temperature:
+
+```JSON
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Operation/TargetTemperature","fr":"/S","rqi":"","ty":4,"pc":{"m2m:cin":{"con":14,"cnf":"text/plain:0"}}}}
+```
+where `14` can be any value from 12 to 30
+
+#### changing schedule:
+```JSON
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/List/Heating","fr":"/S","rqi":"sxpom","ty":4,"pc":{"m2m:cin":{"con":"{ \"data\" : [\"$NULL|0|0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0700,210;0900,180;1700,210;2300,180;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|0|0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,    210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0700,210;0900,180;1200,210;1400,180;1700,210;2300,180;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|0|0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;;0800,210;2300,180;;;;\",\"$NULL|1|;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\",\"$NULL|1|;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\",\"$NULL|1|;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\"]}","cnf":"text/plain:0"}}}}
+```
+The fist 3 scheduels are default, you can change the following on the last 3
+- Name, change `$NULL` into the name you like. Advised is plain text some special characters are allowed but not all.
+- schedule, a csv in a csv as plain text in json format in a json.
+see changing schedules for format details.
+
+#### Setting holiday
+```JSON
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Holiday/StartDate","fr":"/S","rqi":"npoqn","ty":4,"pc":{"m2m:cin":{"con":"2020-12-31","cnf":"text/plain:0"}}}}
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Holiday/EndDate","fr":"/S","rqi":"doesf","ty":4,"pc":{"m2m:cin":{"con":"2020-12-31","cnf":"text/plain:0"}}}}
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Holiday/HolidayState","fr":"/S","rqi":"rhbh","ty":4,"pc":{"m2m:cin":{"con":1,"cnf":"text/plain:0"}}}}
+```
+
+In order:
+1: Holliday start date
+2: Holliday stop date
+3: Tuning on holiday (1) change to (0) to turn off.
+
+#### Change to a different schedule:
+
+```JSON
+{"m2m:rqp":{"op":1,"to":"/[0]/MNAE/1/Schedule/Default","fr":"/S","rqi":"'+randomString()+'","ty":4,"pc":{"m2m:cin":{"con":"{\"data\":[{\"path\":\"/'device_id'/MNAE/1/schedule/List/Heating/la\",\"id\":3}]}","cnf":"text/plain:0"}}}}
+```
+- device_id: is a personal ID with a URL you need to send to the adapter. This is the only way to change it. Its read and found for you and put in the database.
+- id: numer 3 to 5 to change the schedule you want.
+
+Any questions? please shoot a message :) 
