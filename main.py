@@ -77,9 +77,13 @@ def main():
         if daikinSearch == "True":
             # ^- need to convert to booleans
             DaikinIP = FI.findIP(daikinSerial)
-            #print(DaikinIP)
-        else:
+        elif daikinIP == "":
             daikinIP = ""
+        elif daikinIP != "":
+            DaikinIP = daikinIP
+        else:
+            print("Error found in IP")
+            sys.exit(1)
     else:
         # Not pretty, but it works :)
         if args.IP:
