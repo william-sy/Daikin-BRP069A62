@@ -1,3 +1,4 @@
 zeroconf
 configparser
 websocket
+websocket-client
