@@ -17,6 +17,7 @@ import DOHPC.readHP as RH
 import DOHPC.createDB as CDB
 import DOHPC.sendHP as SH
 import DOHPC.showHP as DHP
+import DOHPC.mqtt as MQTT
 
 def main():
     # Get input form user
@@ -56,6 +57,9 @@ def main():
     parser.add_argument('-r','--read', action='store_true',
                     help='Set me and I will read the pump and put it in the DB ',
                     dest='readFlag')
+    parser.add_argument('-m','--mqtt', action='store_true',
+                    help='Set me and I will start a MQTT loop (BETA FEATURE)',
+                    dest='mqtt')
     args = parser.parse_args()
 
     if args.cdataBase:
@@ -127,6 +131,9 @@ def main():
             DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
         # Run into a while loop here that does its magic.
         #pass
+        elif args.mqtt:
+            # This will be a loop, And does not exit on its own, nneed to think about reasing / sending data
+            MQTT.startMQTT(daikinMqttBroker, daikinMqttName)
 
     """
     Now that we have the valeus, time to do send a new temperature, or schedule to the heatpump
