@@ -13,4 +13,6 @@ def readConfig(file):
     daikingUrlDisc = config['URLS']['disc']
     daikinMqttBroker = config['MQT']['broker']
     daikinMqttName = config['MQT']['name']
-    return daikinSearch, daikinSerial, daikinIP, daikinDevices, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinMqttBroker, daikinMqttName
+    daikinMqttPublishTimeOut = config['MQT']['timeout']
+    daikinMqttExitFile = config['MQT']['exit']
+    return daikinSearch, daikinSerial, daikinIP, daikinDevices, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinMqttBroker, daikinMqttName, daikinMqttPublishTimeOut, daikinMqttExitFile
