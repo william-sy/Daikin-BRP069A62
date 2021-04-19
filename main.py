@@ -17,11 +17,12 @@ import DOHPC.readHP as RH
 import DOHPC.createDB as CDB
 import DOHPC.sendHP as SH
 import DOHPC.showHP as DHP
+import DOHPC.mqtt as MQTT
 
 def main():
     # Get input form user
     parser = argparse.ArgumentParser(
-        description='Daikin OpenSourece HeatPump Controller - (DOHPC)'
+        description='Daikin OpenSource HeatPump Controller - (DOHPC)'
     )
     parser.add_argument('-fip','--find-ip', nargs='+',
                     help='If you want to automatically find the IP by mDNS, Must come with a serial number!',
@@ -38,9 +39,6 @@ def main():
     parser.add_argument('-d','--display', action='store_true',
                     help='Just display all the info dont change a thing',
                     dest='display')
-    parser.add_argument('-fd','--fancy-display','--thermostat',
-                    help='Use NPYSCREEN to display the info and run as a thermostat',
-                    dest='fdisplay')
     parser.add_argument('-cdb','--create-database',
                     help='Creates a SQLITE database for you - takes filename as argument.(besure to update the config.ini)',
                     dest='cdataBase')
@@ -56,6 +54,9 @@ def main():
     parser.add_argument('-r','--read', action='store_true',
                     help='Set me and I will read the pump and put it in the DB ',
                     dest='readFlag')
+    parser.add_argument('-m','--mqtt', action='store_true',
+                    help='Set me and I will start a MQTT loop (BETA FEATURE)',
+                    dest='mqtt')
     args = parser.parse_args()
 
     if args.cdataBase:
@@ -73,7 +74,7 @@ def main():
     if args.file:
         # User gave a config file
         givenConfig = args.file
-        daikinSearch, daikinSerial, daikinIP, daikinDevices, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc = RC.readConfig(givenConfig)
+        daikinSearch, daikinSerial, daikinIP, daikinDevices, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishDataTimeOut, daikinMqttExitFile = RC.readConfig(givenConfig)
         if daikinSearch == "True":
             # ^- need to convert to booleans
             DaikinIP = FI.findIP(daikinSerial)
@@ -127,6 +128,9 @@ def main():
             DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
         # Run into a while loop here that does its magic.
         #pass
+        elif args.mqtt:
+            # This will be a loop, And does not exit on its own, nneed to think about reasing / sending data
+            MQTT.startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishDataTimeOut, daikinMqttExitFile, daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
 
     """
     Now that we have the valeus, time to do send a new temperature, or schedule to the heatpump

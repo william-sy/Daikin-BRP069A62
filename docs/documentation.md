@@ -301,4 +301,68 @@ In order:
 - device_id: is a personal ID with a URL you need to send to the adapter. This is the only way to change it. Its read and found for you and put in the database.
 - id: numer 3 to 5 to change the schedule you want.
 
-Any questions? please shoot a message :) 
+### MQTT:
+There is now MQTT support in this script.
+
+Basic usage: `python3 ./main.py -f ./files/config.ini -m`
+This will start the MQTT server/client. To stop press `control + c` As you might send this to the background, there is option to place a empty file on a location of your choosing. This will also stop the MQTT process.
+
+What is being PUBBED/SUBBED:
+
+#### SUBS:
+1: DHPW/RecvOperationPower - on / off
+2: DHPW/RecvTargetTemperature - Integer 12 to 30
+3: DHPW/RecvUpdateSchedule - See "changing schedule"
+4: DHPW/RecvChangeSchedule - Integer 0 to 5
+
+#### PUBS:
+The pubs are divided into 2 sets, a small one and a big one. the smaller one only sends some temp data and the bigger one also sends the schedules errors and other info. The program starts with the big one, and then only sends the big one every `X` seconds configured in the config.ini.
+
+The smaller set is default to every 5 min:
+Smaller set:
+```
+DHPW/IndoorTemperature
+DHPW/LeavingWaterTemperatureCurrent
+DHPW/WantedTemperature
+DHPW/OutdoorTemperature
+DHPW/SystemState
+DHPW/OperatingMode
+DHPW/OperatingMode
+DHPW/CurrentActiveSchedule
+DHPW/NextSchedule
+DHPW/NextTemperatureGoal
+```
+Bigger set:
+```
+DHPW/ChildLockState
+DHPW/ChildLockCode
+DHPW/HolidayStart
+DHPW/HolidayEnd
+DHPW/HolidayState
+DHPW/UserGivenName
+DHPW/SystemHeatingState
+DHPW/HpUnitIndoorEprom
+DHPW/HpUnitUserEprom
+DHPW/HpIndoorSoftware
+DHPW/HpOutdoorSoftware
+DHPW/HpModelNumber
+DHPW/ControllerFirmware
+DHPW/ControllerSoftware
+DHPW/ControllerSerial
+DHPW/Brand
+DHPW/Model
+DHPW/Type
+DHPW/DeviceFunction
+DHPW/Errors
+DHPW/ErrorState
+DHPW/InstallerState
+DHPW/WarningState
+DHPW/EmergencyState
+```
+
+All data is `raw` and  un processed as of now! This means that some things might be `0 to 6` instead of `monday to sunday` for example.
+
+Upon request/demand this might be implemented
+
+
+Any questions? please shoot a message :)

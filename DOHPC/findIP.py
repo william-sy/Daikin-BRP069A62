@@ -5,6 +5,7 @@ def findIP(name):
     type = '_daikin._tcp.local.'
     name = name
     zeroconf = Zeroconf()
+    foundDaikinIP = ""
     try:
         info = zeroconf.get_service_info(type, name+ '.' + type)
         if info:
