@@ -39,9 +39,6 @@ def main():
     parser.add_argument('-d','--display', action='store_true',
                     help='Just display all the info dont change a thing',
                     dest='display')
-    parser.add_argument('-fd','--fancy-display','--thermostat',
-                    help='Use NPYSCREEN to display the info and run as a thermostat',
-                    dest='fdisplay')
     parser.add_argument('-cdb','--create-database',
                     help='Creates a SQLITE database for you - takes filename as argument.(besure to update the config.ini)',
                     dest='cdataBase')

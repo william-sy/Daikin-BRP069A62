@@ -2,23 +2,41 @@
 def startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishDataTimeOut, daikinMqttExitFile, daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices):
     import paho.mqtt.client as mqtt
     import time, os, sys
+    import sqlite3 as sl
+    import DOHPC.sendHP as SH
+    import DOHPC.readHP as RH
+
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect(client, userdata, flags, rc):
-        print("Connected with result code "+str(rc))
-        client.subscribe([("DHPW/R_D_Error",2),("DHPW/R_Info",2),("DHPW/R_D_I_Brand",2),("DHPW/R_D_I_Model",2),("DHPW/R_D_I_Duty",2),("DHPW/R_D_I_Firmware",2),("DHPW/R_D_I_software",2),("DHPW/R_D_I_Serial",2),("DHPW/R_U_I_Indoor_Software",2),("DHPW/R_U_I_Outdoor_Software",2),("DHPW/R_U_I_Model_Number",2),("DHPW/R_U_I_Indoor_Eeprom",2),("DHPW/R_U_I_User_Eeprom",2),("DHPW/R_U_I_Given_Name",2),("DHPW/R_U_S_Error_State",2),("DHPW/R_U_S_Installer_State",2),("DHPW/R_U_S_Warning_State",2),("DHPW/R_U_S_Emergency_State",2),("DHPW/R_U_S_TTOS",2),("DHPW/R_U_S_WeatherDependentState",2),("DHPW/R_LeavingWaterTemperatureCurrent",2),("DHPW/R_Heating_TargetTemperature",2),("DHPW/R_Heating_IndoorTemperature",2),("DHPW/R_Heating_OutdoorTemperature",2),("DHPW/R_Heating_OperationPower",2),("DHPW/R_Heating_OperationMode",2),("DHPW/R_ChildLock_State",2),("DHPW/R_ChildLock_Code",2),("DHPW/R_Holiday_StartDate",2),("DHPW/R_Holiday_EndDate",2),("DHPW/R_Holiday_HolidayState",2),("DHPW/R_Schedule_Active",2),("DHPW/R_Schedule_Next_Start",2),("DHPW/R_Schedule_Next_Target",2),("DHPW/R_Schedule_Next_Day",2),("DHPW/R_Schedule_List_ID",2),("DHPW/W_Heating_OperationPower",2),("DHPW/W_TargetTemperature",2),("DHPW/R_ScheduleDefault",2),("DHPW/W_ScheduleDefault",2)])
-        client.connected_flag=True
+        #print("Connected with result code "+str(rc))
+        client.subscribe(
+            [
+                ("DHPW/RecvOperationPower",2),
+                ("DHPW/RecvTargetTemperature",2),
+                ("DHPW/RecvUpdateSchedule",2),
+                ("DHPW/RecvChangeSchedule",2)
+            ]
+        )
+        client.connected_flag = True
 
     # The callback for when a PUBLISH message is received from the server.
     def on_message(client, userdata, message):
-        #print("message topic=",message.topic)
-        #print("message received " ,str(message.payload.decode("utf-8")))
         # depending on the message, take a action:
-        if message.topic == "DHPW/temp":
-            print("Set new temperature")
+        if message.topic == "DHPW/RecvTargetTemperature":
+            SH.sendHPvalues("T", message.payload.decode("utf-8"), daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+        elif message.topic == "DHPW/RecvOperationPower":
+            SH.sendHPvalues("O", message.payload.decode("utf-8"), daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+        elif message.topic == "DHPW/RecvUpdateSchedule":
+            SH.sendHPvalues("S", message.payload.decode("utf-8"), daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+        elif message.topic == "DHPW/RecvChangeSchedule":
+            SH.sendHPvalues("I", message.payload.decode("utf-8"), daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+        else:
+            pass
 
     start_program = True
+    times_send = 0
     client = mqtt.Client("DHPW")
-    client.connected_flag=False
+    client.connected_flag = False
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(daikinMqttBroker, port=1883, keepalive=60)
@@ -26,28 +44,76 @@ def startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishD
     # Start the loop, and wait for a connection
     client.loop_start()
     while client.connected_flag == False:
-        print("We are not yet connected, please hold (2)")
+        #print("We are not yet connected, please hold (2)")
         time.sleep(2)
 
     # Here we enter a while loop that can be terminated with a new file (graceful) or a key stroke (non graceful)
     try:
         while not os.path.exists(daikinMqttExitFile):
-            times_send = 0
-            if start_program == True:
+            #if start_program == True:
                 # start program send all data
+            #    start_program = False
+            #    print("Send all the data!")
+            #else:
+            # recieving data always runs on the background
+            # Sleep for the spefified amount of time by the user
+            time.sleep(int(daikinMqttPublishTempTimeOut))
+            times_send = times_send + 1
+            if times_send == int(daikinMqttPublishDataTimeOut) or start_program == True:
+                # reset counter
+                times_send = 0
                 start_program = False
-                print("Send all the data!")
+                print("alldata")
+                # Read HeatPump
+                RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+                # Get and send
+                con = sl.connect(daikinDataBase)
+                with con:
+                    hp_details = con.execute("SELECT * from hp_data order by DATE DESC limit 1")
+                for row in hp_details:
+                    client.publish("DHPW/ChildLockState", row[27])
+                    client.publish("DHPW/ChildLockCode", row[28])
+                    client.publish("DHPW/HolidayStart", row[29])
+                    client.publish("DHPW/HolidayEnd", row[30])
+                    client.publish("DHPW/HolidayState", row[31])
+                    client.publish("DHPW/UserGivenName", row[14])
+                    client.publish("DHPW/SystemHeatingState", row[20])
+                    client.publish("DHPW/HpUnitIndoorEprom", row[12])
+                    client.publish("DHPW/HpUnitUserEprom", row[13])
+                    client.publish("DHPW/HpIndoorSoftware", row[9])
+                    client.publish("DHPW/HpOudtoorSoftware", row[10])
+                    client.publish("DHPW/HpModelNumber", row[11])
+                    client.publish("DHPW/ControllerFirmware", row[6])
+                    client.publish("DHPW/ControllerSoftware", row[7])
+                    client.publish("DHPW/ControllerSerial", row[7])
+                    client.publish("DHPW/Brand", row[3])
+                    client.publish("DHPW/Model", row[4])
+                    client.publish("DHPW/Type", row[5])
+                    client.publish("DHPW/DeviceFunction", row[2])
+                    client.publish("DHPW/Errors", row[1])
+                    client.publish("DHPW/ErrorState", row[15])
+                    client.publish("DHPW/InstallerState", row[16])
+                    client.publish("DHPW/WarningState", row[17])
+                    client.publish("DHPW/EmergencyState", row[18])
             else:
-                # recieving data always runs on the background
-                # Sleep for the spefified amount of time by the user
-                time.sleep(200)
-                times_send = times_send + 1
-                if times_send == daikinMqttPublishDataTimeOut:
-                    # reset counter
-                    times_send = 0
-                    #send all the data
-                else:
-                    pass
+                # Read HeatPump
+                RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+                # Get and send
+                con = sl.connect(daikinDataBase)
+                with con:
+                    hp_details = con.execute("SELECT * from hp_data order by DATE DESC limit 1")
+                for row in hp_details:
+                    client.publish("DHPW/IndoorTemperature", row[23])
+                    client.publish("DHPW/LeavingWaterTemperatureCurrent", row[21])
+                    client.publish("DHPW/WantedTemperature", row[22])
+                    client.publish("DHPW/OutdoorTemperature", row[24])
+                    client.publish("DHPW/SystemState", row[25])
+                    client.publish("DHPW/OperatingMode", row[26])
+                    client.publish("DHPW/OperatingMode", row[26])
+                    client.publish("DHPW/CurrentActiveSchedule", row[36])
+                    client.publish("DHPW/NextSchedule", row[33])
+                    client.publish("DHPW/NextTemperatureGoal", row[34])
+
     except KeyboardInterrupt:
         print(" I was brutally interrupted, tis but a scratch!")
 

@@ -132,15 +132,19 @@ def daikinDataFilter(returnData, rowName, dbFileName, daikinKey1, daikinKey2, da
                     WHERE DATE LIKE '{today}';
                 """)
             else:
-                extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
-                nestedData = json.loads(extractData)
-                extractNestedData = nestedData["data"][daikinKey3]
-                #return extractNestedData
-                con.execute(f"""
-                    UPDATE hp_data SET
-                        {rowName} = '{extractNestedData}'
-                    WHERE DATE LIKE '{today}';
-                """)
+                try:
+                    extractData = data["m2m:rsp"]["pc"][daikinKey1][daikinKey2]
+                    nestedData = json.loads(extractData)
+                    extractNestedData = nestedData["data"][daikinKey3]
+                    #return extractNestedData
+                    con.execute(f"""
+                        UPDATE hp_data SET
+                            {rowName} = '{extractNestedData}'
+                        WHERE DATE LIKE '{today}';
+                    """)
+                except:
+                    pass
+                    # power must be off
         elif daikinRwType == "s":
             # Normally we dont want this but we have to make 1 execption:
             if rowName == "R_ScheduleDefault":
