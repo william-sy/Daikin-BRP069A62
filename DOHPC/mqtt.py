@@ -50,11 +50,6 @@ def startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishD
     # Here we enter a while loop that can be terminated with a new file (graceful) or a key stroke (non graceful)
     try:
         while not os.path.exists(daikinMqttExitFile):
-            #if start_program == True:
-                # start program send all data
-            #    start_program = False
-            #    print("Send all the data!")
-            #else:
             # recieving data always runs on the background
             # Sleep for the spefified amount of time by the user
             time.sleep(int(daikinMqttPublishTempTimeOut))
@@ -63,7 +58,6 @@ def startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishD
                 # reset counter
                 times_send = 0
                 start_program = False
-                print("alldata")
                 # Read HeatPump
                 RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
                 # Get and send
@@ -81,7 +75,7 @@ def startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishD
                     client.publish("DHPW/HpUnitIndoorEprom", row[12])
                     client.publish("DHPW/HpUnitUserEprom", row[13])
                     client.publish("DHPW/HpIndoorSoftware", row[9])
-                    client.publish("DHPW/HpOudtoorSoftware", row[10])
+                    client.publish("DHPW/HpOutdoorSoftware", row[10])
                     client.publish("DHPW/HpModelNumber", row[11])
                     client.publish("DHPW/ControllerFirmware", row[6])
                     client.publish("DHPW/ControllerSoftware", row[7])
