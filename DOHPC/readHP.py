@@ -8,7 +8,7 @@ def randomString(stringLength=5):
     return ''.join(random.choice(letters) for i in range(stringLength))
 
 # A function to read the heatpump data, not in use just yet.
-def readHPOptions(daikinIP, daikinDevices):
+def readHPOptions(daikinIP):
     from websocket import create_connection
     import json, datetime, time
     import locale, calendar
@@ -17,25 +17,25 @@ def readHPOptions(daikinIP, daikinDevices):
     # Setup the connection
     ip = daikinIP
     ws = create_connection("ws://"+ip+"/mca")
-    numerOfDevices = int(daikinDevices)
     daikinDeviceOptions = {}
 
     # Scan our options and put then in variables
-    while numerOfDevices >= 0:
-        daikinDeviceID = str(numerOfDevices)
-        ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/"+daikinDeviceID+"/UnitProfile/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
-        raw_data = json.loads(ws.recv())
-        filter_data = raw_data["m2m:rsp"]["pc"]["m2m:cin"]["con"]
-        # DDID = Daikin Device ID
-        daikinDeviceOptions["DDID{0}".format(daikinDeviceID)] = filter_data
-        numerOfDevices -= 1
+
+    daikinDeviceID = 1
+    ws.send("{\"m2m:rqp\":{\"op\":2,\"to\":\"/[0]/MNAE/"+daikinDeviceID+"/UnitProfile/la\",\"fr\":\"/\",\"rqi\":\""+randomString()+"\"}}")
+    raw_data = json.loads(ws.recv())
+    filter_data = raw_data["m2m:rsp"]["pc"]["m2m:cin"]["con"]
+    # DDID = Daikin Device ID
+    daikinDeviceOptions["DDID{0}".format(daikinDeviceID)] = filter_data
+
+    # If boiler == True, read one more device.
 
     ws.close()
     # Returns a dict with JSON as value
     return daikinDeviceOptions
 
 # A function to read the heatpump data
-def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices):
+def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc):
     from websocket import create_connection
     import sqlite3 as sl
     import datetime, json
@@ -43,16 +43,8 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
     # Setup the connection
     ip = daikinIP
     ws = create_connection(f"ws://{ip}/mca")
-    numberofDaikinDevices = int(daikinDevices)
     daikinFilteredData = {}
 
-    if numberofDaikinDevices > 1:
-        # Print disclaimer.
-        print("""
-            Currently more than 1 Daikin device has not been tested / implemented
-            Feel free to test on your setup and help the project along if you find bugs!
-            Thanks
-        """)
     # Create a row to put all the date in:
     now = datetime.datetime.now()
     # Allows you one row per minute.
@@ -69,18 +61,19 @@ def readHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUr
         hpError = con.execute("SELECT * FROM rw_url where type like '%e%' and rw like '%r%'")
         # Get Device ID and default schedule ID:
         hpSDID = con.execute("SELECT * FROM rw_url where type like '%s%' and rw like '%w%'")
-    # Time to get the results we want from the heatpump.
-    while numberofDaikinDevices >= 1:
-        id = str(numberofDaikinDevices)
-        for row in hpBase:
-            # m2m:rqp = ReQuestParameter, this is default.
-            # rqi ReQuestIndex? needs to be random in anycase
-            ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
-            daikinSocketResponse = ws.recv()
-            daikinSocketResponseName = row[7]
-            daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
 
-        numberofDaikinDevices -= 1
+    # Time to get the results we want from the heatpump.
+    numberofDaikinDevices = 1
+    id = str(numberofDaikinDevices)
+    for row in hpBase:
+        # m2m:rqp = ReQuestParameter, this is default.
+        # rqi ReQuestIndex? needs to be random in anycase
+        ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikinUrlBase+""+id+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")
+        daikinSocketResponse = ws.recv()
+        daikinSocketResponseName = row[7]
+        daikinDataFilter(daikinSocketResponse, daikinSocketResponseName, dbFileName, row[4], row[5], row[6], row[10], today, con)
+
+    # if boiler == true:
 
     for row in hpDisc:
         ws.send("{\"m2m:rqp\":{\"op\":"+row[8]+",\"to\":\""+daikingUrlDisc+""+row[11]+""+row[2]+"\",\"fr\":\""+row[3]+"\",\"rqi\":\""+randomString()+"\"}}")

@@ -11,7 +11,7 @@ def CT(string):
     li = list(string.split(","))
     return li[1]
 
-def showHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices):
+def showHPDetails(daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc):
     import sqlite3 as sl
     LL  = "###################################################################################################"
     LS = "#"

@@ -13,7 +13,7 @@ def randomString(stringLength=5):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
-def sendHPvalues(type, value, daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices):
+def sendHPvalues(type, value, daikinIP, dbFileName, daikinUrlError, daikinUrlBase, daikingUrlDisc):
     import sqlite3 as sl
     from websocket import create_connection
     import json, sys

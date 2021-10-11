@@ -4,7 +4,7 @@ __author__ = "William van Beek"
 __copyright__ = ""
 __credits__ = ["William van Beek"]
 __license__ = "GPL-3.0-only"
-__version__ = "0.1"
+__version__ = "1.2"
 __maintainer__ = "William van Beek"
 __email__ = ""
 __status__ = "Testing"
@@ -74,7 +74,11 @@ def main():
     if args.file:
         # User gave a config file
         givenConfig = args.file
-        daikinSearch, daikinSerial, daikinIP, daikinDevices, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishDataTimeOut, daikinMqttExitFile = RC.readConfig(givenConfig)
+        # All the config items we want to read from that file.
+        daikinSearch, daikinSerial, daikinIP, daikinDataBase,                   \
+        daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinMqttBroker,        \
+        daikinMqttPublishTempTimeOut, daikinMqttPublishDataTimeOut,             \
+        daikinMqttExitFile, daikinBoiler = RC.readConfig(givenConfig)
         if daikinSearch == "True":
             # ^- need to convert to booleans
             DaikinIP = FI.findIP(daikinSerial)
@@ -90,18 +94,10 @@ def main():
         if args.IP:
             # You know the IP, no need to find it
             daikinIP = args.IP[0]
-            if args.number:
-                daikinDevices = args.number[0]
-            else:
-                daikinDevices = ""
         elif args.findIP:
             # You want to find the ip
             daikinSerial = args.findIP[0]
             daikinIP = FI.findIP(daikinSerial)
-            if args.number:
-                daikinDevices = args.number[0]
-            else:
-                daikinDevices = ""
         else:
             daikinIP = ""
 
@@ -110,27 +106,31 @@ def main():
     Time to do some actual work with the heatpump.
     """
     # Read Heatpump values:
-    if daikinIP == "" or daikinDevices == "" or daikinDataBase == "":
-        print("There is no IP adress, or amount of devices specified, cannot read heatpump")
+    if daikinIP == "":
+        print("There is no IP adress, cannot read heatpump")
+        sys.exit(1)
+    elif daikinDataBase == "":
+        # This is a bit mor usefull.
+        print("There is no database specified")
         sys.exit(1)
     elif daikinUrlError == "" or daikinUrlBase == "" or daikingUrlDisc == "":
-        # In case still no config file is being used :(
+        # This ELIF is a bit useless, need to remove this.
         daikinUrlError = "/[0]/MNAE/"
-        daikinUrlBase = "/[0]/MNCSE-node/"
+        daikinUrlBase  = "/[0]/MNCSE-node/"
         daikingUrlDisc = "/[0]/MNAE/0"
     else:
         # Read current settings from the heatpump
         if args.readFlag:
-            RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+            RH.readHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc)
             if args.display:
-                DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+                DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc)
         elif args.display:
-            DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+            DHP.showHPDetails(daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc)
         # Run into a while loop here that does its magic.
         #pass
         elif args.mqtt:
             # This will be a loop, And does not exit on its own, nneed to think about reasing / sending data
-            MQTT.startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishDataTimeOut, daikinMqttExitFile, daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+            MQTT.startMQTT(daikinMqttBroker, daikinMqttPublishTempTimeOut, daikinMqttPublishDataTimeOut, daikinMqttExitFile, daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc)
 
     """
     Now that we have the valeus, time to do send a new temperature, or schedule to the heatpump
@@ -138,7 +138,7 @@ def main():
     if args.sendType:
         # we want to send a value
         if args.sendValue:
-            SH.sendHPvalues(args.sendType, args.sendValue, daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc, daikinDevices)
+            SH.sendHPvalues(args.sendType, args.sendValue, daikinIP, daikinDataBase, daikinUrlError, daikinUrlBase, daikingUrlDisc)
         else:
             print("No data to send")
             sys.exit(1)
