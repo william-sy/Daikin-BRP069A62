@@ -1,0 +1,36 @@
+---
+# You can modify these in order to controll the application
+basics:
+  search_ip: True
+  detect_ip: True
+  database : ./files/daikin.db
+
+mqtt:
+  broker      : 127.0.0.1
+  temp_timeout: 300
+  data_timeout: 6
+  exit_file   : /home/user/exitmqtt
+
+lan_adapter:
+  ip       : 192.168.2.130
+  boiler   : False
+  serial_nr: 175000236
+
+# the following values are generated.
+
+p1_p2_devices:
+  0:
+    - found:   False
+      options: ""
+  1:
+    - found:   False
+      options: ""
+  2:
+    - found:   False
+      options: ""
+  3:
+    - found:   False
+      options: ""
+  4:
+    - found:   False
+      options: ""
