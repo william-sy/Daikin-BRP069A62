@@ -86,3 +86,6 @@ Most project out there for Daikin is for their aico units and not heatpump stuff
 
 I am sure you can find more even on the urls there is this repo that does all of this on the Daikin proprietairty p1/p2 serial bus:
 - [p1/ps serial bus](https://github.com/Arnold-n/P1P2Serial)
+
+# Acknowledgments
+* [Frankkkkk](https://github.com/Frankkkkk/python-daikin-altherma) As much as my code helped yours, it helped right back :)

@@ -1,36 +1,47 @@
----
-# You can modify these in order to controll the application
 basics:
-  search_ip: True
-  detect_ip: True
-  database : ./files/daikin.db
-
-mqtt:
-  broker      : 127.0.0.1
-  temp_timeout: 300
-  data_timeout: 6
-  exit_file   : /home/user/exitmqtt
-
+  database: ./files/daikin.db
+  scan_dev: true
+  search_ip: true
 lan_adapter:
-  ip       : 192.168.2.130
-  boiler   : False
+  boiler: false
+  ip: 192.168.2.130
   serial_nr: 175000236
-
-# the following values are generated.
-
+mqtt:
+  broker: 127.0.0.1
+  data_timeout: 6
+  exit_file: /home/user/exitmqtt
+  temp_timeout: 300
 p1_p2_devices:
   0:
-    - found:   False
-      options: ""
+    DeviceTime: 20211014T211942Z
+    c_firmware: '17003908'
+    c_serialnr: '175000236'
+    c_software: 436CC148000
+    duty: HVAC controller
+    found: true
+    fucntion: ''
+    h_version: ''
+    manufacturer: Daikin
+    model: BRP069A62
+    name: ''
+    options: ''
   1:
-    - found:   False
-      options: ""
+    found: true
+    fucntion: ''
+    name: ''
+    options: ''
   2:
-    - found:   False
-      options: ""
+    found: false
+    fucntion: ''
+    name: ''
+    options: ''
   3:
-    - found:   False
-      options: ""
+    found: false
+    fucntion: ''
+    name: ''
+    options: ''
   4:
-    - found:   False
-      options: ""
+    found: false
+    fucntion: ''
+    name: ''
+    options: ''
