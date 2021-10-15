@@ -286,46 +286,75 @@ class dohpc():
         for key in device:
             if key != 0:
                 if device[key]["found"] == True:
-                    for item in device[key][subject]:
-                        if item == data :
-                            return self._get_value(f"MNAE/1/{hpsub}/{data}/la", self.commonReturnPath)
+                    if subject == "operation":
+                        try:
+                            device[key][subject][data]
+                        except:
+                            return
+                    elif subject == "consumption":
+                        URL = f"{data}"
+                    else:
+                        URL = f"{hpsub}/{data}"
 
-    # Temperatures
+                    try:
+                        ymlkey = device[key][subject]
+                    except:
+                        return
+
+                    for item in ymlkey:
+                        if item == data:
+                            return self._get_value(f"MNAE/1//la", self.commonReturnPath)
+
     @property
     def IndoorTemperature(self):
         """
         Get the indoor temperature
         Arguments:
-        1: sensor, the key in the YML file
-        2: Sensor, the name the controller needs
-        3: The data we want to get.
+        - sensor, the key in the YML file
+        - Sensor, the name the controller needs
+        - The data we want to get
         """
-        return self._verify( "sensor", "Sensor", "IndoorTemperature")
+        return self._verify("sensor", "Sensor", "IndoorTemperature")
     @property
     def LeavingWaterTemperatureCurrent(self):
-        return self._verify( "sensor", "Sensor", "LeavingWaterTemperatureCurrent")
+        return self._verify("sensor", "Sensor", "LeavingWaterTemperatureCurrent")
     @property
     def OutdoorTemperature(self):
-        return self._verify( "sensor", "Sensor", "OutdoorTemperature")
+        return self._verify("sensor", "Sensor", "OutdoorTemperature")
     @property
     def TankTemperature(self):
-        return self._verify( "sensor", "Sensor", "TankTemperature")
-    # Errors
+        return self._verify("sensor", "Sensor", "TankTemperature")
     @property
     def ErrorState(self):
-        return self._verify( "unitstatus", "UnitStatus", "ErrorState")
+        return self._verify("unitstatus", "UnitStatus", "ErrorState")
     @property
     def InstallerState(self):
-        return self._verify( "unitstatus", "UnitStatus", "InstallerState")
+        return self._verify("unitstatus", "UnitStatus", "InstallerState")
     @property
     def WarningState(self):
-        return self._verify( "unitstatus", "UnitStatus", "WarningState")
+        return self._verify("unitstatus", "UnitStatus", "WarningState")
     @property
     def EmergencyState(self):
-        return self._verify( "unitstatus", "UnitStatus", "EmergencyState")
+        return self._verify("unitstatus", "UnitStatus", "EmergencyState")
     @property
     def TargetTemperatureOverruledState(self):
-        return self._verify( "unitstatus", "UnitStatus", "TargetTemperatureOverruledState")
+        return self._verify("unitstatus", "UnitStatus", "TargetTemperatureOverruledState")
+    @property
+    def powerState(self):
+        return self._verify("operation", "Operation", "Power")
+    @property
+    def TankPowerFullState(self):
+        """
+        If you dont have a Tank you will get a None, It wont even try.
+        """
+        return self._verify("operation", "Operation", "Powerfull")
+    @property
+    def powerConsumption(self):
+        """
+        If you dont have powerconsumption you will get a None, It wont even try.
+        """
+        return self._verify("consumption", "Consumption", "Consumption")
+
 
 if __name__ == "__main__":
     daikin_heat_pump = dohpc("./files/dohpc.yml")
@@ -338,5 +367,8 @@ if __name__ == "__main__":
     #print(daikin_heat_pump.WarningState)
     #print(daikin_heat_pump.EmergencyState)
     #print(daikin_heat_pump.TargetTemperatureOverruledState)
+    #print(daikin_heat_pump.powerState)
+    #print(daikin_heat_pump.TankPowerFullState)
+    #print(daikin_heat_pump.powerConsumption)
 
 # Lets init by scanning the ammount of connected devices.

@@ -21,7 +21,7 @@ mqtt:
   temp_timeout: 300
 p1_p2_devices:
   0:
-    DeviceTime: 20211015T171231Z
+    DeviceTime: 20211015T175518Z
     c_firmware: '17003908'
     c_serialnr: '175000236'
     c_software: 436CC148000
@@ -140,7 +140,7 @@ p1_p2_devices:
     sensorData:
       IndoorTemperature: 20.0
       LeavingWaterTemperatureCurrent: 44.0
-      OutdoorTemperature: 15.0
+      OutdoorTemperature: 14.0
     unitholidayend: '2020-12-31'
     unitholidaystart: '2020-12-31'
     unitholidaystate: 0
