@@ -293,6 +293,13 @@ class dohpc():
     # Temperatures
     @property
     def IndoorTemperature(self):
+        """
+        Get the indoor temperature
+        Arguments:
+        1: sensor, the key in the YML file
+        2: Sensor, the name the controller needs
+        3: The data we want to get.
+        """
         return self._verify( "sensor", "Sensor", "IndoorTemperature")
     @property
     def LeavingWaterTemperatureCurrent(self):
@@ -322,6 +329,7 @@ class dohpc():
 
 if __name__ == "__main__":
     daikin_heat_pump = dohpc("./files/dohpc.yml")
+    #print(daikin_heat_pump.TankTemperature)
     #print(daikin_heat_pump.IndoorTemperature)
     #print(daikin_heat_pump.LeavingWaterTemperatureCurrent)
     #print(daikin_heat_pump.OutdoorTemperature)
