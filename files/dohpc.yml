@@ -13,23 +13,137 @@ mqtt:
   temp_timeout: 300
 p1_p2_devices:
   0:
-    DeviceTime: 20211014T211942Z
+    DeviceTime: 20211015T134236Z
     c_firmware: '17003908'
     c_serialnr: '175000236'
     c_software: 436CC148000
     duty: HVAC controller
     found: true
-    fucntion: ''
     h_version: ''
     manufacturer: Daikin
     model: BRP069A62
-    name: ''
-    options: ''
   1:
+    OperationData:
+      LeavingWaterTemperatureOffsetHeating: -2.0
+      OperationMode: heating
+      Power: 'on'
+      RoomTemperatureHeating: 18.0
+      TargetTemperature: 18.0
+    ScheduleData:
+      Day: 4
+      OperationMode: Heating
+      StartTime: 1700
+      TargetTemperature: 200
+    childLockData:
+      ChildLockPin: '1234'
+      ChildLockState: 0
     found: true
-    fucntion: ''
-    name: ''
-    options: ''
+    name: Central heating
+    operation:
+      LeavingWaterTemperatureOffsetHeating:
+        maxValue: 10
+        minValue: -10
+        settable: true
+        stepValue: 1
+      OperationMode:
+      - heating
+      Power:
+      - 'on'
+      - standby
+      RoomTemperatureHeating:
+        maxValue: 30.0
+        minValue: 12.0
+        settable: true
+        stepValue: 1.0
+      TargetTemperature:
+        heating:
+          maxValue: 30.0
+          minValue: 12.0
+          stepValue: 1.0
+    schedule:
+      Base: action
+      List:
+        heating:
+        - Actions:
+          - StartTime
+          - TargetTemperature
+          StartTime:
+            stepValue: 10.0
+            unit: minutes
+          TargetTemperature:
+            heating:
+              maxValue: 30.0
+              minValue: 12.0
+              stepValue: 1
+          maxActionsAllowed: 6
+        - - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        - - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        - - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        - - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        - - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        - - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        - []
+      NameAdjustable: 'false'
+      defaultScheduleAvailable: 'true'
+    sensor:
+    - IndoorTemperature
+    - OutdoorTemperature
+    - LeavingWaterTemperatureCurrent
+    sensorData:
+      IndoorTemperature: 20.0
+      LeavingWaterTemperatureCurrent: 43.0
+      OutdoorTemperature: 15.0
+    unitholidayend: '2020-12-31'
+    unitholidaystart: '2020-12-31'
+    unitholidaystate: 0
+    unitstatus:
+    - ErrorState
+    - InstallerState
+    - WarningState
+    - EmergencyState
+    - TargetTemperatureOverruledState
+    unitstatusData:
+      EmergencyState: 0
+      ErrorState: 0
+      InstallerState: 0
+      TargetTemperatureOverruledState: 0
+      WarningState: 0
   2:
     found: false
     fucntion: ''

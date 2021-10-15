@@ -30,6 +30,7 @@ class dohpc():
         """
         self.config = ""
         self.config_file = config_file
+        self.commonReturnPath = "m2m:rsp/pc/m2m:cin/con"
         # Get config:
         self._read_config(config_file)
         if self.config['basics']['search_ip'] == True:
@@ -50,12 +51,16 @@ class dohpc():
             self._get_devices()
             self._get_options()
             self._scan_devices()
+            self._update_data()
         elif self.config['basics']['search_ip'] == False:
-            pass
+            self.update_data()
             # If this is what the user wants we need to check
             # if there is a device in p1_p2_devices
 
     def _get_value(self, req, path, return_code="m2m:rsp/rsc"):
+        """
+        Get any value from the Adapter.
+        """
         reqid = uuid.uuid4().hex[0:5]
         request = {
             "m2m:rqp": {
@@ -80,6 +85,9 @@ class dohpc():
         return self.return_code
 
     def _read_config(self, config_file):
+        """
+        Read the config file.
+        """
         with open(r'%s' % config_file) as file:
             self.config = yaml.full_load(file)
         return self.config
@@ -106,6 +114,10 @@ class dohpc():
             return self.lan_adapter_ip
 
     def _get_options(self):
+        """
+        Get all the device 0 options. From the adapter, these should be the same
+        across all models.
+        """
         device = self.config['p1_p2_devices']
         for key in device:
             if key == 0:
@@ -146,10 +158,29 @@ class dohpc():
             if key != 0:
                 if device[key]["found"] == True:
                     unitProfile      = f"MNAE/{key}/UnitProfile/la"
-                    unitProfilePath  = "m2m:rsp/pc/m2m:cin/con"
-                    self._get_value(unitProfile, unitProfilePath)
-                    print(self.response)
+                    self._get_value(unitProfile, self.commonReturnPath)
+                    # Load the response as JSON
+                    returnProfile = json.loads(self.response)
+                    #print(self.response)
+                    # Unit sensors
+                    self._write_device_to_yaml(key, "sensor", returnProfile["Sensor"])
+                    self._write_device_to_yaml(key, "unitstatus", returnProfile["UnitStatus"])
+                    self._write_device_to_yaml(key, "operation", returnProfile["Operation"])
+                    self._write_device_to_yaml(key, "schedule", returnProfile["Schedule"])
+                    try:
+                        self._write_device_to_yaml(key, "consumption", returnProfile["Consumption"])
+                    except:
+                        pass
 
+                    unitHolidayStart      = f"MNAE/{key}/Holiday/StartDate/la"
+                    self._get_value(unitHolidayStart, self.commonReturnPath)
+                    self._write_device_to_yaml(key, "unitholidaystart", self.response)
+                    unitHolidayEnd      = f"MNAE/{key}/Holiday/EndDate/la"
+                    self._get_value(unitHolidayEnd, self.commonReturnPath)
+                    self._write_device_to_yaml(key, "unitholidayend", self.response)
+                    unitHolidayState      = f"MNAE/{key}/Holiday/HolidayState/la"
+                    self._get_value(unitHolidayState, self.commonReturnPath)
+                    self._write_device_to_yaml(key, "unitholidaystate", self.response)
 
     def _get_devices(self):
         path = "m2m:rsp/pc/m2m:cnt/lbl"
@@ -166,7 +197,73 @@ class dohpc():
                 item  = "found"
                 self._write_device_to_yaml(key, item, alive)
 
+    def _update_data(self):
+        """
+        This function is here to get all the data, assuming we already scanned the
+        device for its options, so we dont have to do that anymore.
+        This saves time / bandwidth (not really a concern)
+        """
+        device = self.config['p1_p2_devices']
+        for key in device:
+            if key != 0:
+                if device[key]["found"] == True:
+                    # Get unit name
+                    sensorData      = f"MNAE/{key}/UnitIdentifier/Name/la"
+                    self._get_value(sensorData, self.commonReturnPath)
+                    self._write_device_to_yaml(key, "name", self.response)
+                    o_data = {}
+                    # Get data from the found sensors
+                    s_data = {}
+                    for item in device[key]['sensor']:
+                        sensorData      = f"MNAE/{key}/Sensor/{item}/la"
+                        self._get_value(sensorData, self.commonReturnPath)
+                        s_data[item] = self.response
+                    self._write_device_to_yaml(key, "sensorData", s_data)
+
+                    for item in device[key]['operation']:
+                        operationData = f"MNAE/{key}/Operation/{item}/la"
+                        self._get_value(operationData, self.commonReturnPath)
+                        o_data[item] = self.response
+                    self._write_device_to_yaml(key, "OperationData", o_data)
+
+                    u_data = {}
+                    for item in device[key]['unitstatus']:
+                        unitData = f"MNAE/{key}/UnitStatus/{item}/la"
+                        self._get_value(unitData, self.commonReturnPath)
+                        u_data[item] = self.response
+                    self._write_device_to_yaml(key, "unitstatusData", u_data)
+
+                    # Child Lock data
+                    # Might give error.
+                    c_data = {}
+                    childlockStateData = f"MNAE/{key}/ChildLock/LockedState/la"
+                    self._get_value(childlockStateData, self.commonReturnPath)
+                    c_data['ChildLockState'] = self.response
+                    childlockPinData = f"MNAE/{key}/ChildLock/PinCode/la"
+                    self._get_value(childlockPinData, self.commonReturnPath)
+                    c_data['ChildLockPin'] = self.response
+                    self._write_device_to_yaml(key, "childLockData", c_data)
+                    # Schedules these are subject to change refresh is often needed:
+                    scheduleData = f"MNAE/{key}/Schedule/Next/la"
+                    self._get_value(scheduleData, self.commonReturnPath)
+                    scheduleRetunData = json.loads(self.response)
+                    self._write_device_to_yaml(key, "ScheduleData", scheduleRetunData["data"])
+
+                    try:
+                        device[key]["consumption"]
+                        consumptionData = f"MNAE/{key}/Consumption/la"
+                        self._get_value(consumptionData, self.commonReturnPath)
+                        self._write_device_to_yaml(key, "consumptionData", self.response)
+                        print(self.response)
+                    except:
+                        pass
+
+
+
     def _write_device_to_yaml(self, number, item, given_value):
+        """
+        Write the values we got from the adapter to a YML file we understand.
+        """
         fname = self.config_file
         stream = open(fname, 'r')
         data = yaml.load(stream, Loader=yaml.FullLoader)
