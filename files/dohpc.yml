@@ -1,7 +1,15 @@
 basics:
   database: ./files/daikin.db
+  debug: false
   scan_dev: true
   search_ip: true
+external_devices:
+- name: bedroom
+  sensors:
+  - rad_in
+  - rad_out
+  - rad_offside
+  - room
 lan_adapter:
   boiler: false
   ip: 192.168.2.130
@@ -13,7 +21,7 @@ mqtt:
   temp_timeout: 300
 p1_p2_devices:
   0:
-    DeviceTime: 20211015T134236Z
+    DeviceTime: 20211015T171231Z
     c_firmware: '17003908'
     c_serialnr: '175000236'
     c_software: 436CC148000
@@ -24,16 +32,20 @@ p1_p2_devices:
     model: BRP069A62
   1:
     OperationData:
-      LeavingWaterTemperatureOffsetHeating: -2.0
+      LeavingWaterTemperatureOffsetHeating: -1.0
       OperationMode: heating
       Power: 'on'
-      RoomTemperatureHeating: 18.0
-      TargetTemperature: 18.0
+      RoomTemperatureHeating: 20.0
+      TargetTemperature: 20.0
     ScheduleData:
       Day: 4
       OperationMode: Heating
-      StartTime: 1700
-      TargetTemperature: 200
+      StartTime: 2100
+      TargetTemperature: 180
+    Sensor:
+    - IndoorTemperature
+    - OutdoorTemperature
+    - LeavingWaterTemperatureCurrent
     childLockData:
       ChildLockPin: '1234'
       ChildLockState: 0
@@ -127,7 +139,7 @@ p1_p2_devices:
     - LeavingWaterTemperatureCurrent
     sensorData:
       IndoorTemperature: 20.0
-      LeavingWaterTemperatureCurrent: 43.0
+      LeavingWaterTemperatureCurrent: 44.0
       OutdoorTemperature: 15.0
     unitholidayend: '2020-12-31'
     unitholidaystart: '2020-12-31'
@@ -146,16 +158,10 @@ p1_p2_devices:
       WarningState: 0
   2:
     found: false
-    fucntion: ''
     name: ''
-    options: ''
   3:
     found: false
-    fucntion: ''
     name: ''
-    options: ''
   4:
     found: false
-    fucntion: ''
     name: ''
-    options: ''

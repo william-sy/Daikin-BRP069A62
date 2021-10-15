@@ -55,11 +55,6 @@ class dohpc():
         elif self.config['basics']['scan_dev'] == False:
             self._update_data()
 
-# From here we can process user requests.
-
-
-
-# These are internal functions, for the init phase.
     def _get_value(self, req, path, return_code="m2m:rsp/rsc"):
         """
         Get any value from the Adapter.
@@ -83,9 +78,20 @@ class dohpc():
         if self.return_code == 2000:
             self.response = dpath.util.get(result, path)
             return self.response
-        elif self.return_code == 4004:
-            pass
-        return self.return_code
+
+        if self.config['basics']['debug'] == True:
+            if self.return_code == 2001:
+                print("Hooray - 2001 - Succes")
+            elif self.return_code == 4000:
+                print(req)
+                print("Sorry - 400 - URL ERR")
+            elif self.return_code == 4004:
+                print(req)
+                print("Sorry - 404 - Not Found")
+            elif self.return_code == 4102:
+                print("Sorry - 4102 - Value ERR")
+
+            return self.return_code
 
     def _read_config(self, config_file):
         """
@@ -275,7 +281,54 @@ class dohpc():
         with open(fname, 'w') as yaml_file:
             yaml_file.write( yaml.dump(data, default_flow_style=False))
 
+    def _verify(self, subject, hpsub ,data):
+        device = self.config['p1_p2_devices']
+        for key in device:
+            if key != 0:
+                if device[key]["found"] == True:
+                    for item in device[key][subject]:
+                        if item == data :
+                            return self._get_value(f"MNAE/1/{hpsub}/{data}/la", self.commonReturnPath)
+
+    # Temperatures
+    @property
+    def IndoorTemperature(self):
+        return self._verify( "sensor", "Sensor", "IndoorTemperature")
+    @property
+    def LeavingWaterTemperatureCurrent(self):
+        return self._verify( "sensor", "Sensor", "LeavingWaterTemperatureCurrent")
+    @property
+    def OutdoorTemperature(self):
+        return self._verify( "sensor", "Sensor", "OutdoorTemperature")
+    @property
+    def TankTemperature(self):
+        return self._verify( "sensor", "Sensor", "TankTemperature")
+    # Errors
+    @property
+    def ErrorState(self):
+        return self._verify( "unitstatus", "UnitStatus", "ErrorState")
+    @property
+    def InstallerState(self):
+        return self._verify( "unitstatus", "UnitStatus", "InstallerState")
+    @property
+    def WarningState(self):
+        return self._verify( "unitstatus", "UnitStatus", "WarningState")
+    @property
+    def EmergencyState(self):
+        return self._verify( "unitstatus", "UnitStatus", "EmergencyState")
+    @property
+    def TargetTemperatureOverruledState(self):
+        return self._verify( "unitstatus", "UnitStatus", "TargetTemperatureOverruledState")
 
 if __name__ == "__main__":
     daikin_heat_pump = dohpc("./files/dohpc.yml")
+    #print(daikin_heat_pump.IndoorTemperature)
+    #print(daikin_heat_pump.LeavingWaterTemperatureCurrent)
+    #print(daikin_heat_pump.OutdoorTemperature)
+    #print(daikin_heat_pump.ErrorState)
+    #print(daikin_heat_pump.InstallerState)
+    #print(daikin_heat_pump.WarningState)
+    #print(daikin_heat_pump.EmergencyState)
+    #print(daikin_heat_pump.TargetTemperatureOverruledState)
+
 # Lets init by scanning the ammount of connected devices.
