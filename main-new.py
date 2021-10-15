@@ -52,11 +52,14 @@ class dohpc():
             self._get_options()
             self._scan_devices()
             self._update_data()
-        elif self.config['basics']['search_ip'] == False:
-            self.update_data()
-            # If this is what the user wants we need to check
-            # if there is a device in p1_p2_devices
+        elif self.config['basics']['scan_dev'] == False:
+            self._update_data()
 
+# From here we can process user requests.
+
+
+
+# These are internal functions, for the init phase.
     def _get_value(self, req, path, return_code="m2m:rsp/rsc"):
         """
         Get any value from the Adapter.
@@ -261,8 +264,6 @@ class dohpc():
                     except:
                         pass
 
-
-
     def _write_device_to_yaml(self, number, item, given_value):
         """
         Write the values we got from the adapter to a YML file we understand.
@@ -275,6 +276,6 @@ class dohpc():
             yaml_file.write( yaml.dump(data, default_flow_style=False))
 
 
-
-dohpc("./files/dohpc.yml")
+if __name__ == "__main__":
+    daikin_heat_pump = dohpc("./files/dohpc.yml")
 # Lets init by scanning the ammount of connected devices.

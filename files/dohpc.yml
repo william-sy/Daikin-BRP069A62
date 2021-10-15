@@ -1,7 +1,7 @@
 basics:
   database: ./files/daikin.db
-  scan_dev: false
-  search_ip: false
+  scan_dev: true
+  search_ip: true
 lan_adapter:
   boiler: false
   ip: 192.168.2.130
