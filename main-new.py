@@ -153,6 +153,9 @@ class dohpc():
                 #self._get_value(error, errorPath)
 
     def _scan_devices(self):
+        """
+        Scanning the device for its options.
+        """
         device = self.config['p1_p2_devices']
         for key in device:
             if key != 0:
