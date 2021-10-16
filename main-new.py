@@ -1,19 +1,9 @@
 from websocket import create_connection
-import yaml, uuid, ipaddress, json
+import yaml, uuid, ipaddress, json, sys, time
 import dpath.util
 #import json, datetime, time, string, random, yaml
 #import locale, calendar
 #locale.setlocale(locale.LC_ALL, '')
-
-# Define a random string to send to the device
-#def randomString(stringLength=5):
-#    """Generate a random string of fixed length """
-#    letters = string.ascii_lowercase
-#    return ''.join(random.choice(letters) for i in range(stringLength))
-
-ip = "192.168.2.130"
-ws = create_connection("ws://"+ip+"/mca")
-
 
 class dohpc():
     """
@@ -32,7 +22,7 @@ class dohpc():
         self.config_file = config_file
         self.commonReturnPath = "m2m:rsp/pc/m2m:cin/con"
         # Get config:
-        self._read_config(config_file)
+        self._read_config(self.config_file)
         if self.config['basics']['search_ip'] == True:
             self._find_ip(self.config['lan_adapter']['serial_nr'])
             ip_address = self.lan_adapter_ip
@@ -55,7 +45,7 @@ class dohpc():
         elif self.config['basics']['scan_dev'] == False:
             self._update_data()
 
-    def _get_value(self, req, path, return_code="m2m:rsp/rsc"):
+    def _get_value(self, req, path, return_code="m2m:rsp/rsc", ):
         """
         Get any value from the Adapter.
         """
@@ -165,6 +155,7 @@ class dohpc():
         """
         Scanning the device for its options.
         """
+        self._read_config(self.config_file)
         device = self.config['p1_p2_devices']
         for key in device:
             if key != 0:
@@ -215,6 +206,7 @@ class dohpc():
         device for its options, so we dont have to do that anymore.
         This saves time / bandwidth (not really a concern)
         """
+        self._read_config(self.config_file)
         device = self.config['p1_p2_devices']
         for key in device:
             if key != 0:
@@ -223,7 +215,14 @@ class dohpc():
                     sensorData      = f"MNAE/{key}/UnitIdentifier/Name/la"
                     self._get_value(sensorData, self.commonReturnPath)
                     self._write_device_to_yaml(key, "name", self.response)
+
                     o_data = {}
+                    for item in device[key]['operation']:
+                        operationData = f"MNAE/{key}/Operation/{item}/la"
+                        self._get_value(operationData, self.commonReturnPath)
+                        o_data[item] = self.response
+                    self._write_device_to_yaml(key, "OperationData", o_data)
+
                     # Get data from the found sensors
                     s_data = {}
                     for item in device[key]['sensor']:
@@ -232,12 +231,6 @@ class dohpc():
                         s_data[item] = self.response
                     self._write_device_to_yaml(key, "sensorData", s_data)
 
-                    for item in device[key]['operation']:
-                        operationData = f"MNAE/{key}/Operation/{item}/la"
-                        self._get_value(operationData, self.commonReturnPath)
-                        o_data[item] = self.response
-                    self._write_device_to_yaml(key, "OperationData", o_data)
-
                     u_data = {}
                     for item in device[key]['unitstatus']:
                         unitData = f"MNAE/{key}/UnitStatus/{item}/la"
@@ -245,8 +238,6 @@ class dohpc():
                         u_data[item] = self.response
                     self._write_device_to_yaml(key, "unitstatusData", u_data)
 
-                    # Child Lock data
-                    # Might give error.
                     c_data = {}
                     childlockStateData = f"MNAE/{key}/ChildLock/LockedState/la"
                     self._get_value(childlockStateData, self.commonReturnPath)
@@ -255,18 +246,19 @@ class dohpc():
                     self._get_value(childlockPinData, self.commonReturnPath)
                     c_data['ChildLockPin'] = self.response
                     self._write_device_to_yaml(key, "childLockData", c_data)
-                    # Schedules these are subject to change refresh is often needed:
-                    scheduleData = f"MNAE/{key}/Schedule/Next/la"
-                    self._get_value(scheduleData, self.commonReturnPath)
-                    scheduleRetunData = json.loads(self.response)
-                    self._write_device_to_yaml(key, "ScheduleData", scheduleRetunData["data"])
+
+                    if device[key]["schedule"]:
+                        scheduleData = f"MNAE/{key}/Schedule/Next/la"
+                        self._get_value(scheduleData, self.commonReturnPath)
+                        scheduleRetunData = json.loads(self.response)
+                        self._write_device_to_yaml(key, "ScheduleData", scheduleRetunData["data"])
 
                     try:
                         device[key]["consumption"]
                         consumptionData = f"MNAE/{key}/Consumption/la"
                         self._get_value(consumptionData, self.commonReturnPath)
-                        self._write_device_to_yaml(key, "consumptionData", self.response)
-                        print(self.response)
+                        consumptionRetunData = json.loads(self.response)
+                        self._write_device_to_yaml(key, "consumptionData", consumptionRetunData["Electrical"])
                     except:
                         pass
 
@@ -286,6 +278,7 @@ class dohpc():
         for key in device:
             if key != 0:
                 if device[key]["found"] == True:
+                    # Oh boy this needs cleanign up :)
                     if subject == "operation":
                         try:
                             device[key][subject][data]
@@ -357,7 +350,7 @@ class dohpc():
 
 
 if __name__ == "__main__":
-    daikin_heat_pump = dohpc("./files/dohpc.yml")
+    daikin_heat_pump = dohpc("./files/start.yml")
     #print(daikin_heat_pump.TankTemperature)
     #print(daikin_heat_pump.IndoorTemperature)
     #print(daikin_heat_pump.LeavingWaterTemperatureCurrent)
@@ -370,5 +363,7 @@ if __name__ == "__main__":
     #print(daikin_heat_pump.powerState)
     #print(daikin_heat_pump.TankPowerFullState)
     #print(daikin_heat_pump.powerConsumption)
-
-# Lets init by scanning the ammount of connected devices.
+    # Send data
+    # Power On/Off
+    # Change Temperature
+    # turn on tank.

@@ -4,7 +4,7 @@ basics:
   search_ip: True
   scan_dev : True
   database : ./files/daikin.db
-
+  debug    : false
 mqtt:
   broker      : 127.0.0.1
   temp_timeout: 300
@@ -25,21 +25,21 @@ p1_p2_devices:
     options : ""
   1:
     name    : ""
-    found   : False
+    found   : false
     fucntion: ""
     options : ""
   2:
     name    : ""
-    found   : False
+    found   : false
     fucntion: ""
     options : ""
   3:
     name    : ""
-    found   : False
+    found   : false
     fucntion: ""
     options : ""
   4:
     name    : ""
-    found   : False
+    found   : false
     fucntion: ""
     options : ""
