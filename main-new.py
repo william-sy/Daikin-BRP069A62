@@ -348,6 +348,9 @@ class dohpc():
         """
         return self._verify("consumption", "Consumption", "Consumption")
 
+    @property
+    def DomesticHotWaterTemperatureHeating(self):
+        return self._verify("operation", "Operation", "DomesticHotWaterTemperatureHeating")
 
 if __name__ == "__main__":
     daikin_heat_pump = dohpc("./files/start.yml")
@@ -363,6 +366,7 @@ if __name__ == "__main__":
     print(daikin_heat_pump.powerState)
     print(daikin_heat_pump.TankPowerFullState)
     print(daikin_heat_pump.powerConsumption)
+    print(daikin_heat_pump.DomesticHotWaterTemperatureHeating)
     # Send data
     # Power On/Off
     # Change Temperature
