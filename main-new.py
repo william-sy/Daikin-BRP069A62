@@ -275,28 +275,28 @@ class dohpc():
 
     def _verify(self, subject, hpsub ,data):
         device = self.config['p1_p2_devices']
+        URL = f"{hpsub}/{data}"
         for key in device:
             if key != 0:
                 if device[key]["found"] == True:
-                    # Oh boy this needs cleanign up :)
                     if subject == "operation":
                         try:
-                            device[key][subject][data]
+                            ymlkey = device[key][subject][data]
                         except:
                             return
-                    elif subject == "consumption":
-                        URL = f"{data}"
                     else:
-                        URL = f"{hpsub}/{data}"
-
-                    try:
                         ymlkey = device[key][subject]
-                    except:
-                        return
+
+                    if subject == "consumption":
+                        URL = f"{data}"
+                        try:
+                            ymlkey = device[key][subject]
+                        except:
+                            return
 
                     for item in ymlkey:
                         if item == data:
-                            return self._get_value(f"MNAE/1//la", self.commonReturnPath)
+                            return self._get_value(f"MNAE/1/{URL}/la", self.commonReturnPath)
 
     @property
     def IndoorTemperature(self):
@@ -351,18 +351,18 @@ class dohpc():
 
 if __name__ == "__main__":
     daikin_heat_pump = dohpc("./files/start.yml")
-    #print(daikin_heat_pump.TankTemperature)
-    #print(daikin_heat_pump.IndoorTemperature)
-    #print(daikin_heat_pump.LeavingWaterTemperatureCurrent)
-    #print(daikin_heat_pump.OutdoorTemperature)
-    #print(daikin_heat_pump.ErrorState)
-    #print(daikin_heat_pump.InstallerState)
-    #print(daikin_heat_pump.WarningState)
-    #print(daikin_heat_pump.EmergencyState)
-    #print(daikin_heat_pump.TargetTemperatureOverruledState)
-    #print(daikin_heat_pump.powerState)
-    #print(daikin_heat_pump.TankPowerFullState)
-    #print(daikin_heat_pump.powerConsumption)
+    print(daikin_heat_pump.TankTemperature)
+    print(daikin_heat_pump.IndoorTemperature)
+    print(daikin_heat_pump.LeavingWaterTemperatureCurrent)
+    print(daikin_heat_pump.OutdoorTemperature)
+    print(daikin_heat_pump.ErrorState)
+    print(daikin_heat_pump.InstallerState)
+    print(daikin_heat_pump.WarningState)
+    print(daikin_heat_pump.EmergencyState)
+    print(daikin_heat_pump.TargetTemperatureOverruledState)
+    print(daikin_heat_pump.powerState)
+    print(daikin_heat_pump.TankPowerFullState)
+    print(daikin_heat_pump.powerConsumption)
     # Send data
     # Power On/Off
     # Change Temperature
