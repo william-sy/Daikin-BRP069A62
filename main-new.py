@@ -320,7 +320,7 @@ class dohpc():
         return self._verify("operation", "Operation/Power")
     @property
     def TankPowerFullState(self):
-        return self._verify("operation", "Operation/Powerfull")
+        return self._verify("operation", "Operation/Powerful")
     @property
     def powerConsumption(self):
         """
