@@ -279,7 +279,7 @@ class dohpc():
             if key != 0:
                 if device[key]["found"] == True:
 
-                    return self._get_value(f"MNAE/1/{url}/la", self.commonReturnPath)
+                    return self._get_value(f"MNAE/{key}/{url}", self.commonReturnPath)
 
     @property
     def IndoorTemperature(self):
@@ -290,43 +290,43 @@ class dohpc():
         - Sensor, the name the controller needs
         - The data we want to get
         """
-        return self._verify("sensor", "Sensor/IndoorTemperature")
+        return self._verify("sensor", "Sensor/IndoorTemperature/la")
     @property
     def LeavingWaterTemperatureCurrent(self):
-        return self._verify("sensor", "Sensor/LeavingWaterTemperatureCurrent")
+        return self._verify("sensor", "Sensor/LeavingWaterTemperatureCurrent/la")
     @property
     def OutdoorTemperature(self):
-        return self._verify("sensor", "Sensor/OutdoorTemperature")
+        return self._verify("sensor", "Sensor/OutdoorTemperature/la")
     @property
     def TankTemperature(self):
         return self._verify("sensor", "Sensor/TankTemperature")
     @property
     def ErrorState(self):
-        return self._verify("unitstatus", "UnitStatus/ErrorState")
+        return self._verify("unitstatus", "UnitStatus/ErrorState/la")
     @property
     def InstallerState(self):
-        return self._verify("unitstatus", "UnitStatus/InstallerState")
+        return self._verify("unitstatus", "UnitStatus/InstallerState/la")
     @property
     def WarningState(self):
-        return self._verify("unitstatus", "UnitStatus/WarningState")
+        return self._verify("unitstatus", "UnitStatus/WarningState/la")
     @property
     def EmergencyState(self):
-        return self._verify("unitstatus", "UnitStatus/EmergencyState")
+        return self._verify("unitstatus", "UnitStatus/EmergencyState/la")
     @property
     def TargetTemperatureOverruledState(self):
-        return self._verify("unitstatus", "UnitStatus/TargetTemperatureOverruledState")
+        return self._verify("unitstatus", "UnitStatus/TargetTemperatureOverruledState/la")
     @property
     def powerState(self):
-        return self._verify("operation", "Operation/Power")
+        return self._verify("operation", "Operation/Power/la")
     @property
     def TankPowerFullState(self):
-        return self._verify("operation", "Operation/Powerful")
+        return self._verify("operation", "Operation/Powerful/la")
     @property
     def powerConsumption(self):
         """
         If you dont have powerconsumption you will get a None, It wont even try.
         """
-        return self._verify("consumption", "Consumption")
+        return self._verify("consumption", "Consumption/la")
 
     @property
     def DomesticHotWaterTemperatureHeating(self):
