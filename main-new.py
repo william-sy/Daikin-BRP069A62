@@ -45,7 +45,29 @@ class dohpc():
         elif self.config['basics']['scan_dev'] == False:
             self._update_data()
 
-    def _get_value(self, req, path, return_code="m2m:rsp/rsc", ):
+    def _send_value(self, req, data, return_code="m2m:rsp/rsc"):
+        reqid = uuid.uuid4().hex[0:5]
+        request = {
+            "m2m:rqp": {
+                "op": 1,
+                "to": f"/[0]/{req}",
+                "fr": dohpc.UserAgent,
+                "rqi": reqid,
+                "ty": 4,
+                "pc": {
+                    "m2m:cin": data,
+                }
+            }
+        }
+        self.ws.send(json.dumps(request))
+        result = json.loads(self.ws.recv())
+        assert result["m2m:rsp"]["rqi"] == reqid
+        assert result["m2m:rsp"]["to"] == dohpc.UserAgent
+        self.return_code = dpath.util.get(result, return_code)
+        print(self.return_code)
+        return self.return_code
+
+    def _get_value(self, req, path, return_code="m2m:rsp/rsc"):
         """
         Get any value from the Adapter.
         """
@@ -277,6 +299,7 @@ class dohpc():
         device = self.config['p1_p2_devices']
         for key in device:
             if key != 0:
+                print(key)
                 if device[key]["found"] == True:
                     return self._get_value(f"MNAE/{key}/{url}", self.commonReturnPath)
 
@@ -308,6 +331,12 @@ class dohpc():
     def TargetTemperatureOverruledState(self):
         return self._verify("unitstatus", "UnitStatus/TargetTemperatureOverruledState/la")
     @property
+    def targetTemperature(self):
+        return self._verify("operation", "Operation/TargetTemperature/la")
+    @property
+    def LTWTOffset(self):
+        return self._verify("operation", "Operation/LeavingWaterTemperatureOffsetHeating/la")
+    @property
     def powerState(self):
         return self._verify("operation", "Operation/Power/la")
     @property
@@ -331,35 +360,66 @@ class dohpc():
         device = self.config['p1_p2_devices']
         return device[key][subject][item]
 
+    # Sending values to heatpump
+    def TurnOnOff(self, key, subject, state):
+        # Get current Value:
+        if subject == "Power":
+            c_state = daikin_heat_pump.powerState
+            if c_state == state:
+                print("No change")
+            elif c_state != state:
+                data = {'con': state, 'cnf': 'text/plain:0'}
+                self._send_value(f"MNAE/{key}/Operation/{subject}", data)
+            else:
+                print("Err")
+        elif subject == "Powerful":
+            c_state = daikin_heat_pump.powerState
+            if c_state == state:
+                print("No change")
+            elif c_state != state:
+                data = {'con': state, 'cnf': 'text/plain:0'}
+                self._send_value(f"MNAE/{key}/Operation/{subject}", data)
+            else:
+                print("Err")
+
+    def ChangeTemp(self, key, subject, temp):
+        data = {'con': temp, 'cnf': 'text/plain:0'}
+        self._send_value(f"MNAE/{key}/Operation/{subject}", data)
+
 
 if __name__ == "__main__":
     daikin_heat_pump = dohpc("./files/start.yml")
     # Get any value from the YML file.
-    print("#- YML DATA")
-    daikin_heat_pump.UpdateValeus
-    print(daikin_heat_pump.GetValue( 1, "unitstatusData", "TargetTemperatureOverruledState"))
+    #print("#- YML DATA")
+    #daikin_heat_pump.UpdateValeus
+    #print(daikin_heat_pump.GetValue( 1, "unitstatusData", "TargetTemperatureOverruledState"))
     # Get the value from the lan adapter itself:
-    print("#- Live DATA")
-    print("#-  sensors")
-    print(f"Indoor:    {daikin_heat_pump.IndoorTemperature}")
-    print(f"Water:     {daikin_heat_pump.LeavingWaterTemperatureCurrent}")
-    print(f"Outdoor:   {daikin_heat_pump.OutdoorTemperature}")
-    print(f"Tank:      {daikin_heat_pump.TankTemperature}")
-    print("#-  unitstatus")
-    print(f"Error:     {daikin_heat_pump.ErrorState}")
-    print(f"installer: {daikin_heat_pump.InstallerState}")
-    print(f"Warning:   {daikin_heat_pump.WarningState}")
-    print(f"Emergency: {daikin_heat_pump.EmergencyState}")
+    #print("#- Live DATA")
+    #print("#-  sensors")
+    #print(f"Indoor:    {daikin_heat_pump.IndoorTemperature}")
+    #print(f"Water:     {daikin_heat_pump.LeavingWaterTemperatureCurrent}")
+    #print(f"Outdoor:   {daikin_heat_pump.OutdoorTemperature}")
+    #print(f"Tank:      {daikin_heat_pump.TankTemperature}")
+    #print("#-  unitstatus")
+    #print(f"Error:     {daikin_heat_pump.ErrorState}")
+    #print(f"installer: {daikin_heat_pump.InstallerState}")
+    #print(f"Warning:   {daikin_heat_pump.WarningState}")
+    #print(f"Emergency: {daikin_heat_pump.EmergencyState}")
     print(f"Toverrule: {daikin_heat_pump.TargetTemperatureOverruledState}")
-    print("#-  operation")
-    print(f"power:     {daikin_heat_pump.powerState}")
-    print(f"TankPower: {daikin_heat_pump.TankPowerFullState}")
-    print(f"PowerC:    {daikin_heat_pump.powerConsumption}")
-    print(f"TankTemp:  {daikin_heat_pump.DomesticHotWaterTemperatureHeating}")
+    #print("#-  operation")
+    #print(f"LTWTO:     {daikin_heat_pump.LTWTOffset}")
+    #print(f"TargetT:   {daikin_heat_pump.targetTemperature}")
+    #print(f"power:     {daikin_heat_pump.powerState}")
+    #print(f"TankPower: {daikin_heat_pump.TankPowerFullState}")
+    #print(f"PowerC:    {daikin_heat_pump.powerConsumption}")
+    #print(f"TankTemp:  {daikin_heat_pump.DomesticHotWaterTemperatureHeating}")
 
-    print("#- Send Data")
-
-    # Send data
-    # Power On/Off
-    # Change Temperature
-    # turn on tank.
+    #print("#- Send Data")
+    # Turn the system on / off
+    #daikin_heat_pump.TurnOnOff("1", "Power", "on")
+    #daikin_heat_pump.TurnOnOff("1", "Power", "standby")
+    # Turn Tank on / off (You might want need to change the key)
+    #daikin_heat_pump.TurnOnOff("2", "Powerful", "0")
+    #daikin_heat_pump.TurnOnOff("2", "Powerful", "1")
+    # Change the desired heat in the house:
+    #daikin_heat_pump.ChangeTemp("1", "TargetTemperature", 20)
