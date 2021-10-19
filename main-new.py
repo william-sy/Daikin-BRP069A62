@@ -278,18 +278,10 @@ class dohpc():
         for key in device:
             if key != 0:
                 if device[key]["found"] == True:
-
                     return self._get_value(f"MNAE/{key}/{url}", self.commonReturnPath)
 
     @property
     def IndoorTemperature(self):
-        """
-        Get the indoor temperature
-        Arguments:
-        - sensor, the key in the YML file
-        - Sensor, the name the controller needs
-        - The data we want to get
-        """
         return self._verify("sensor", "Sensor/IndoorTemperature/la")
     @property
     def LeavingWaterTemperatureCurrent(self):
@@ -299,7 +291,7 @@ class dohpc():
         return self._verify("sensor", "Sensor/OutdoorTemperature/la")
     @property
     def TankTemperature(self):
-        return self._verify("sensor", "Sensor/TankTemperature")
+        return self._verify("sensor", "Sensor/TankTemperature/la")
     @property
     def ErrorState(self):
         return self._verify("unitstatus", "UnitStatus/ErrorState/la")
@@ -323,30 +315,50 @@ class dohpc():
         return self._verify("operation", "Operation/Powerful/la")
     @property
     def powerConsumption(self):
-        """
-        If you dont have powerconsumption you will get a None, It wont even try.
-        """
         return self._verify("consumption", "Consumption/la")
 
     @property
     def DomesticHotWaterTemperatureHeating(self):
-        return self._verify("operation", "Operation/DomesticHotWaterTemperatureHeating")
+        return self._verify("operation", "Operation/DomesticHotWaterTemperatureHeating/la")
+
+    # This will update the values in the yml file
+    @property
+    def UpdateValeus(self):
+        self._update_data()
+
+    # This will get a value from the yml file
+    def GetValue(self, key, subject, item):
+        device = self.config['p1_p2_devices']
+        return device[key][subject][item]
+
 
 if __name__ == "__main__":
     daikin_heat_pump = dohpc("./files/start.yml")
-    print(daikin_heat_pump.IndoorTemperature)
-    print(daikin_heat_pump.LeavingWaterTemperatureCurrent)
-    print(daikin_heat_pump.OutdoorTemperature)
-    print(daikin_heat_pump.ErrorState)
-    print(daikin_heat_pump.InstallerState)
-    print(daikin_heat_pump.WarningState)
-    print(daikin_heat_pump.EmergencyState)
-    print(daikin_heat_pump.TargetTemperatureOverruledState)
-    print(daikin_heat_pump.powerState)
-    print(daikin_heat_pump.TankPowerFullState)
-    print(daikin_heat_pump.powerConsumption)
-    print(daikin_heat_pump.DomesticHotWaterTemperatureHeating)
-    print(daikin_heat_pump.TankTemperature)
+    # Get any value from the YML file.
+    print("#- YML DATA")
+    daikin_heat_pump.UpdateValeus
+    print(daikin_heat_pump.GetValue( 1, "unitstatusData", "TargetTemperatureOverruledState"))
+    # Get the value from the lan adapter itself:
+    print("#- Live DATA")
+    print("#-  sensors")
+    print(f"Indoor:    {daikin_heat_pump.IndoorTemperature}")
+    print(f"Water:     {daikin_heat_pump.LeavingWaterTemperatureCurrent}")
+    print(f"Outdoor:   {daikin_heat_pump.OutdoorTemperature}")
+    print(f"Tank:      {daikin_heat_pump.TankTemperature}")
+    print("#-  unitstatus")
+    print(f"Error:     {daikin_heat_pump.ErrorState}")
+    print(f"installer: {daikin_heat_pump.InstallerState}")
+    print(f"Warning:   {daikin_heat_pump.WarningState}")
+    print(f"Emergency: {daikin_heat_pump.EmergencyState}")
+    print(f"Toverrule: {daikin_heat_pump.TargetTemperatureOverruledState}")
+    print("#-  operation")
+    print(f"power:     {daikin_heat_pump.powerState}")
+    print(f"TankPower: {daikin_heat_pump.TankPowerFullState}")
+    print(f"PowerC:    {daikin_heat_pump.powerConsumption}")
+    print(f"TankTemp:  {daikin_heat_pump.DomesticHotWaterTemperatureHeating}")
+
+    print("#- Send Data")
+
     # Send data
     # Power On/Off
     # Change Temperature
