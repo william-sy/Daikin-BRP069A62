@@ -12,9 +12,8 @@ mqtt:
   exit_file   : /home/user/exitmqtt
 
 lan_adapter:
-  ip       : 192.168.2.130
-  boiler   : False
-  serial_nr: 175000236
+  ip       : # Add IP here if search_ip == False
+  serial_nr: # Add serial number here if search_ip == True
 
 # the following values are generated.
 p1_p2_devices:
