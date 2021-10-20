@@ -245,6 +245,9 @@ class dohpc():
                         o_data[item] = self.response
                     self._write_device_to_yaml(key, "OperationData", o_data)
 
+                    sc_data = {}
+
+
                     # Get data from the found sensors
                     s_data = {}
                     for item in device[key]['sensor']:
@@ -295,13 +298,16 @@ class dohpc():
         with open(fname, 'w') as yaml_file:
             yaml_file.write( yaml.dump(data, default_flow_style=False))
 
-    def _verify(self, subject, url):
+    def _verify(self, subject, url, decode="None"):
+        if decode == "None":
+            decode = self.commonReturnPath
+
         device = self.config['p1_p2_devices']
         ret_val = {}
         for key in device:
             if key != 0:
                 if device[key]["found"] == True:
-                    ret_val[key] = self._get_value(f"MNAE/{key}/{url}", self.commonReturnPath)
+                    ret_val[key] = self._get_value(f"MNAE/{key}/{url}", decode)
         return ret_val
 
     @property
@@ -346,11 +352,18 @@ class dohpc():
     @property
     def powerConsumption(self):
         return self._verify("consumption", "Consumption/la")
-
     @property
     def DomesticHotWaterTemperatureHeating(self):
         return self._verify("operation", "Operation/DomesticHotWaterTemperatureHeating/la")
-
+    @property
+    def AllSchedules(self):
+        return self._verify("schedule", "Schedule/List/Heating/la")
+    @property
+    def CurrentSchedule(self):
+        return self._verify("schedule", "Schedule/Default/la")
+    @property
+    def NextSchedule(self):
+        return self._verify("schedule", "Schedule/Next/la")
     # This will update the values in the yml file
     @property
     def UpdateValeus(self):
@@ -406,7 +419,11 @@ if __name__ == "__main__":
     #print(f"installer: {daikin_heat_pump.InstallerState}")
     #print(f"Warning:   {daikin_heat_pump.WarningState}")
     #print(f"Emergency: {daikin_heat_pump.EmergencyState}")
-    print(f"Toverrule: {daikin_heat_pump.TargetTemperatureOverruledState}")
+    #print(f"Toverrule: {daikin_heat_pump.TargetTemperatureOverruledState}")
+    #print("#-  schedules")
+    #print(f"Schedule:  {daikin_heat_pump.AllSchedules}")
+    #print(f"Schedule:  {daikin_heat_pump.CurrentSchedule}")
+    #print(f"Schedule:  {daikin_heat_pump.NextSchedule}")
     #print("#-  operation")
     #print(f"LTWTO:     {daikin_heat_pump.LTWTOffset}")
     #print(f"TargetT:   {daikin_heat_pump.targetTemperature}")
