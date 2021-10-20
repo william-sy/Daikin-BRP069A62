@@ -1,4 +1,5 @@
 zeroconf
-configparser
 websocket
 websocket-client
+dpath
+ipaddress
