@@ -1,7 +1,6 @@
 # Daikin BPR069A62 Lan Adapter
 
 ## Intro
-
 Welcome to the repository for the DAIKIN BRP-BRP069A62. This project aims to get all
 available data from the `BPR069A62 lan adapter` and display it or modify it accordingly to your needs where possible.
 
@@ -14,60 +13,13 @@ The following actions are possible:
 - Change name of at least schedules 3 to 5 0 to 3 is not tested.
 - Turn the heatpump on or off
 
-## More Documentation
-More in depth documentation will be in the `docs` directory
-
 # Current to-do of project:
-- Create a TUI / Flask wrapper
+- Create a GUI
 - Documentation (Ongoing in the code itself, not formalized in the docs folder just yet)
 - Edit holiday (on/off/dates) / change pincode
 - Reboot / Reset.
 
-
 # Simple how-to get started:
-## Step 1
-when you check out the master branch from this repo the easiest way is to edit or create a 'config.ini'
-This wil need to look like this (or use / adjust the `/files/config.ini`)
-
-```ini
-# Configuration for main.py to reduce command line arguments
-[DAIKIN]
-search = False
-serial =
-ip =
-devices = 1
-database = ./files/daikin.db
-
-[URLS]
-base = /[0]/MNAE/
-disc = /[0]/MNCSE-node/
-error = /[0]/MNAE/0
-```
-
-You need atleast the IP adress or the serial number of your Daikin lan adapter.
-The serial and the IP can be found in the daikin apps
-> The `Controller` app is named `Daikin Online Control Heating` and can be used offline. The `Daikin Residentail Controller` is a IOT thing
-
-## Step 2
-You need a database. You can use the sample database `/files/daikin.db` Or you can copy this one or create your own with the command:
-
-`main.py -cdb ./datbase/location/database.db`
-
-## Step 3
-
-Read your first data and check things out:
-`main.py -f ./files/config.ini -r`
-
-## Step 4
-You are ready to go! you can now use any command with this script for example:
-
-Show data:
-`-f ./files/config.ini -d`
-
-Read data and then show:
-`-f ./files/config.ini -r -d`
-
-More information on how to use this program in the docs folder.
 
 # Credits / Other usefull links:
 Most of the things you see here are inspired by:
@@ -76,7 +28,6 @@ Most of the things you see here are inspired by:
 - [athom.com](https://community.athom.com/t/daikin-ai/158/103)
 - [home-assistant.io](https://community.home-assistant.io/t/daikin-heat-pump-altherma-integration/202760/13)
 - [community.getvera.com](https://community.getvera.com/t/lua-code-to-read-data-via-websocket/213810/17)
-
 
 Please give them a read it will help!
 Most project out there for Daikin is for their aico units and not heatpump stuff such as:
