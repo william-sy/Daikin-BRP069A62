@@ -1,166 +1,44 @@
+---
+# You can modify these in order to controll the application
 basics:
-  database: ./files/daikin.db
-  debug: false
-  scan_dev: true
-  search_ip: true
-lan_adapter:
-  ip: 192.168.2.130
-  serial_nr: 175000236
+  search_ip: True
+  scan_dev : True
+  database : ./files/daikin.db
+  debug    : false
 mqtt:
-  broker: 127.0.0.1
-  data_timeout: 6
-  exit_file: /home/user/exitmqtt
+  broker      : 127.0.0.1
   temp_timeout: 300
+  data_timeout: 6
+  exit_file   : /home/user/exitmqtt
+
+lan_adapter:
+  ip       : # Add IP here if search_ip == False
+  serial_nr: # Add serial number here if search_ip == True
+
+# the following values are generated.
 p1_p2_devices:
   0:
-    DeviceTime: 20211020T204105Z
-    c_firmware: '17003908'
-    c_serialnr: '175000236'
-    c_software: 436CC148000
-    duty: HVAC controller
-    found: true
-    fucntion: ''
-    h_version: ''
-    manufacturer: Daikin
-    model: BRP069A62
-    name: ''
-    options: ''
+    name    : ""
+    found   : false
+    fucntion: ""
+    options : ""
   1:
-    OperationData:
-      LeavingWaterTemperatureOffsetHeating: -1.0
-      OperationMode: heating
-      Power: 'on'
-      RoomTemperatureHeating: 20.0
-      TargetTemperature: 20.0
-    ScheduleData:
-      Day: 2
-      OperationMode: Heating
-      StartTime: 2100
-      TargetTemperature: 180
-    childLockData:
-      ChildLockPin: '1234'
-      ChildLockState: 0
-    found: true
-    fucntion: ''
-    name: Central heating
-    operation:
-      LeavingWaterTemperatureOffsetHeating:
-        maxValue: 10
-        minValue: -10
-        settable: true
-        stepValue: 1
-      OperationMode:
-      - heating
-      Power:
-      - 'on'
-      - standby
-      RoomTemperatureHeating:
-        maxValue: 30.0
-        minValue: 12.0
-        settable: true
-        stepValue: 1.0
-      TargetTemperature:
-        heating:
-          maxValue: 30.0
-          minValue: 12.0
-          stepValue: 1.0
-    options: ''
-    schedule:
-      Base: action
-      List:
-        heating:
-        - Actions:
-          - StartTime
-          - TargetTemperature
-          StartTime:
-            stepValue: 10.0
-            unit: minutes
-          TargetTemperature:
-            heating:
-              maxValue: 30.0
-              minValue: 12.0
-              stepValue: 1
-          maxActionsAllowed: 6
-        - - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-          - sunday
-        - - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-          - sunday
-        - - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-          - sunday
-        - - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-          - sunday
-        - - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-          - sunday
-        - - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-          - sunday
-        - []
-      NameAdjustable: 'false'
-      defaultScheduleAvailable: 'true'
-    sensor:
-    - IndoorTemperature
-    - OutdoorTemperature
-    - LeavingWaterTemperatureCurrent
-    sensorData:
-      IndoorTemperature: 20.0
-      LeavingWaterTemperatureCurrent: 44.0
-      OutdoorTemperature: 16.0
-    unitholidayend: '2020-12-31'
-    unitholidaystart: '2020-12-31'
-    unitholidaystate: 0
-    unitstatus:
-    - ErrorState
-    - InstallerState
-    - WarningState
-    - EmergencyState
-    - TargetTemperatureOverruledState
-    unitstatusData:
-      EmergencyState: 0
-      ErrorState: 0
-      InstallerState: 0
-      TargetTemperatureOverruledState: 0
-      WarningState: 0
+    name    : ""
+    found   : false
+    fucntion: ""
+    options : ""
   2:
-    found: false
-    fucntion: ''
-    name: ''
-    options: ''
+    name    : ""
+    found   : false
+    fucntion: ""
+    options : ""
   3:
-    found: false
-    fucntion: ''
-    name: ''
-    options: ''
+    name    : ""
+    found   : false
+    fucntion: ""
+    options : ""
   4:
-    found: false
-    fucntion: ''
-    name: ''
-    options: ''
+    name    : ""
+    found   : false
+    fucntion: ""
+    options : ""
