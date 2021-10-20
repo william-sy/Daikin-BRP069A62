@@ -103,7 +103,7 @@ class dohpc():
             elif self.return_code == 4102:
                 print("Sorry - 4102 - Value ERR")
 
-            return self.return_code
+            print(self.return_code)
 
     def _read_config(self, config_file):
         """
@@ -297,11 +297,12 @@ class dohpc():
 
     def _verify(self, subject, url):
         device = self.config['p1_p2_devices']
+        ret_val = {}
         for key in device:
             if key != 0:
-                print(key)
                 if device[key]["found"] == True:
-                    return self._get_value(f"MNAE/{key}/{url}", self.commonReturnPath)
+                    ret_val[key] = self._get_value(f"MNAE/{key}/{url}", self.commonReturnPath)
+        return ret_val
 
     @property
     def IndoorTemperature(self):
